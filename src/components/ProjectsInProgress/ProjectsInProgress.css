@@ -1,0 +1,107 @@
+.projects-in-progress {
+  background-color: #050505;
+}
+
+.projects-in-progress__header {
+  text-align: center;
+  margin-bottom: var(--spacing-lg);
+}
+
+.projects-in-progress__title {
+  font-size: clamp(2rem, 4vw, 3rem);
+  margin-bottom: var(--spacing-xs);
+}
+
+.projects-in-progress__subtitle {
+  font-size: 1rem;
+  color: var(--color-text-secondary);
+  font-style: italic;
+}
+
+.projects-in-progress__grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: var(--spacing-md);
+  max-width: 1000px;
+  margin: 0 auto;
+}
+
+.progress-project {
+  background-color: rgba(255, 255, 255, 0.02);
+  border: 1px solid rgba(255, 255, 255, 0.05);
+  border-radius: 8px;
+  padding: var(--spacing-md);
+  transition: all var(--transition-normal);
+  position: relative;
+  overflow: hidden;
+}
+
+.progress-project::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 3px;
+  height: 0;
+  background: var(--color-accent);
+  transition: height var(--transition-normal);
+}
+
+.progress-project:hover {
+  background-color: rgba(255, 255, 255, 0.04);
+  border-color: rgba(255, 255, 255, 0.1);
+  transform: translateY(-3px);
+}
+
+.progress-project:hover::before {
+  height: 100%;
+}
+
+.progress-project__title {
+  font-size: 1.3rem;
+  font-weight: var(--font-weight-semibold);
+  margin-bottom: var(--spacing-xs);
+  color: var(--color-text);
+}
+
+.progress-project__meta {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-size: 0.9rem;
+  color: var(--color-text-secondary);
+  margin-bottom: var(--spacing-xs);
+}
+
+.progress-project__separator {
+  opacity: 0.5;
+}
+
+.progress-project__role {
+  color: var(--color-accent);
+  font-weight: var(--font-weight-medium);
+}
+
+.progress-project__production {
+  font-size: 0.95rem;
+  color: var(--color-text-secondary);
+  margin-bottom: var(--spacing-xs);
+}
+
+.progress-project__status {
+  display: inline-block;
+  font-size: 0.8rem;
+  color: var(--color-accent);
+  background-color: rgba(255, 59, 59, 0.1);
+  padding: 0.3rem 0.8rem;
+  border-radius: 20px;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  font-weight: var(--font-weight-medium);
+}
+
+@media (max-width: 768px) {
+  .projects-in-progress__grid {
+    grid-template-columns: 1fr;
+  }
+}

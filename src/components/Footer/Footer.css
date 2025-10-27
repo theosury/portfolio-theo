@@ -1,0 +1,32 @@
+.footer {
+  background-color: #000000;
+  border-top: 1px solid rgba(255, 255, 255, 0.05);
+  padding: var(--spacing-lg) 0;
+}
+
+.footer__content {
+  text-align: center;
+}
+
+.footer__text {
+  font-size: 0.95rem;
+  color: var(--color-text-secondary);
+  margin-bottom: var(--spacing-xs);
+}
+
+.footer__credit {
+  font-size: 0.85rem;
+  color: var(--color-text-secondary);
+  opacity: 0.7;
+}
+
+@media (max-width: 768px) {
+  .footer {
+    padding: var(--spacing-md) 0;
+  }
+  
+  .footer__text,
+  .footer__credit {
+    font-size: 0.85rem;
+  }
+}

@@ -1,0 +1,23 @@
+/* =====================================================
+   LIGHT MODE - Footer uniquement (optionnel)
+   ===================================================== */
+
+/* Si tu veux que le Footer reste en light mode, décommente ces lignes :
+
+footer,
+.footer {
+  background: #f5f5f5;
+  color: #333333;
+  border-top: 1px solid #e0e0e0;
+}
+
+footer a,
+.footer a {
+  color: #333333;
+}
+
+footer a:hover,
+.footer a:hover {
+  color: #ff3b3b;
+}
+*/

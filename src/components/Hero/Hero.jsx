@@ -1,134 +1,64 @@
 import React, { useState, useEffect } from 'react';
-import { heroImages } from '../../data/projectsData';
 import './Hero.css';
 
-const Hero = () => {
-  const [currentImageIndex, setCurrentImageIndex] = useState(0);
-  const [isTransitioning, setIsTransitioning] = useState(false);
+function Hero() {
+  const [images, setImages] = useState([]);
+  const [currentIndex, setCurrentIndex] = useState(0);
 
-  // Auto-slide toutes les 5 secondes
   useEffect(() => {
+    // Charge automatiquement toutes les images du dossier /images/hero/
+    const imageModules = import.meta.glob('/public/images/hero/*.{jpg,jpeg,png,webp,JPG,JPEG,PNG,WEBP}', { 
+      eager: true,
+      as: 'url'
+    });
+
+    const imageUrls = Object.keys(imageModules).map(path => path.replace('/public', ''));
+    setImages(imageUrls);
+  }, []);
+
+  // Change d'image toutes les 5 secondes
+  useEffect(() => {
+    if (images.length === 0) return;
+
     const interval = setInterval(() => {
-      handleNext();
+      setCurrentIndex((prevIndex) => (prevIndex + 1) % images.length);
     }, 5000);
 
     return () => clearInterval(interval);
-  }, [currentImageIndex]);
+  }, [images]);
 
-  const handleNext = () => {
-    if (isTransitioning) return;
-    setIsTransitioning(true);
-    
-    setTimeout(() => {
-      setCurrentImageIndex((prev) => 
-        prev === heroImages.length - 1 ? 0 : prev + 1
-      );
-      setIsTransitioning(false);
-    }, 500);
-  };
-
-  const handlePrev = () => {
-    if (isTransitioning) return;
-    setIsTransitioning(true);
-    
-    setTimeout(() => {
-      setCurrentImageIndex((prev) => 
-        prev === 0 ? heroImages.length - 1 : prev - 1
-      );
-      setIsTransitioning(false);
-    }, 500);
-  };
-
-  const goToSlide = (index) => {
-    if (isTransitioning) return;
-    setIsTransitioning(true);
-    
-    setTimeout(() => {
-      setCurrentImageIndex(index);
-      setIsTransitioning(false);
-    }, 500);
-  };
+  if (images.length === 0) return null;
 
   return (
-    <section className="hero" id="hero">
-      {/* Slider d'images */}
-      <div className="hero__slider">
-        {heroImages.map((image, index) => (
+    <section id="hero" className="hero">
+      <div className="hero-slider">
+        {images.map((img, index) => (
           <div
             key={index}
-            className={`hero__slide ${
-              index === currentImageIndex ? 'hero__slide--active' : ''
-            } ${isTransitioning ? 'hero__slide--transitioning' : ''}`}
-            style={{ backgroundImage: `url(${image.src})` }}
-          >
-            <div className="hero__overlay"></div>
-          </div>
-        ))}
-      </div>
-
-      {/* Contenu central */}
-      <div className="hero__content">
-        <h1 className="hero__title">
-          THÉO SURY
-        </h1>
-        <p className="hero__subtitle">
-          Chef-opérateur & Technicien lumière
-        </p>
-        <p className="hero__specialization">
-          Fiction, clips & formats courts
-        </p>
-        <p className="hero__location">
-          Lille / Paris
-        </p>
-        <div className="hero__cta">
-          <a href="#hero-projects" className="btn btn-primary">
-            Voir mes projets
-          </a>
-          <a href="#contact" className="btn">
-            Me contacter
-          </a>
-        </div>
-      </div>
-
-      {/* Controls du slider */}
-      <button 
-        className="hero__arrow hero__arrow--left"
-        onClick={handlePrev}
-        aria-label="Image précédente"
-      >
-        ‹
-      </button>
-      <button 
-        className="hero__arrow hero__arrow--right"
-        onClick={handleNext}
-        aria-label="Image suivante"
-      >
-        ›
-      </button>
-
-      {/* Indicateurs */}
-      <div className="hero__indicators">
-        {heroImages.map((_, index) => (
-          <button
-            key={index}
-            className={`hero__indicator ${
-              index === currentImageIndex ? 'hero__indicator--active' : ''
-            }`}
-            onClick={() => goToSlide(index)}
-            aria-label={`Aller à l'image ${index + 1}`}
+            className={`hero-slide ${index === currentIndex ? 'active' : ''}`}
+            style={{ backgroundImage: `url(${img})` }}
           />
         ))}
       </div>
-
-      {/* Scroll indicator */}
-      <div className="hero__scroll">
-        <a href="#films" className="hero__scroll-link">
-          <span className="hero__scroll-text">Scroll</span>
-          <span className="hero__scroll-line"></span>
-        </a>
+      
+      <div className="hero-content">
+        <h1 className="hero-title">Théo Sury</h1>
+        <p className="hero-subtitle">Caméra // Lumière // Fiction</p>
       </div>
+      
+      <button className="hero-cta" onClick={() => {
+        const section = document.getElementById('hero-projects');
+        if (section) {
+          const offset = 80;
+          const elementPosition = section.getBoundingClientRect().top;
+          const offsetPosition = elementPosition + window.pageYOffset - offset;
+          window.scrollTo({ top: offsetPosition, behavior: 'smooth' });
+        }
+      }}>
+        <span className="hero-arrow">↓</span>
+      </button>
     </section>
   );
-};
+}
 
 export default Hero;

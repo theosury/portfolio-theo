@@ -1,37 +1,238 @@
-.photos {
-  background-color: #050505;
+/* ===================================
+   SECTION PHOTOS
+   =================================== */
+
+.photos-section {
+  padding: 8rem 0;
+  background: #000000;
 }
 
-.photos__header {
+.photos-section .section-title {
+  color: #ffffff;
+  font-size: 2.5rem;
+  font-weight: 600;
+  margin-bottom: 4rem;
   text-align: center;
-  margin-bottom: var(--spacing-lg);
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
 }
 
-.photos__title {
-  font-size: clamp(2.5rem, 5vw, 4rem);
-  margin-bottom: var(--spacing-sm);
-}
+/* ===================================
+   GRILLE DE PHOTOS
+   =================================== */
 
-.photos__subtitle {
-  font-size: 1.1rem;
-  color: var(--color-text-secondary);
-  max-width: 600px;
-  margin: 0 auto;
-}
-
-.photos__grid {
+.photos-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
-  gap: var(--spacing-lg);
+  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+  gap: 1.5rem;
+  width: 100%;
+}
+
+.photo-item {
+  position: relative;
+  aspect-ratio: 1;
+  overflow: hidden;
+  cursor: pointer;
+  background: #111;
+  border-radius: 12px;
+}
+
+.photo-item img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: transform 0.3s ease, opacity 0.3s ease;
+}
+
+.photo-item:hover img {
+  transform: scale(1.05);
+  opacity: 0.85;
+}
+
+/* Message si pas de photos */
+.no-photos {
+  text-align: center;
+  color: #666;
+  font-size: 1.1rem;
+  padding: 4rem 2rem;
+}
+
+.no-photos code {
+  background: #1a1a1a;
+  padding: 0.2rem 0.6rem;
+  border-radius: 4px;
+  color: #ff3b3b;
+  font-family: 'Courier New', monospace;
+}
+
+/* ===================================
+   LIGHTBOX
+   =================================== */
+
+.lightbox {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(0, 0, 0, 0.95);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 9999;
+  padding: 2rem;
+  cursor: zoom-out;
+}
+
+.lightbox img {
+  max-width: 90%;
+  max-height: 90vh;
+  object-fit: contain;
+  cursor: default;
+  box-shadow: 0 10px 50px rgba(0, 0, 0, 0.5);
+}
+
+/* Bouton fermer */
+.lightbox-close {
+  position: fixed;
+  top: 2rem;
+  right: 2rem;
+  width: 50px;
+  height: 50px;
+  background: rgba(255, 255, 255, 0.1);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  color: #fff;
+  font-size: 2.5rem;
+  cursor: pointer;
+  z-index: 10000;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 50%;
+  transition: all 0.2s ease;
+  line-height: 1;
+  padding: 0;
+}
+
+.lightbox-close:hover {
+  background: rgba(255, 255, 255, 0.2);
+  transform: rotate(90deg);
+}
+
+/* Navigation gauche/droite */
+.lightbox-nav {
+  position: fixed;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 60px;
+  height: 60px;
+  background: rgba(255, 255, 255, 0.1);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  color: #fff;
+  font-size: 3rem;
+  cursor: pointer;
+  z-index: 10000;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 50%;
+  transition: all 0.2s ease;
+  line-height: 1;
+  padding: 0;
+}
+
+.lightbox-nav:hover {
+  background: rgba(255, 255, 255, 0.2);
+}
+
+.lightbox-prev {
+  left: 2rem;
+}
+
+.lightbox-next {
+  right: 2rem;
+}
+
+/* Compteur */
+.lightbox-counter {
+  position: fixed;
+  bottom: 2rem;
+  left: 50%;
+  transform: translateX(-50%);
+  color: #fff;
+  background: rgba(0, 0, 0, 0.7);
+  padding: 0.5rem 1.5rem;
+  border-radius: 2rem;
+  font-size: 0.9rem;
+  z-index: 10000;
+  backdrop-filter: blur(10px);
+}
+
+/* ===================================
+   RESPONSIVE
+   =================================== */
+
+@media (max-width: 1024px) {
+  .photos-grid {
+    grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+    gap: 1rem;
+  }
 }
 
 @media (max-width: 768px) {
-  .photos__grid {
-    grid-template-columns: 1fr;
-    gap: var(--spacing-md);
+  .photos-section {
+    padding: 4rem 0;
   }
-  
-  .photos__header {
-    margin-bottom: var(--spacing-md);
+
+  .photos-section .section-title {
+    font-size: 2rem;
+    margin-bottom: 2rem;
+  }
+
+  .photos-grid {
+    grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+    gap: 0.75rem;
+  }
+
+  .lightbox {
+    padding: 1rem;
+  }
+
+  .lightbox img {
+    max-width: 95%;
+    max-height: 85vh;
+  }
+
+  .lightbox-close,
+  .lightbox-nav {
+    width: 45px;
+    height: 45px;
+    font-size: 2rem;
+  }
+
+  .lightbox-close {
+    top: 1rem;
+    right: 1rem;
+  }
+
+  .lightbox-prev {
+    left: 1rem;
+  }
+
+  .lightbox-next {
+    right: 1rem;
+  }
+
+  .lightbox-counter {
+    bottom: 1rem;
+    font-size: 0.85rem;
+    padding: 0.4rem 1.2rem;
+  }
+}
+
+@media (max-width: 480px) {
+  .photos-grid {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 0.5rem;
   }
 }

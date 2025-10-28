@@ -37,7 +37,7 @@
 /* Contenu texte */
 .hero-content {
   position: absolute;
-  top: 50%;
+  top: 40%;
   left: 50%;
   transform: translate(-50%, -50%);
   text-align: center;
@@ -49,13 +49,13 @@
 }
 
 .hero-title {
-  font-size: 4rem;
+  font-size: 6rem;
   font-weight: 700;
   letter-spacing: 0.1em;
   margin: 0;
-  margin-bottom: 1rem;
+  margin-bottom: 0rem;
   text-transform: uppercase;
-  text-shadow: 0 2px 20px rgba(0, 0, 0, 0.5);
+  text-shadow: 0 2px 15px rgba(0, 0, 0, 0.7);
 }
 
 .hero-subtitle {
@@ -63,7 +63,7 @@
   font-weight: 300;
   letter-spacing: 0.05em;
   margin: 0;
-  text-shadow: 0 2px 15px rgba(0, 0, 0, 0.5);
+  text-shadow: 0 2px 12px rgba(0, 0, 0, 0.7);
   opacity: 1;
 }
 

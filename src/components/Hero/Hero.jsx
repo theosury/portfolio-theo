@@ -5,15 +5,19 @@ function Hero() {
   const [images, setImages] = useState([]);
   const [currentIndex, setCurrentIndex] = useState(0);
 
+  // Charge et mélange les images une seule fois au montage
   useEffect(() => {
-    // Charge automatiquement toutes les images du dossier /images/hero/
     const imageModules = import.meta.glob('/public/images/hero/*.{jpg,jpeg,png,webp,JPG,JPEG,PNG,WEBP}', { 
       eager: true,
       as: 'url'
     });
 
     const imageUrls = Object.keys(imageModules).map(path => path.replace('/public', ''));
-    setImages(imageUrls);
+
+    // Mélange aléatoirement les images (ordre fixe pour la session)
+    const shuffled = [...imageUrls].sort(() => Math.random() - 0.5);
+
+    setImages(shuffled);
   }, []);
 
   // Change d'image toutes les 5 secondes
@@ -21,7 +25,7 @@ function Hero() {
     if (images.length === 0) return;
 
     const interval = setInterval(() => {
-      setCurrentIndex((prevIndex) => (prevIndex + 1) % images.length);
+      setCurrentIndex(prevIndex => (prevIndex + 1) % images.length);
     }, 5000);
 
     return () => clearInterval(interval);
@@ -43,18 +47,21 @@ function Hero() {
       
       <div className="hero-content">
         <h1 className="hero-title">Théo Sury</h1>
-        <p className="hero-subtitle">Caméra // Lumière // Fiction</p>
+        <p className="hero-subtitle">CHEF-OPÉRATEUR - CAMÉRA & LUMIÈRE</p>
       </div>
       
-      <button className="hero-cta" onClick={() => {
-        const section = document.getElementById('hero-projects');
-        if (section) {
-          const offset = 80;
-          const elementPosition = section.getBoundingClientRect().top;
-          const offsetPosition = elementPosition + window.pageYOffset - offset;
-          window.scrollTo({ top: offsetPosition, behavior: 'smooth' });
-        }
-      }}>
+      <button
+        className="hero-cta"
+        onClick={() => {
+          const section = document.getElementById('hero-projects');
+          if (section) {
+            const offset = 80;
+            const elementPosition = section.getBoundingClientRect().top;
+            const offsetPosition = elementPosition + window.pageYOffset - offset;
+            window.scrollTo({ top: offsetPosition, behavior: 'smooth' });
+          }
+        }}
+      >
         <span className="hero-arrow">↓</span>
       </button>
     </section>

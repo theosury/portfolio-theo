@@ -66,20 +66,21 @@ export const projectsData = {
         'Audrey Bauer (Alice)',
         'Joel Perruch (Pablo Vieux)'
       ]
-    }
+    },
   ],
 
   // ========== TOUS LES PROJETS (grid principale) ==========
   films: [
-    {
+      {
       id: 'armanaque',
       title: 'Armanaque',
       year: '2024',
       role: 'Chef-opérateur',
-      production: 'Auto-produit (Cours Florent + ESEC)',
+      production: 'Auto-produit',
       thumbnail: '/images/armanaque-thumb.jpg',
       images: [],
       description: 'Moyen-métrage fiction (45min52) tourné en 2 semaines en banlieue parisienne. Film auto-produit avec matériel prêté par le Cours Florent et l\'ESEC.',
+      youtubeId: 'gJY3ENECfbQ',
       specs: {
         format: 'Moyen-métrage',
         duree: '45min52',
@@ -275,8 +276,34 @@ export const projectsData = {
         'Olivia Jubin',
         'François Ayrault'
       ]
+    },
+    {
+      id: 'pardon',
+      title: 'Pardon',
+      year: '2024',
+      role: '1er assistant caméra',
+      realisatrice: 'Virginie Courteille',
+      chefOp: 'Isaac Gorin',
+      production: 'Nikon Film Festival',
+      thumbnail: '/images/pardon-thumb.jpg',
+      specs: {
+        format: 'Court-métrage',
+        lieu: 'Paris',
+        tournage: 'Décembre 2024'
+      }
+    },
+        {
+      id: 'merci',
+      title: 'Merci...',
+      year: '2025',
+      role: 'Chef-opérateur',
+      production: 'Court-métrage - Cours Florent',
+      thumbnail: '/images/merci-thumb.jpg',
+      status: 'En post-production',
+      note: 'Tourné en 1 journée, banlieue parisienne. Ambition de plan-séquence à l\'Easyrig (finalement 3 plans à cause de la pluie et d\'un moteur défectueux). Sony FX3, matériel prêté, budget quasi nul.'
     }
   ],
+
 
   // ========== PROJETS EN POST-PRODUCTION ==========
   projectsInProgress: [
@@ -297,15 +324,6 @@ export const projectsData = {
         jours: '10 jours (2 semaines)',
         camera: 'Blackmagic 6K'
       }
-    },
-    {
-      id: 'merci',
-      title: 'Merci...',
-      year: '2025',
-      role: 'Chef-opérateur',
-      production: 'Court-métrage - Cours Florent',
-      status: 'En post-production',
-      note: 'Tourné en 1 journée, banlieue parisienne. Ambition de plan-séquence à l\'Easyrig (finalement 3 plans à cause de la pluie et d\'un moteur défectueux). Sony FX3, matériel prêté, budget quasi nul.'
     },
     {
       id: 'bbc',
@@ -376,21 +394,6 @@ export const projectsData = {
       specs: {
         lieu: 'LCR Les Tailleurs, Villeneuve-d\'Ascq',
         tournage: 'Juillet 2025'
-      }
-    },
-    {
-      id: 'pardon',
-      title: 'Pardon',
-      year: '2024',
-      role: '1er assistant caméra',
-      realisatrice: 'Virginie Courteille',
-      chefOp: 'Isaac Gorin',
-      production: 'Nikon Film Festival',
-      status: 'En post-production',
-      specs: {
-        format: 'Court-métrage',
-        lieu: 'Paris',
-        tournage: 'Décembre 2024'
       }
     }
   ],

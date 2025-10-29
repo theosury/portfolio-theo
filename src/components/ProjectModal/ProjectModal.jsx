@@ -40,11 +40,10 @@ const ProjectModal = ({ project, onClose }) => {
     };
   }, []);
 
-  // Swipe horizontal (droite) pour fermer la modal sur mobile
+  // Swipe multidirectionnel pour fermer la modal (style Tinder)
   useEffect(() => {
     let startX = 0;
     let startY = 0;
-    let currentX = 0;
     let isDragging = false;
     let modalElement = null;
     
@@ -60,37 +59,48 @@ const ProjectModal = ({ project, onClose }) => {
     const handleTouchMove = (e) => {
       if (!isDragging || !modalElement) return;
       
-      currentX = e.touches[0].clientX;
+      const currentX = e.touches[0].clientX;
       const currentY = e.touches[0].clientY;
       
       const diffX = currentX - startX;
       const diffY = currentY - startY;
       
-      // Déterminer si c'est un swipe horizontal ou vertical
-      const isHorizontalSwipe = Math.abs(diffX) > Math.abs(diffY);
+      // Distance totale du swipe (pythagore)
+      const distance = Math.sqrt(diffX * diffX + diffY * diffY);
       
-      // Swipe vers la DROITE uniquement (diffX positif) et horizontal
-      if (isHorizontalSwipe && diffX > 0) {
-        // Empêcher le scroll natif pendant le swipe horizontal
+      // Vérifier si c'est un swipe intentionnel (pas juste du scroll)
+      const isSwipeGesture = distance > 20;
+      
+      if (isSwipeGesture) {
+        // Empêcher tout scroll pendant le swipe
         e.preventDefault();
         
-        // Appliquer une translation pour feedback visuel
-        const translateX = Math.min(diffX * 0.4, 200);
-        const opacity = Math.max(1 - diffX / 500, 0.3);
+        // Calculer l'angle du swipe pour appliquer la bonne transformation
+        const angle = Math.atan2(diffY, diffX);
         
-        modalElement.style.transform = `translateX(${translateX}px)`;
+        // Appliquer la transformation en fonction de la direction
+        const translateX = diffX * 0.5;
+        const translateY = diffY * 0.5;
+        
+        // Opacité basée sur la distance
+        const opacity = Math.max(1 - distance / 400, 0.2);
+        
+        // Rotation légère pour l'effet "carte qui part"
+        const rotation = (diffX / window.innerWidth) * 15; // Max 15deg
+        
+        modalElement.style.transform = `translate(${translateX}px, ${translateY}px) rotate(${rotation}deg)`;
         modalElement.style.opacity = `${opacity}`;
         modalElement.style.transition = 'none';
         
-        // Fermer si on dépasse 150px (moins sensible)
-        if (diffX > 150) {
+        // Fermer si on dépasse 120px dans n'importe quelle direction
+        if (distance > 120) {
           isDragging = false;
-          onClose();
+          // Animation de sortie fluide
+          modalElement.style.transition = 'transform 0.3s ease, opacity 0.3s ease';
+          modalElement.style.transform = `translate(${diffX * 2}px, ${diffY * 2}px) rotate(${rotation * 2}deg)`;
+          modalElement.style.opacity = '0';
+          setTimeout(() => onClose(), 200);
         }
-      }
-      // Bloquer le swipe vers la gauche (navigation arrière sur mobile)
-      else if (isHorizontalSwipe && diffX < -20) {
-        e.preventDefault();
       }
     };
     
@@ -98,8 +108,8 @@ const ProjectModal = ({ project, onClose }) => {
       if (!modalElement) return;
       
       isDragging = false;
-      // Réinitialiser la position avec transition
-      modalElement.style.transition = 'transform 0.3s ease, opacity 0.3s ease';
+      // Réinitialiser la position avec transition élastique
+      modalElement.style.transition = 'transform 0.4s cubic-bezier(0.34, 1.56, 0.64, 1), opacity 0.3s ease';
       modalElement.style.transform = '';
       modalElement.style.opacity = '';
       
@@ -108,12 +118,11 @@ const ProjectModal = ({ project, onClose }) => {
         if (modalElement) {
           modalElement.style.transition = '';
         }
-      }, 300);
+      }, 400);
     };
     
     const modal = document.querySelector('.modal');
     if (modal) {
-      // Safari nécessite passive: false pour preventDefault()
       modal.addEventListener('touchstart', handleTouchStart, { passive: false });
       modal.addEventListener('touchmove', handleTouchMove, { passive: false });
       modal.addEventListener('touchend', handleTouchEnd, { passive: true });

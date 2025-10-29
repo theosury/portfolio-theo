@@ -44,11 +44,11 @@ function Header() {
             Accueil
           </a>
           <a href="#projets" onClick={(e) => scrollToSection(e, 'hero-projects')}>
-            Projets
-          </a>
-          <a href="#films" onClick={(e) => scrollToSection(e, 'films')}>
             Films
           </a>
+          {/* <a href="#films" onClick={(e) => scrollToSection(e, 'films')}>
+            Films
+          </a>*/}
           <a href="#photographie" onClick={(e) => scrollToSection(e, 'photographie')}>
             Photos
           </a>

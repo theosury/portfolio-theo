@@ -40,11 +40,12 @@ const ProjectModal = ({ project, onClose }) => {
     };
   }, []);
 
-  // Swipe multidirectionnel pour fermer la modal (style Tinder)
+  // Swipe horizontal pour fermer la modal (style Tinder)
   useEffect(() => {
     let startX = 0;
     let startY = 0;
     let isDragging = false;
+    let isHorizontalSwipe = false;
     let modalElement = null;
     
     const handleTouchStart = (e) => {
@@ -54,6 +55,7 @@ const ProjectModal = ({ project, onClose }) => {
       startX = e.touches[0].clientX;
       startY = e.touches[0].clientY;
       isDragging = true;
+      isHorizontalSwipe = false;
     };
     
     const handleTouchMove = (e) => {
@@ -65,50 +67,58 @@ const ProjectModal = ({ project, onClose }) => {
       const diffX = currentX - startX;
       const diffY = currentY - startY;
       
-      // Distance totale du swipe (pythagore)
-      const distance = Math.sqrt(diffX * diffX + diffY * diffY);
+      // Déterminer si c'est un swipe horizontal (seulement au début du mouvement)
+      if (!isHorizontalSwipe && Math.abs(diffX) < 10 && Math.abs(diffY) < 10) {
+        return; // Mouvement trop petit, on attend
+      }
       
-      // Vérifier si c'est un swipe intentionnel (pas juste du scroll)
-      const isSwipeGesture = distance > 20;
+      if (!isHorizontalSwipe) {
+        // Déterminer la direction une seule fois
+        isHorizontalSwipe = Math.abs(diffX) > Math.abs(diffY);
+      }
       
-      if (isSwipeGesture) {
-        // Empêcher tout scroll pendant le swipe
+      // Si c'est un swipe horizontal
+      if (isHorizontalSwipe) {
+        // Empêcher le scroll pendant le swipe horizontal
         e.preventDefault();
         
-        // Calculer l'angle du swipe pour appliquer la bonne transformation
-        const angle = Math.atan2(diffY, diffX);
+        // Distance horizontale absolue
+        const distance = Math.abs(diffX);
         
-        // Appliquer la transformation en fonction de la direction
-        const translateX = diffX * 0.5;
-        const translateY = diffY * 0.5;
+        // Appliquer la transformation uniquement horizontale
+        const translateX = diffX * 0.7;
         
-        // Opacité basée sur la distance
-        const opacity = Math.max(1 - distance / 400, 0.2);
+        // Opacité basée sur la distance (commence à diminuer après 100px)
+        const opacity = Math.max(1 - distance / 600, 0.3);
         
-        // Rotation légère pour l'effet "carte qui part"
-        const rotation = (diffX / window.innerWidth) * 15; // Max 15deg
+        // Rotation légère pour l'effet "carte qui part" (max 20deg)
+        const rotation = (diffX / window.innerWidth) * 20;
         
-        modalElement.style.transform = `translate(${translateX}px, ${translateY}px) rotate(${rotation}deg)`;
+        modalElement.style.transform = `translateX(${translateX}px) rotate(${rotation}deg)`;
         modalElement.style.opacity = `${opacity}`;
         modalElement.style.transition = 'none';
         
-        // Fermer si on dépasse 120px dans n'importe quelle direction
-        if (distance > 120) {
+        // Fermer si on dépasse 200px (comme Tinder - course plus longue)
+        if (distance > 200) {
           isDragging = false;
           // Animation de sortie fluide
           modalElement.style.transition = 'transform 0.3s ease, opacity 0.3s ease';
-          modalElement.style.transform = `translate(${diffX * 2}px, ${diffY * 2}px) rotate(${rotation * 2}deg)`;
+          const exitDistance = diffX > 0 ? window.innerWidth : -window.innerWidth;
+          modalElement.style.transform = `translateX(${exitDistance}px) rotate(${rotation * 1.5}deg)`;
           modalElement.style.opacity = '0';
-          setTimeout(() => onClose(), 200);
+          setTimeout(() => onClose(), 250);
         }
       }
+      // Sinon, c'est un scroll vertical, on laisse faire
     };
     
     const handleTouchEnd = () => {
       if (!modalElement) return;
       
       isDragging = false;
-      // Réinitialiser la position avec transition élastique
+      isHorizontalSwipe = false;
+      
+      // Réinitialiser la position avec transition élastique (effet rebond)
       modalElement.style.transition = 'transform 0.4s cubic-bezier(0.34, 1.56, 0.64, 1), opacity 0.3s ease';
       modalElement.style.transform = '';
       modalElement.style.opacity = '';

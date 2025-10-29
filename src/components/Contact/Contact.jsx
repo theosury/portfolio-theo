@@ -56,15 +56,19 @@ const Contact = () => {
                 <span className="contact__method-value">{aboutData.contact.vimeo}</span>
               </a>
             )}
-          </div>
 
-          <div className="contact__cta">
-            <a 
-              href={`mailto:${aboutData.contact.email}`}
-              className="btn btn-primary"
-            >
-              Envoyer un email
-            </a>
+            {aboutData.contact.linkedin && (
+              <a 
+                href={`https://linkedin.com/in/${aboutData.contact.linkedin.replace('@', '')}`}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="contact__method"
+              >
+                <span className="contact__method-label">Linkedin</span>
+                <span className="contact__method-value">{aboutData.contact.linkedin}</span>
+              </a>
+            )}
+
           </div>
         </div>
       </div>

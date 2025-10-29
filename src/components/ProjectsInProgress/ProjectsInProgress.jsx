@@ -1,33 +1,53 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { projectsData } from '../../data/projectsData';
+import ProjectCard from '../ProjectCard/ProjectCard';
+import ProjectModal from '../ProjectModal/ProjectModal';
 import './ProjectsInProgress.css';
 
 const ProjectsInProgress = () => {
+  const [selectedProject, setSelectedProject] = useState(null);
+
+  // Filtrer uniquement les projets avec status "En post-production"
+  const projectsInProgress = projectsData.films.filter(
+    project => project.status === 'En post-production'
+  );
+
+  const handleProjectClick = (project) => {
+    setSelectedProject(project);
+  };
+
+  const handleCloseModal = () => {
+    setSelectedProject(null);
+  };
+
   return (
-    <section className="projects-in-progress section" id="in-progress">
+    <section className="projects-in-progress section" id="projets-en-cours">
       <div className="container">
         <div className="projects-in-progress__header">
-          <h2 className="projects-in-progress__title">Projets en post-production</h2>
+          <h2 className="projects-in-progress__title">PROJETS EN POST-PROD</h2>
           <p className="projects-in-progress__subtitle">
-            Bientôt disponibles
+            films actuellement en montage ou étalonnage
           </p>
         </div>
 
         <div className="projects-in-progress__grid">
-          {projectsData.projectsInProgress.map((project) => (
-            <div key={project.id} className="progress-project">
-              <h3 className="progress-project__title">{project.title}</h3>
-              <div className="progress-project__meta">
-                <span className="progress-project__year">{project.year}</span>
-                <span className="progress-project__separator">•</span>
-                <span className="progress-project__role">{project.role}</span>
-              </div>
-              <p className="progress-project__production">{project.production}</p>
-              <span className="progress-project__status">{project.status}</span>
-            </div>
+          {projectsInProgress.map((project) => (
+            <ProjectCard
+              key={project.id}
+              project={project}
+              onClick={() => handleProjectClick(project)}
+            />
           ))}
         </div>
       </div>
+
+      {/* Modal pour afficher le projet en détail */}
+      {selectedProject && (
+        <ProjectModal
+          project={selectedProject}
+          onClose={handleCloseModal}
+        />
+      )}
     </section>
   );
 };

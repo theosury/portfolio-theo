@@ -1,11 +1,9 @@
 // =============================================
 // CONFIGURATION DES PROJETS
 // =============================================
-// ⚠️ IMPORTANT : Ce fichier contient TOUTES les données de ton portfolio
-// Change uniquement ce fichier, jamais le code des composants !
 
 export const projectsData = {
-  // ========== PROJETS HERO (les 2 mis en avant avec vidéo) ==========
+  // ========== PROJETS HERO ==========
   heroProjects: [
     {
       id: 'vedette',
@@ -69,9 +67,9 @@ export const projectsData = {
     },
   ],
 
-  // ========== TOUS LES PROJETS (grid principale) ==========
+  // ========== TOUS LES PROJETS ==========
   films: [
-      {
+    {
       id: 'armanaque',
       title: 'Armanaque',
       year: '2024',
@@ -88,7 +86,49 @@ export const projectsData = {
         lieu: 'Banlieue parisienne',
         camera: 'Sony FS7',
         budget: 'Très faible'
+
       }
+    },
+    {
+      id: 'insipide',
+      title: 'Insipide',
+      year: '2023',
+      month: 'Novembre 2023',
+      role: 'Réalisateur',
+      chefOp: 'Solal Alenda',
+              realisation: 'Theo Sury',
+        montage: 'Theo Sury',
+        chefOp: 'Solal Alenda',
+
+      thumbnail: '/images/insipide-valse-thumb.jpg',
+      images: [],
+      youtubeIds: [
+        {
+          id: 'AJoQw8D-Ph4',
+          title: 'La Valse'
+        },
+        {
+          id: 'tNIKhZKBRLk',
+          title: 'Le Mépris'
+        },
+        {
+          id: 'gXo5zLmihIA',
+          title: 'La Fuite'
+        }
+      ],
+      description: 'Série de trois trailers pour la collection "Insipide", créée par Mathilde Duquénoy. Clips mode conceptualisés par Theo Sury, Solal Alenda et Mathilde Duquénoy.',
+      synopsis: 'Trois univers distincts : La Valse (danse inquiétante), Le Mépris (tension solitaire), La Fuite (course éperdue).',
+      specs: {
+        production: 'Auto-produit - Suburb TV en assistance',
+        format: 'Clips mode',
+        etalonnage: 'Solal Alenda',
+        location: 'RVZ & Puzzle Video'
+      },
+      cast: [
+        'La Valse : Ethan Wallevrick & Bill Tuan (Valseurs), Axel Lessieur (Angoisse)',
+        'Le Mépris : Clothilde Merlin (Jeune fille), Axel Lessieur (Angoisse)',
+        'La Fuite : Ariel Duquesne (Homme aux talons), Axel Lessieur (Angoisse), '
+      ]
     },
     {
       id: 'casse-noisette',
@@ -139,7 +179,7 @@ export const projectsData = {
       year: '2023',
       role: 'Stagiaire Électricien / Machino',
       realisateur: 'Taylor Knight',
-      chefElectro: 'Jéremie Dignac',
+      chefElectro: 'Jérémie Dignac',
       directricePhoto: 'Micaela Albanese',
       production: 'Pictor Prod',
       thumbnail: '/images/gadfly-thumb.jpg',
@@ -147,73 +187,6 @@ export const projectsData = {
       description: 'Court-métrage produit par Pictor Prod.',
       specs: {
         format: 'Court-métrage'
-      }
-    },
-    {
-      id: 'insipide-valse',
-      title: 'Insipide — La Valse',
-      year: '2023',
-      role: 'Réalisateur',
-      chefOp: 'Solal Alenda',
-      production: 'Trailer collection mode Insipide',
-      thumbnail: '/images/insipide-valse-thumb.jpg',
-      images: [],
-      youtubeId: '',
-      description: 'Trailer pour la collection "Insipide", créée par Mathilde Duquénoy. Clip mode conceptualisé par Theo Sury, Solal Alenda et Mathilde Duquénoy.',
-      specs: {
-        format: 'Clip mode',
-        realisation: 'Theo Sury',
-        montage: 'Theo Sury',
-        chefOp: 'Solal Alenda',
-        etalonnage: 'Solal Alenda',
-        location: 'RVZ & Puzzle Video'
-      },
-      cast: [
-        'Ethan Wallevrick (Valseur)',
-        'Bill Tuan (Valseur)'
-      ]
-    },
-    {
-      id: 'insipide-mepris',
-      title: 'Insipide — Le Mépris',
-      year: '2023',
-      role: 'Réalisateur',
-      chefOp: 'Solal Alenda',
-      production: 'Trailer collection mode Insipide',
-      thumbnail: '/images/insipide-mepris-thumb.jpg',
-      images: [],
-      youtubeId: '',
-      description: 'Trailer pour la collection "Insipide", créée par Mathilde Duquénoy. Clip mode conceptualisé par Theo Sury, Solal Alenda et Mathilde Duquénoy.',
-      specs: {
-        format: 'Clip mode',
-        realisation: 'Theo Sury',
-        montage: 'Theo Sury',
-        chefOp: 'Solal Alenda',
-        etalonnage: 'Solal Alenda',
-        location: 'RVZ & Puzzle Video'
-      },
-      cast: [
-        'Axel Lessieur (Angoisse)'
-      ]
-    },
-    {
-      id: 'insipide-fuite',
-      title: 'Insipide — La Fuite',
-      year: '2023',
-      role: 'Réalisateur',
-      chefOp: 'Solal Alenda',
-      production: 'Trailer collection mode Insipide',
-      thumbnail: '/images/insipide-fuite-thumb.jpg',
-      images: [],
-      youtubeId: '',
-      description: 'Trailer pour la collection "Insipide", créée par Mathilde Duquénoy. Clip mode conceptualisé par Theo Sury, Solal Alenda et Mathilde Duquénoy.',
-      specs: {
-        format: 'Clip mode',
-        realisation: 'Theo Sury',
-        montage: 'Theo Sury',
-        chefOp: 'Solal Alenda',
-        etalonnage: 'Solal Alenda',
-        location: 'RVZ & Puzzle Video'
       }
     },
     {
@@ -227,6 +200,7 @@ export const projectsData = {
       thumbnail: '/images/loverdance-thumb.jpg',
       images: [],
       description: 'Lola rencontre Simon lors d\'un marathon de 24 heures de danse. Alors que la compétition bat son plein, ils développent une complicité qui la détourne de son objectif. Mais les éliminations se succèdent à un rythme effréné et, à bout de souffle, elle décide de s\'unir à lui pour une danse qui pourrait bien les mener à la victoire…',
+      arteId: '119915-009-A?autoplay=true&mute=0',
       specs: {
         format: 'Court-métrage fiction',
         coproduction: 'Filmakademie Baden-Württemberg, La Fémis, ARTE, SWR',
@@ -292,30 +266,20 @@ export const projectsData = {
         tournage: 'Décembre 2024'
       }
     },
-        {
-      id: 'merci',
-      title: 'Merci...',
-      year: '2025',
-      role: 'Chef-opérateur',
-      production: 'Court-métrage - Cours Florent',
-      thumbnail: '/images/merci-thumb.jpg',
-      status: 'En post-production',
-      note: 'Tourné en 1 journée, banlieue parisienne. Ambition de plan-séquence à l\'Easyrig (finalement 3 plans à cause de la pluie et d\'un moteur défectueux). Sony FX3, matériel prêté, budget quasi nul.'
-    }
-  ],
-
-
-  // ========== PROJETS EN POST-PRODUCTION ==========
-  projectsInProgress: [
+    
+    // ========== PROJETS EN POST-PRODUCTION ==========
     {
       id: 'male-addict',
       title: 'Mâle Addict',
       year: '2025',
+      month: 'Mars 2025',
       role: 'Chef-opérateur',
       coChefOp: 'À confirmer',
       realisateurs: 'Victoria Baverey & Pierre Vaxelaire',
       production: 'Moyen-métrage - Cours Florent',
+      thumbnail: '/images/male-addict-thumb.jpg',
       status: 'En post-production',
+      images: [],
       description: 'Triangle amoureux toxique entre Mathis, Thalia et Tom. Mathis et Thalia ont une liaison secrète alors que Thalia est en couple avec Tom, le meilleur ami de Mathis.',
       synopsis: 'L\'histoire explore la manipulation, la trahison et les conséquences d\'une relation destructrice entre trois jeunes adultes pris dans un jeu dangereux de désir et de mensonges.',
       specs: {
@@ -327,14 +291,17 @@ export const projectsData = {
     },
     {
       id: 'bbc',
-      title: 'BBC (Bons Beaux Charmeurs)',
+      title: 'BBC',
       year: '2025',
+      month: 'Août 2025',
       role: 'Électricien',
       realisateurs: 'Joaquim Tivoukou & Naïr Mlanao',
       chefOp: 'Jerry Pradon',
       chefElectro: 'Leo Aguiton',
       production: 'MOLIMO Prod',
+      thumbnail: '/images/bbc-thumb.jpg',
       status: 'En post-production',
+      images: [],
       description: 'Xavier et Awa rentrent chez eux et croisent Madame Kogo dans l\'ascenseur. Elle apprend qu\'Awa va avoir une fille et confronte Xavier sur son passé, lui indiquant qu\'il doit procéder à un processus de réparation avant de devenir père.',
       specs: {
         format: 'Court-métrage',
@@ -354,12 +321,15 @@ export const projectsData = {
       id: 'azincourt',
       title: 'Azincourt',
       year: '2024',
+      month: 'Octobre 2024',
       role: 'Électricien',
       realisateur: 'Adrien Guillet',
       chefOp: 'Axel Dos Santos',
       chefElectro: 'Alexandre Chadha',
       production: 'Court-métrage médiéval - VHS Prod',
+      thumbnail: '/images/azincourt-thumb.jpg',
       status: 'En post-production',
+      images: [],
       specs: {
         format: 'Court-métrage médiéval',
         lieu: 'Château de la Lande, Montaigu-Vendée',
@@ -371,11 +341,14 @@ export const projectsData = {
       id: 'gate66',
       title: 'Gate 66',
       year: '2025',
+      month: 'Septembre 2025',
       role: '1er assistant caméra B',
       realisateur: 'Maël Kerever',
       chefOp: 'Bastien Leprince',
       production: 'Court-métrage - École 24 × ArtFX',
+      thumbnail: '/images/gate66-thumb.jpg',
       status: 'En post-production',
+      images: [],
       specs: {
         format: 'Court-métrage',
         lieu: 'Plaine Image, Tourcoing',
@@ -387,34 +360,18 @@ export const projectsData = {
       id: 'verite-studio',
       title: 'Vérité Studio',
       year: '2025',
+      month: 'Juillet 2025',
       role: 'Électricien',
       realisatrice: 'Khadija Sy',
       production: 'Court-métrage - Point E × La Fémis',
+      thumbnail: '/images/verite-studio-thumb.jpg',
       status: 'En post-production',
+      images: [],
       specs: {
         lieu: 'LCR Les Tailleurs, Villeneuve-d\'Ascq',
         tournage: 'Juillet 2025'
       }
     }
-  ],
-
-  // ========== PHOTOGRAPHIE ==========
-  photos: [
-    {
-      id: 'sahara',
-      title: 'Sahara',
-      year: '2024',
-      category: 'Voyage',
-      thumbnail: '/images/sahara-thumb.jpg',
-      images: [
-        '/images/sahara-1.jpg',
-        '/images/sahara-2.jpg',
-        '/images/sahara-3.jpg',
-        '/images/sahara-4.jpg',
-      ],
-      description: 'Série photographique réalisée lors d\'un voyage dans le désert.'
-    }
-    // Ajoute tes autres séries photo ici...
   ],
 
   // ========== AUTRES EXPÉRIENCES ==========
@@ -427,7 +384,7 @@ export const projectsData = {
       realisateur: 'Martin Schrepel',
       chefOp: 'Grégoire Léon-Dufour',
       production: 'Making-of EP "Home"',
-      thumbnail: '/images/darwin-thumb.jpg',
+      thumbnail: '/images/darwinthumb.jpg',
       description: 'Captation et montage du making-of de l\'EP "Home" du groupe Darwin Experience. Clips : Automatic Doors, Home, I Killed You, I Just Want to Dance.',
       specs: {
         format: 'Making-of / Clips musicaux',
@@ -442,7 +399,7 @@ export const projectsData = {
       year: '2024',
       role: 'Stagiaire',
       production: '3 mois - Magasin & Filtres',
-      thumbnail: '/images/panavision-thumb.jpg',
+      thumbnail: '/images/panavisionthumb.jpg',
       description: 'Stage maintenance caméra et configuration. Vérification et maintenance d\'accessoires caméra et filtres, rangement du stock, préparation de commandes, configuration caméra.'
     },
     {
@@ -451,7 +408,7 @@ export const projectsData = {
       year: '2025',
       role: 'Assistant technique (cadre, lumière, régie)',
       production: 'Formation direction d\'acteur',
-      thumbnail: '/images/dixit-thumb.jpg',
+      thumbnail: '/images/dixitthumb.jpg',
       description: 'Captation de formations en direction d\'acteur (janvier & juin 2025).'
     },
     {
@@ -460,7 +417,7 @@ export const projectsData = {
       year: '2023-2024',
       role: 'Photographe',
       production: 'Événementiel',
-      thumbnail: '/images/noctem-thumb.jpg',
+      thumbnail: '/images/noctemthumb.jpg',
       description: 'Photographie événementielle en conditions de faible lumière.'
     },
     {
@@ -471,7 +428,7 @@ export const projectsData = {
       realisateurs: 'Alexis Charrier & Thomas Lipmann',
       directeursPhoto: 'William Hulin & Hervé Lodé',
       production: 'Fédération Entertainment - TELSETE',
-      thumbnail: '/images/dna-thumb.jpg',
+      thumbnail: '/images/dnathumb.jpg',
       description: 'Stage de 3e assistant caméra sur la série quotidienne de TF1. Deux sessions d\'une semaine chacune.',
       specs: {
         duree: '2 sessions de 1 semaine'
@@ -530,27 +487,6 @@ J'interviens actuellement sur des courts et moyens-métrages, des clips musicaux
     phone: '07 50 84 62 01',
     instagram: '@theosury',
     vimeo: '',
-    linkedin: 'www.linkedin.com/in/theosury/'
+    linkedin: '@theosury'
   }
 };
-
-// ========== IMAGES POUR LE HERO SLIDER ==========
-// Ces images vont défiler sur la page d'accueil
-export const heroImages = [
-  {
-    src: '/images/hero-1.jpg',
-    alt: 'Image du projet Vedette',
-    project: 'vedette'
-  },
-  {
-    src: '/images/hero-2.jpg',
-    alt: 'Image du projet Ce que laissent les vagues',
-    project: 'vagues'
-  },
-  {
-    src: '/images/hero-3.jpg',
-    alt: 'Image de plateau',
-    project: ''
-  }
-  // Ajoute 2-3 images max pour le slider
-];

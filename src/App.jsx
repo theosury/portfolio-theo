@@ -21,8 +21,8 @@ function App() {
         <Films />
         <ProjectsInProgress />
         <Photos />
-        <About />
-        <OtherExperiences />
+        {/*<OtherExperiences />*/}
+        {/*<About />*/}
         <Contact />
       </main>
       <Footer />

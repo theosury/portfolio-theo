@@ -19,11 +19,11 @@ const Films = () => {
     <section className="films section" id="films">
       <div className="container">
         <div className="films__header">
-          <h2 className="films__title">Autres films</h2>
+          <h2 className="films__title">AUTRES FILMS</h2>
         </div>
 
         <div className="films__grid">
-          {projectsData.films.map((film) => (
+          {projectsData.films.filter(film => film.status !== 'En post-production').map((film) => (
             <ProjectCard
               key={film.id}
               project={film}

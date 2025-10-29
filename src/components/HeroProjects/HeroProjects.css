@@ -196,11 +196,14 @@
     padding: var(--spacing-sm);
   }
 
+  /* Cacher complètement le bouton info sur mobile (fix Safari) */
   .hero-project__info-icon {
-    width: 28px;
-    height: 28px;
-    font-size: 1rem;
-    top: 0.5rem;
-    right: 0.5rem;
+    display: none !important;
+    opacity: 0 !important;
+    visibility: hidden !important;
+    pointer-events: none !important;
+    /* Force Safari iOS à respecter */
+    -webkit-transform: scale(0) !important;
+    transform: scale(0) !important;
   }
 }

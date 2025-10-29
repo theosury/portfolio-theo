@@ -22,44 +22,100 @@ const ProjectModal = ({ project, onClose }) => {
 
   // Empêcher le scroll du body quand la modale est ouverte
   useEffect(() => {
+    // Pour tous les navigateurs
     document.body.style.overflow = 'hidden';
-    // Empêcher le pull-to-refresh sur mobile
     document.body.style.overscrollBehavior = 'none';
+    
+    // Pour Safari iOS
+    document.body.style.position = 'fixed';
+    document.body.style.width = '100%';
+    document.body.style.WebkitOverflowScrolling = 'touch';
     
     return () => {
       document.body.style.overflow = 'unset';
       document.body.style.overscrollBehavior = 'auto';
+      document.body.style.position = '';
+      document.body.style.width = '';
+      document.body.style.WebkitOverflowScrolling = '';
     };
   }, []);
 
-  // Swipe-to-close sur mobile
+  // Swipe-to-close sur mobile (compatible Safari et Firefox)
   useEffect(() => {
     let startY = 0;
-    let currentY = 0;
+    let isDragging = false;
+    let modalElement = null;
     
     const handleTouchStart = (e) => {
-      startY = e.touches[0].clientY;
+      modalElement = document.querySelector('.modal');
+      if (!modalElement) return;
+      
+      // Ne déclencher le swipe que si on est en haut de la modal
+      if (modalElement.scrollTop <= 10) {
+        startY = e.touches[0].clientY;
+        isDragging = true;
+      }
     };
     
     const handleTouchMove = (e) => {
-      currentY = e.touches[0].clientY;
-      // Si on est en haut de la modal et qu'on swipe vers le bas
-      const modal = document.querySelector('.modal');
-      if (modal && modal.scrollTop === 0 && currentY - startY > 50) {
-        onClose();
+      if (!isDragging || !modalElement) return;
+      
+      const currentY = e.touches[0].clientY;
+      const diff = currentY - startY;
+      
+      // Si on swipe vers le bas (diff positif) et qu'on est en haut
+      if (diff > 0 && modalElement.scrollTop <= 10) {
+        // Empêcher le scroll natif pendant le swipe
+        e.preventDefault();
+        
+        // Appliquer une translation pour feedback visuel
+        const translateY = Math.min(diff * 0.6, 150);
+        const opacity = Math.max(1 - diff / 400, 0.3);
+        
+        modalElement.style.transform = `translateY(${translateY}px)`;
+        modalElement.style.opacity = `${opacity}`;
+        modalElement.style.transition = 'none';
+        
+        // Fermer si on dépasse 100px
+        if (diff > 100) {
+          isDragging = false;
+          onClose();
+        }
       }
+    };
+    
+    const handleTouchEnd = () => {
+      if (!modalElement) return;
+      
+      isDragging = false;
+      // Réinitialiser la position avec transition
+      modalElement.style.transition = 'transform 0.3s ease, opacity 0.3s ease';
+      modalElement.style.transform = '';
+      modalElement.style.opacity = '';
+      
+      // Nettoyer la transition après l'animation
+      setTimeout(() => {
+        if (modalElement) {
+          modalElement.style.transition = '';
+        }
+      }, 300);
     };
     
     const modal = document.querySelector('.modal');
     if (modal) {
-      modal.addEventListener('touchstart', handleTouchStart);
-      modal.addEventListener('touchmove', handleTouchMove);
+      // Safari nécessite passive: false pour preventDefault()
+      modal.addEventListener('touchstart', handleTouchStart, { passive: false });
+      modal.addEventListener('touchmove', handleTouchMove, { passive: false });
+      modal.addEventListener('touchend', handleTouchEnd, { passive: true });
+      modal.addEventListener('touchcancel', handleTouchEnd, { passive: true });
     }
     
     return () => {
       if (modal) {
         modal.removeEventListener('touchstart', handleTouchStart);
         modal.removeEventListener('touchmove', handleTouchMove);
+        modal.removeEventListener('touchend', handleTouchEnd);
+        modal.removeEventListener('touchcancel', handleTouchEnd);
       }
     };
   }, [onClose]);

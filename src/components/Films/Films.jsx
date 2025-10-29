@@ -19,7 +19,7 @@ const Films = () => {
     <section className="films section" id="films">
       <div className="container">
         <div className="films__header">
-          <h2 className="films__title">AUTRES FILMS</h2>
+          {/*<h2 className="films__title">AUTRES FILMS</h2>*/}
         </div>
 
         <div className="films__grid">

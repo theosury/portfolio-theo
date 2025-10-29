@@ -1,7 +1,7 @@
 .footer {
   background-color: #000000;
   border-top: 1px solid rgba(255, 255, 255, 0.05);
-  padding: var(--spacing-lg) 0;
+  padding: var(--spacing-md) 0; /* Réduit de --spacing-lg à --spacing-md */
 }
 
 .footer__content {
@@ -22,7 +22,7 @@
 
 @media (max-width: 768px) {
   .footer {
-    padding: var(--spacing-md) 0;
+    padding: var(--spacing-sm) 0; /* Encore plus réduit sur mobile */
   }
   
   .footer__text,

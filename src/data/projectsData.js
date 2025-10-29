@@ -5,34 +5,34 @@
 export const projectsData = {
   // ========== PROJETS HERO ==========
   heroProjects: [
-    {
-      id: 'vedette',
-      title: 'Vedette !',
-      year: '2024',
-      role: 'Chef-opérateur / Cadreur',
-      coChefOp: 'Isaac Gorin',
-      realisateurs: 'Augustin Provost & Konrad Galice',
-      production: 'ESEC',
-      thumbnail: '/images/vedette-thumb.jpg',
-      images: [
-        '/images/vedette-1.jpg',
-        '/images/vedette-2.jpg',
-      ],
-      youtubeId: 'huDt5YegK_k',
-      description: 'Claude, une ancienne vedette en déclin, se bat avec le réalisateur pour tourner une scène romantique avec sa co-star Olivia Ricci. Il regrette alors son souhait lorsqu\'il découvre qu\'Olivia est en réalité sa fille, mais le réalisateur est décidé à lui faire tourner cette scène et Olivia est bien décidée à lui faire regretter son abandon de responsabilité paternel.',
-      synopsis: 'Pastiche des années 50 tourné en studio. Deux ambiances distinctes : le "film dans le film" avec un éclairage doux très studio, dolly et longues focales, et la partie "hors du film" très contrastée, en plans fixes stricts au 18mm.',
-      specs: {
-        format: 'Court-métrage fiction',
-        duree: '14min08',
-        jours: '2 jours',
-        camera: 'Arri ALEXA SXT Plus (Alexa Classic)',
-        objectifs: 'Cooke S4',
-      },
-      cast: [
-        'Gilbert Coudurier (Claude Berr)',
-        'Luna Kozaczka (Olivia Ricci)',
-        'Stéphane de Oliveira (Réalisateur)'
-      ]
+   {
+    id: 'vedette',
+    title: 'Vedette !',
+    year: '2024',
+    month: 'Février-Mars 2024',
+    role: 'Chef-opérateur / Cadreur',
+    coChefOp: 'Isaac Gorin',
+    realisateurs: 'Augustin Provost & Konrad Galice',
+    production: 'ESEC',
+    thumbnail: '/images/vedette-thumb.jpg',
+    images: [],
+    youtubeId: 'huDt5YegK_k',
+    description: 'Claude, une ancienne vedette en déclin, se bat avec le réalisateur pour tourner une scène romantique avec sa co-star Olivia Ricci. Il regrette alors son souhait lorsqu\'il découvre qu\'Olivia est en réalité sa fille, mais le réalisateur est décidé à lui faire tourner cette scène et Olivia est bien décidée à lui faire regretter son abandon de responsabilité paternel.',
+    synopsis: 'Pastiche des années 50 tourné en studio. Deux ambiances distinctes : le "film dans le film" avec un éclairage doux très studio, dolly et longues focales, et la partie "hors du film" très contrastée, en plans fixes stricts au 18mm.',
+    etalonneur: 'Marion de Ravel de l\'Argentière',
+    specs: {
+      format: 'Court-métrage fiction',
+      duree: '14min08',
+      jours: '2 jours',
+      lieu: 'Studio',
+      camera: 'Arri ALEXA SXT Plus',
+      objectifs: 'Cooke S4',
+    },
+    cast: [
+      'Gilbert Coudurier (Claude Berr)',
+      'Luna Kozaczka (Olivia Ricci)',
+      'Stéphane de Oliveira (Réalisateur)'
+    ]
     },
     {
       id: 'vagues',
@@ -43,12 +43,10 @@ export const projectsData = {
       realisatrices: 'Luce Paz & Ana Maria Garza Flores',
       production: 'ESEC',
       thumbnail: '/images/vagues-thumb.jpg',
-      images: [
-        '/images/vagues-1.jpg',
-      ],
+      images: [],
       youtubeId: 'BC1k5pwd-_8',
       description: 'Pablo est un gitan qui vit seul près de la mer. Ce lieu est devenu son refuge depuis ses 19 ans, âge auquel il est tombé amoureux de son unique amour, Alice, avant de la perdre tragiquement cette même année. Forcé de quitter le seul endroit où il a vu son bonheur, il replonge dans ses souvenirs comme pour plonger avec Alice, la retrouver, quitte à ne plus en émerger.',
-      synopsis: 'La musique gitane de son enfance, le tissu rouge carmin et la fraîcheur du sable la nuit nous emportent sur la rive et on se souviendra avec lui de l\'année de ses 19 ans, lorsque la vie était plus douce.',
+      synopsis: 'Deux époques se confrontent : un présent sombre et désaturé face à un passé chaud aux couleurs vives. Tournage en Bretagne avec Easyrig pour suivre les mouvements des personnages sur la plage. Plans dynamiques et sensoriels pour traduire la mémoire de Pablo.',
       specs: {
         format: 'Court-métrage fiction',
         duree: '12min44',
@@ -56,7 +54,6 @@ export const projectsData = {
         lieu: 'Bretagne',
         camera: 'Arri ALEXA SXT Plus',
         objectifs: 'Cooke S4',
-        budget: '4500€',
         cadrage: 'Easyrig'
       },
       cast: [
@@ -69,26 +66,27 @@ export const projectsData = {
 
   // ========== TOUS LES PROJETS ==========
   films: [
-    {
-      id: 'armanaque',
-      title: 'Armanaque',
-      year: '2024',
-      role: 'Chef-opérateur',
-      production: 'Auto-produit',
-      thumbnail: '/images/armanaque-thumb.jpg',
-      images: [],
-      description: 'Moyen-métrage fiction (45min52) tourné en 2 semaines en banlieue parisienne. Film auto-produit avec matériel prêté par le Cours Florent et l\'ESEC.',
-      youtubeId: 'gJY3ENECfbQ',
-      specs: {
-        format: 'Moyen-métrage',
-        duree: '45min52',
-        jours: '2 semaines',
-        lieu: 'Banlieue parisienne',
-        camera: 'Sony FS7',
-        budget: 'Très faible'
-
-      }
-    },
+{
+  id: 'armanaque',
+  title: 'Armanaque',
+  year: '2024',
+  role: 'Chef-opérateur',
+  production: 'Auto-produit',
+  thumbnail: '/images/armanaque-thumb.jpg',
+  images: [],
+  description: 'Moyen-métrage fiction (45min52) tourné en 2 semaines en banlieue parisienne. Film auto-produit avec matériel prêté par le Cours Florent et l\'ESEC.',
+  synopsis: 'Lumière dure à contre-jour, soleil écrasant et zones cramées pour un rendu chaud et organique. Exploration du point de vue avec de nombreux champ-contre-champ, caméra au plus proche des personnages pour servir le ton comédie. Défi technique : moyen-métrage tourné en FS7 avec uniquement du tungstène.',
+  youtubeId: 'gJY3ENECfbQ',
+  specs: {
+    format: 'Moyen-métrage fiction',
+    duree: '45min52',
+    jours: '2 semaines',
+    lieu: 'Banlieue parisienne',
+    camera: 'Sony FS7',
+    budget: 'Très faible',
+    lumiere: 'Tungstène uniquement'
+  }
+},
     {
       id: 'insipide',
       title: 'Insipide',
@@ -96,24 +94,19 @@ export const projectsData = {
       month: 'Novembre 2023',
       role: 'Réalisateur',
       chefOp: 'Solal Alenda',
-              realisation: 'Theo Sury',
-        montage: 'Theo Sury',
-        chefOp: 'Solal Alenda',
-
+      realisation: 'Theo Sury',
+      montage: 'Theo Sury',
       thumbnail: '/images/insipide-valse-thumb.jpg',
       images: [],
       youtubeIds: [
         {
-          id: 'AJoQw8D-Ph4',
-          title: 'La Valse'
+          id: 'tNIKhZKBRLk'
         },
         {
-          id: 'tNIKhZKBRLk',
-          title: 'Le Mépris'
+          id: 'AJoQw8D-Ph4'
         },
         {
-          id: 'gXo5zLmihIA',
-          title: 'La Fuite'
+          id: 'gXo5zLmihIA'
         }
       ],
       description: 'Série de trois trailers pour la collection "Insipide", créée par Mathilde Duquénoy. Clips mode conceptualisés par Theo Sury, Solal Alenda et Mathilde Duquénoy.',
@@ -139,6 +132,7 @@ export const projectsData = {
       production: 'ESEC',
       thumbnail: '/images/casse-noisette-thumb.jpg',
       images: [],
+      vimeoId: '1026723522',
       description: 'Court-métrage studio tourné en une journée lors des portes ouvertes de l\'ESEC. Carte blanche, style inspiré de The Office mais en plus malaisant.',
       specs: {
         format: 'Court-métrage studio',
@@ -162,6 +156,7 @@ export const projectsData = {
       production: 'ESEC',
       thumbnail: '/images/revolte-thumb.jpg',
       images: [],
+      youtubeId: 'PPvxZQ_3x3c',
       description: 'Louis, un fils d\'immigrés chinois manifestant en France contre la politique du gouvernement, entre en conflit avec son père quand il apprend que celui-ci désapprouve sa révolte dans ce qui est pour lui une terre d\'accueil. Film de fin de cycle 1.',
       specs: {
         format: 'Court-métrage fiction',
@@ -181,9 +176,17 @@ export const projectsData = {
       realisateur: 'Taylor Knight',
       chefElectro: 'Jérémie Dignac',
       directricePhoto: 'Micaela Albanese',
-      production: 'Pictor Prod',
+      production: 'Pictor Prod × BAVARD',
       thumbnail: '/images/gadfly-thumb.jpg',
-      images: [],
+      images: [
+        '/images/gadfly-snaps/gadfly-1.jpg',
+        '/images/gadfly-snaps/gadfly-2.jpg',
+        '/images/gadfly-snaps/gadfly-3.jpg',
+        '/images/gadfly-snaps/gadfly-4.jpg',
+        '/images/gadfly-snaps/gadfly-5.jpg',
+        '/images/gadfly-snaps/gadfly-6.jpg',
+        '/images/gadfly-snaps/gadfly-7.jpg'
+      ],
       description: 'Court-métrage produit par Pictor Prod.',
       specs: {
         format: 'Court-métrage'
@@ -223,6 +226,7 @@ export const projectsData = {
       production: 'ESEC',
       thumbnail: '/images/quand-son-souffle-thumb.jpg',
       images: [],
+      youtubeId: 'epDfHUrlK_0',
       description: 'Film de fin d\'études ESEC.',
       specs: {
         format: 'Court-métrage fiction',
@@ -240,6 +244,7 @@ export const projectsData = {
       production: 'ESEC',
       thumbnail: '/images/une-couronne-thumb.jpg',
       images: [],
+      youtubeId: 'c9wZt6gs-ZU',
       description: 'Sybille est la comédienne la plus populaire de son époque. Mère dirigiste et autoritaire, elle pousse sa fille Flora à rentrer dans le milieu. Mais la jeunesse de Flora effacera le succès de sa mère qui semblait être éternel… Film de fin d\'études ESEC.',
       specs: {
         format: 'Court-métrage fiction',
@@ -260,6 +265,7 @@ export const projectsData = {
       chefOp: 'Isaac Gorin',
       production: 'Nikon Film Festival',
       thumbnail: '/images/pardon-thumb.jpg',
+      youtubeId: '9qQdzhmH8O0',
       specs: {
         format: 'Court-métrage',
         lieu: 'Paris',

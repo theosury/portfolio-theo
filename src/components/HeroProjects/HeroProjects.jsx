@@ -1,8 +1,19 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { projectsData } from '../../data/projectsData';
+import ProjectModal from '../ProjectModal/ProjectModal';
 import './HeroProjects.css';
 
 const HeroProjects = () => {
+  const [selectedProject, setSelectedProject] = useState(null);
+
+  const handleProjectClick = (project) => {
+    setSelectedProject(project);
+  };
+
+  const handleCloseModal = () => {
+    setSelectedProject(null);
+  };
+
   return (
     <section className="hero-projects section" id="hero-projects">
       <div className="container">
@@ -33,7 +44,11 @@ const HeroProjects = () => {
                 )}
               </div>
               
-              <div className="hero-project__info">
+              <div 
+                className="hero-project__info"
+                onClick={() => handleProjectClick(project)}
+              >
+                <div className="hero-project__info-icon">ℹ</div>
                 <h3 className="hero-project__title">{project.title}</h3>
                 <div className="hero-project__meta">
                   <span className="hero-project__year">{project.year}</span>
@@ -54,6 +69,14 @@ const HeroProjects = () => {
           ))}
         </div>
       </div>
+
+      {/* Modal pour afficher le projet en détail */}
+      {selectedProject && (
+        <ProjectModal
+          project={selectedProject}
+          onClose={handleCloseModal}
+        />
+      )}
     </section>
   );
 };

@@ -57,7 +57,7 @@ const ProjectModal = ({ project, onClose }) => {
       return (
         <div className="modal__video">
           <iframe
-            src={`https://www.youtube.com/embed/${project.youtubeId}`}
+            src={`https://www.youtube.com/embed/${project.youtubeId}?autoplay=1&mute=0`}
             title={project.title}
             frameBorder="0"
             allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
@@ -71,7 +71,7 @@ const ProjectModal = ({ project, onClose }) => {
       return (
         <div className="modal__video">
           <iframe
-            src={`https://player.vimeo.com/video/${project.vimeoId}`}
+            src={`https://player.vimeo.com/video/${project.vimeoId}?autoplay=1&muted=0`}
             title={project.title}
             frameBorder="0"
             allow="autoplay; fullscreen; picture-in-picture"
@@ -102,8 +102,11 @@ const ProjectModal = ({ project, onClose }) => {
   const renderMultipleVideos = () => {
     if (!project.youtubeIds || project.youtubeIds.length === 0) return null;
     
+    // Si plusieurs vidéos, on mute par défaut
+    const shouldMute = project.youtubeIds.length > 1 ? 1 : 0;
+    
     return (
-      <div className="modal__videos-grid">
+      <div className="modal__videos-grid" data-video-count={project.youtubeIds.length}>
         {project.youtubeIds.map((videoData, index) => (
           <div key={index} className="modal__video-item">
             {videoData.title && (
@@ -111,7 +114,7 @@ const ProjectModal = ({ project, onClose }) => {
             )}
             <div className="modal__video">
               <iframe
-                src={`https://www.youtube.com/embed/${videoData.id}`}
+                src={`https://www.youtube.com/embed/${videoData.id}?autoplay=1&mute=${shouldMute}`}
                 title={videoData.title || `${project.title} - Vidéo ${index + 1}`}
                 frameBorder="0"
                 allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
@@ -228,44 +231,56 @@ const ProjectModal = ({ project, onClose }) => {
               )}
 
               {/* Équipe */}
-              {(project.realisateur || project.realisateurs || project.realisatrice || 
-                project.chefOp || project.coChefOp) && (
+              {(() => {
+                const teamFields = [
+                  'realisateur', 'realisateurs', 'realisatrice', 'assistantReal', 'script',
+                  'chefOp', 'coChefOp', 'assistantCam', 'secondAssistantCam', 'troisiemeAssistantCam',
+                  'dit', 'steadicam', 'photo', 'chefElectro', 'electros', 'chefMachino',
+                  'machino', 'renforts', 'son', 'perchman', 'mixage', 'soundDesign', 'musique',
+                  'monteur', 'montageSon', 'etalonneur', 'vfx', 'graphisme', 'generique',
+                  'directionArtistique', 'deco', 'accessoiriste', 'costume', 'maquillage',
+                  'coiffure', 'regisseur', 'assistRegie', 'producteur', 'prodExec',
+                  'assistProd', 'stagiaires'
+                ];
+                const hasTeamInfo = teamFields.some(field => project[field]);
+                return hasTeamInfo;
+              })() && (
                 <div className="modal__team">
                   <h3>Équipe</h3>
                   <ul>
                     {Object.entries({
-                      //  Réalisation
+                      // 🎬 Réalisation
                       realisateur: "Réalisation",
                       realisateurs: "Réalisation",
                       realisatrice: "Réalisation",
                       assistantReal: "Assistant réalisation",
                       script: "Script",
 
-                      //  Image
+                      // 📷 Image
                       chefOp: "Chef opérateur",
                       coChefOp: "Co-chef opérateur",
                       assistantCam: "1er assistant caméra",
-                      secondAssistantCam: "2ᵉ assistant caméra",
-                      troisiemeAssistantCam: "3ᵉ assistant caméra",
+                      secondAssistantCam: "2ème assistant caméra",
+                      troisiemeAssistantCam: "3ème assistant caméra",
                       dit: "DIT",
                       steadicam: "Steadicam",
                       photo: "Photographe plateau",
 
-                      //  Lumière / machinerie
+                      // 💡 Lumière / machinerie
                       chefElectro: "Chef électricien",
                       electros: "Électros",
                       chefMachino: "Chef machiniste",
                       machino: "Machiniste",
                       renforts: "Renforts",
 
-                      //  Son
+                      // 🎙️ Son
                       son: "Prise de son",
                       perchman: "Perchman",
                       mixage: "Mixage",
                       soundDesign: "Sound design",
                       musique: "Musique originale",
 
-                      // 🖥 Post-production
+                      // 🖥️ Post-production
                       monteur: "Montage image",
                       montageSon: "Montage son",
                       etalonneur: "Étalonnage",
@@ -273,7 +288,7 @@ const ProjectModal = ({ project, onClose }) => {
                       graphisme: "Graphisme",
                       generique: "Générique",
 
-                      //  Décors / habillage
+                      // 🎨 Décors / habillage
                       directionArtistique: "Direction artistique",
                       deco: "Décoration",
                       accessoiriste: "Accessoiriste",
@@ -281,10 +296,9 @@ const ProjectModal = ({ project, onClose }) => {
                       maquillage: "Maquillage",
                       coiffure: "Coiffure",
 
-                      //  Régie / production
+                      // 📋 Régie / production
                       regisseur: "Régisseur général",
                       assistRegie: "Assistant régie",
-                      production: "Production",
                       producteur: "Producteur",
                       prodExec: "Production exécutive",
                       assistProd: "Assistant production",

@@ -11,9 +11,6 @@ const Footer = () => {
           <p className="footer__text">
             © {currentYear} Théo Sury. Tous droits réservés.
           </p>
-          <p className="footer__credit">
-            Conçu et développé avec passion
-          </p>
         </div>
       </div>
     </footer>

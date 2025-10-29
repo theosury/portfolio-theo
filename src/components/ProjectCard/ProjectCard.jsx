@@ -9,6 +9,7 @@ const ProjectCard = ({ project, onClick }) => {
           src={project.thumbnail} 
           alt={project.title}
           className="project-card__image"
+          loading="lazy"
         />
         <div className="project-card__overlay"></div>
         

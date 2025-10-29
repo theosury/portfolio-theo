@@ -76,14 +76,53 @@
   height: 100%;
 }
 
-/* Grille de plusieurs vidéos */
+/* Grille de plusieurs vidéos - adaptative selon le nombre */
 .modal__videos-grid {
-  display: flex;
-  flex-direction: column;
-  gap: 2rem;
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 1.5rem;
   padding: 2rem;
   background: #000;
   border-radius: 12px 12px 0 0;
+}
+
+/* Desktop : grille adaptative selon le nombre de vidéos */
+@media (min-width: 900px) {
+  /* 2 vidéos : 2 colonnes */
+  .modal__videos-grid[data-video-count="2"] {
+    grid-template-columns: repeat(2, 1fr);
+  }
+  
+  /* 3 vidéos : 3 colonnes */
+  .modal__videos-grid[data-video-count="3"] {
+    grid-template-columns: repeat(3, 1fr);
+  }
+  
+  /* 4+ vidéos : 2 colonnes */
+  .modal__videos-grid[data-video-count="4"],
+  .modal__videos-grid[data-video-count="5"],
+  .modal__videos-grid[data-video-count="6"],
+  .modal__videos-grid[data-video-count="7"],
+  .modal__videos-grid[data-video-count="8"],
+  .modal__videos-grid[data-video-count="9"],
+  .modal__videos-grid[data-video-count="10"] {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+/* Tablet : ajustement pour 3 vidéos */
+@media (min-width: 600px) and (max-width: 899px) {
+  .modal__videos-grid[data-video-count="2"],
+  .modal__videos-grid[data-video-count="3"] {
+    grid-template-columns: repeat(2, 1fr);
+  }
+  
+  /* Pour 3 vidéos sur tablet, la dernière prend toute la largeur */
+  .modal__videos-grid[data-video-count="3"] .modal__video-item:last-child {
+    grid-column: 1 / -1;
+    max-width: 500px;
+    margin: 0 auto;
+  }
 }
 
 .modal__video-item {
@@ -91,10 +130,10 @@
 }
 
 .modal__video-title {
-  font-size: 1.3rem;
+  font-size: 1.1rem;
   font-weight: 600;
   color: #ffffff;
-  margin-bottom: 1rem;
+  margin-bottom: 0.75rem;
   padding-left: 0.5rem;
   border-left: 3px solid #ff3b3b;
 }
@@ -138,7 +177,7 @@
   transform: scale(1.1);
 }
 
-/* Galerie d'images (sans vidéo) */
+/* Galerie d'images (sans vidÃ©o) */
 .modal__gallery {
   position: relative;
   width: 100%;
@@ -220,7 +259,7 @@
   z-index: 10;
 }
 
-/* Modal plein écran pour les images */
+/* Modal plein Ã©cran pour les images */
 .image-modal-overlay {
   position: fixed;
   top: 0;
@@ -430,10 +469,11 @@
   .modal__videos-grid {
     gap: 1.5rem;
     padding: 1rem;
+    grid-template-columns: 1fr;
   }
 
   .modal__video-title {
-    font-size: 1.1rem;
+    font-size: 1rem;
   }
 
   .modal__thumbnails {

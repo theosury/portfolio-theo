@@ -177,7 +177,7 @@
   transform: scale(1.1);
 }
 
-/* Galerie d'images (sans vidÃ©o) */
+/* Galerie d'images (sans vidéo) */
 .modal__gallery {
   position: relative;
   width: 100%;
@@ -259,7 +259,7 @@
   z-index: 10;
 }
 
-/* Modal plein Ã©cran pour les images */
+/* Modal plein écran pour les images */
 .image-modal-overlay {
   position: fixed;
   top: 0;
@@ -458,6 +458,27 @@
   .modal {
     max-height: 100vh;
     border-radius: 0;
+  }
+  
+  /* Agrandir la zone de fermeture sur mobile */
+  .modal__close {
+    width: 50px;
+    height: 50px;
+    font-size: 2rem;
+    top: 0.5rem;
+    right: 0.5rem;
+    /* Ajouter un z-index plus élevé */
+    z-index: 200;
+  }
+  
+  /* Zone cliquable plus large en haut */
+  .modal__close::before {
+    content: '';
+    position: absolute;
+    top: -10px;
+    left: -10px;
+    right: -10px;
+    bottom: -10px;
   }
   
   .modal__video,

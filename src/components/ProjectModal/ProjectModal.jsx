@@ -23,10 +23,46 @@ const ProjectModal = ({ project, onClose }) => {
   // Empêcher le scroll du body quand la modale est ouverte
   useEffect(() => {
     document.body.style.overflow = 'hidden';
+    // Empêcher le pull-to-refresh sur mobile
+    document.body.style.overscrollBehavior = 'none';
+    
     return () => {
       document.body.style.overflow = 'unset';
+      document.body.style.overscrollBehavior = 'auto';
     };
   }, []);
+
+  // Swipe-to-close sur mobile
+  useEffect(() => {
+    let startY = 0;
+    let currentY = 0;
+    
+    const handleTouchStart = (e) => {
+      startY = e.touches[0].clientY;
+    };
+    
+    const handleTouchMove = (e) => {
+      currentY = e.touches[0].clientY;
+      // Si on est en haut de la modal et qu'on swipe vers le bas
+      const modal = document.querySelector('.modal');
+      if (modal && modal.scrollTop === 0 && currentY - startY > 50) {
+        onClose();
+      }
+    };
+    
+    const modal = document.querySelector('.modal');
+    if (modal) {
+      modal.addEventListener('touchstart', handleTouchStart);
+      modal.addEventListener('touchmove', handleTouchMove);
+    }
+    
+    return () => {
+      if (modal) {
+        modal.removeEventListener('touchstart', handleTouchStart);
+        modal.removeEventListener('touchmove', handleTouchMove);
+      }
+    };
+  }, [onClose]);
 
   const hasImages = project.images && project.images.length > 0;
   const hasVideo = project.youtubeId || project.vimeoId || project.arteId;

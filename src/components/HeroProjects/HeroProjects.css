@@ -175,7 +175,7 @@
   }
 }
 
-@media (max-width: 768px) {
+@media (max-width: 1023px) {
   .hero-projects {
     padding-top: var(--spacing-xl);
   }
@@ -196,12 +196,14 @@
     padding: var(--spacing-sm);
   }
 
-  /* Cacher complètement le bouton info sur mobile (fix Safari) */
+  /* Cacher complètement le bouton info sur mobile et tablette (fix Safari) */
   .hero-project__info-icon {
     display: none !important;
     opacity: 0 !important;
     visibility: hidden !important;
     pointer-events: none !important;
+    width: 0 !important;
+    height: 0 !important;
     /* Force Safari iOS à respecter */
     -webkit-transform: scale(0) !important;
     transform: scale(0) !important;

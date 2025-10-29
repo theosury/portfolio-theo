@@ -40,9 +40,11 @@ const ProjectModal = ({ project, onClose }) => {
     };
   }, []);
 
-  // Swipe-to-close sur mobile (compatible Safari et Firefox)
+  // Swipe horizontal (droite) pour fermer la modal sur mobile
   useEffect(() => {
+    let startX = 0;
     let startY = 0;
+    let currentX = 0;
     let isDragging = false;
     let modalElement = null;
     
@@ -50,37 +52,45 @@ const ProjectModal = ({ project, onClose }) => {
       modalElement = document.querySelector('.modal');
       if (!modalElement) return;
       
-      // Ne déclencher le swipe que si on est en haut de la modal
-      if (modalElement.scrollTop <= 10) {
-        startY = e.touches[0].clientY;
-        isDragging = true;
-      }
+      startX = e.touches[0].clientX;
+      startY = e.touches[0].clientY;
+      isDragging = true;
     };
     
     const handleTouchMove = (e) => {
       if (!isDragging || !modalElement) return;
       
+      currentX = e.touches[0].clientX;
       const currentY = e.touches[0].clientY;
-      const diff = currentY - startY;
       
-      // Si on swipe vers le bas (diff positif) et qu'on est en haut
-      if (diff > 0 && modalElement.scrollTop <= 10) {
-        // Empêcher le scroll natif pendant le swipe
+      const diffX = currentX - startX;
+      const diffY = currentY - startY;
+      
+      // Déterminer si c'est un swipe horizontal ou vertical
+      const isHorizontalSwipe = Math.abs(diffX) > Math.abs(diffY);
+      
+      // Swipe vers la DROITE uniquement (diffX positif) et horizontal
+      if (isHorizontalSwipe && diffX > 0) {
+        // Empêcher le scroll natif pendant le swipe horizontal
         e.preventDefault();
         
         // Appliquer une translation pour feedback visuel
-        const translateY = Math.min(diff * 0.6, 150);
-        const opacity = Math.max(1 - diff / 400, 0.3);
+        const translateX = Math.min(diffX * 0.4, 200);
+        const opacity = Math.max(1 - diffX / 500, 0.3);
         
-        modalElement.style.transform = `translateY(${translateY}px)`;
+        modalElement.style.transform = `translateX(${translateX}px)`;
         modalElement.style.opacity = `${opacity}`;
         modalElement.style.transition = 'none';
         
-        // Fermer si on dépasse 100px
-        if (diff > 100) {
+        // Fermer si on dépasse 150px (moins sensible)
+        if (diffX > 150) {
           isDragging = false;
           onClose();
         }
+      }
+      // Bloquer le swipe vers la gauche (navigation arrière sur mobile)
+      else if (isHorizontalSwipe && diffX < -20) {
+        e.preventDefault();
       }
     };
     

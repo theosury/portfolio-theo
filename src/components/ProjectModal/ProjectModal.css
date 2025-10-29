@@ -12,7 +12,8 @@
   align-items: center;
   justify-content: center;
   padding: 2rem;
-  overflow: hidden; /* Empêcher tout scroll sur l'overlay */
+  overflow-y: auto; /* Permettre le scroll si besoin */
+  overflow-x: hidden; /* Empêcher seulement le scroll horizontal */
 }
 
 .modal {
@@ -456,12 +457,12 @@
 /* Responsive */
 @media (max-width: 768px) {
   .modal-overlay {
-    padding: 0;
+    padding: 1rem; /* Un peu de padding sur mobile */
   }
   
   .modal {
     max-height: 100vh;
-    border-radius: 0;
+    border-radius: 16px; /* Coins arrondis sur mobile */
   }
   
   /* Agrandir la zone de fermeture sur mobile */
@@ -488,7 +489,7 @@
   .modal__video,
   .modal__gallery,
   .modal__no-media {
-    border-radius: 0;
+    border-radius: 16px 16px 0 0; /* Coins arrondis en haut */
   }
 
   .modal__videos-grid {

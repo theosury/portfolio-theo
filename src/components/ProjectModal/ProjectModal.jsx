@@ -85,25 +85,28 @@ const ProjectModal = ({ project, onClose }) => {
         // Distance horizontale absolue
         const distance = Math.abs(diffX);
         
-        // Appliquer la transformation uniquement horizontale
-        const translateX = diffX * 0.7;
+        // Appliquer la transformation horizontale (suit le doigt à 100%)
+        const translateX = diffX;
         
-        // Opacité basée sur la distance (commence à diminuer après 100px)
-        const opacity = Math.max(1 - distance / 600, 0.3);
+        // Opacité basée sur la distance (commence à diminuer progressivement)
+        const opacity = Math.max(1 - distance / 800, 0.2);
         
-        // Rotation légère pour l'effet "carte qui part" (max 20deg)
-        const rotation = (diffX / window.innerWidth) * 20;
+        // Rotation progressive pour l'effet "carte qui part" (max 25deg)
+        const rotation = (diffX / window.innerWidth) * 25;
         
         modalElement.style.transform = `translateX(${translateX}px) rotate(${rotation}deg)`;
         modalElement.style.opacity = `${opacity}`;
         modalElement.style.transition = 'none';
         
-        // Fermer si on dépasse 200px (comme Tinder - course plus longue)
-        if (distance > 200) {
+        // Seuil basé sur la largeur de l'écran (70% de la largeur)
+        const threshold = window.innerWidth * 0.7;
+        
+        // Fermer si on dépasse 70% de la largeur de l'écran
+        if (distance > threshold) {
           isDragging = false;
-          // Animation de sortie fluide
+          // Animation de sortie fluide - emmener complètement hors écran
           modalElement.style.transition = 'transform 0.3s ease, opacity 0.3s ease';
-          const exitDistance = diffX > 0 ? window.innerWidth : -window.innerWidth;
+          const exitDistance = diffX > 0 ? window.innerWidth + 100 : -(window.innerWidth + 100);
           modalElement.style.transform = `translateX(${exitDistance}px) rotate(${rotation * 1.5}deg)`;
           modalElement.style.opacity = '0';
           setTimeout(() => onClose(), 250);

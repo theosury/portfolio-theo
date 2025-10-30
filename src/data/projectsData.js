@@ -2,6 +2,35 @@
 // CONFIGURATION DES PROJETS
 // =============================================
 
+// Fonction pour parser les dates et trier
+const parseDate = (project) => {
+  if (project.month) {
+    // Format attendu : "Mars 2025" ou "Février-Mars 2024"
+    const match = project.month.match(/(\w+)\s*-?\s*(\w+)?\s*(\d{4})/);
+    if (match) {
+      const monthsMap = {
+        'janvier': 1, 'février': 2, 'mars': 3, 'avril': 4, 'mai': 5, 'juin': 6,
+        'juillet': 7, 'aout': 8, 'septembre': 9, 'octobre': 10, 'novembre': 11, 'décembre': 12
+      };
+      const monthName = match[2] ? match[2].toLowerCase() : match[1].toLowerCase();
+      const month = monthsMap[monthName] || 1;
+      const year = parseInt(match[3]);
+      return new Date(year, month - 1);
+    }
+  }
+  // Sinon, utiliser l'année uniquement
+  return new Date(parseInt(project.year || 2000), 0);
+};
+
+// Fonction de tri (du plus récent au plus ancien)
+const sortProjectsByDate = (projects) => {
+  return [...projects].sort((a, b) => {
+    const dateA = parseDate(a);
+    const dateB = parseDate(b);
+    return dateB - dateA; // Ordre décroissant
+  });
+};
+
 export const projectsData = {
   // ========== PROJETS HERO ==========
   heroProjects: [
@@ -38,6 +67,7 @@ export const projectsData = {
       id: 'vagues',
       title: 'Ce que laissent les vagues',
       year: '2024',
+      month: 'Mai 2024',
       role: 'Cadreur',
       chefOp: 'Isaac Gorin',
       realisatrices: 'Luce Paz & Ana Maria Garza Flores',
@@ -64,321 +94,332 @@ export const projectsData = {
     },
   ],
 
-  // ========== TOUS LES PROJETS ==========
-  films: [
-{
-  id: 'armanaque',
-  title: 'Armanaque',
-  year: '2024',
-  role: 'Chef-opérateur',
-  production: 'Auto-produit',
-  thumbnail: '/images/armanaque-thumb.jpg',
-  images: [],
-  description: 'Moyen-métrage fiction (45min52) tourné en 2 semaines en banlieue parisienne. Film auto-produit avec matériel prêté par le Cours Florent et l\'ESEC.',
-  synopsis: 'Lumière dure à contre-jour, soleil écrasant et zones cramées pour un rendu chaud et organique. Exploration du point de vue avec de nombreux champ-contre-champ, caméra au plus proche des personnages pour servir le ton comédie. Défi technique : moyen-métrage tourné en FS7 avec uniquement du tungstène.',
-  youtubeId: 'gJY3ENECfbQ',
-  specs: {
-    format: 'Moyen-métrage fiction',
-    duree: '45min52',
-    jours: '2 semaines',
-    lieu: 'Banlieue parisienne',
-    camera: 'Sony FS7',
-    budget: 'Très faible',
-    lumiere: 'Tungstène uniquement'
-  }
-},
-    {
-      id: 'insipide',
-      title: 'Insipide',
-      year: '2023',
-      month: 'Novembre 2023',
-      role: 'Réalisateur',
-      chefOp: 'Solal Alenda',
-      realisation: 'Theo Sury',
-      montage: 'Theo Sury',
-      thumbnail: '/images/insipide-valse-thumb.jpg',
-      images: [],
-      youtubeIds: [
-        {
-          id: 'tNIKhZKBRLk'
-        },
-        {
-          id: 'AJoQw8D-Ph4'
-        },
-        {
-          id: 'gXo5zLmihIA'
+  // ========== TOUS LES PROJETS (triés automatiquement par catégorie) ==========
+  get films() {
+    const allFilms = [
+      {
+        id: 'male-addict',
+        title: 'Mâle Addict',
+        year: '2025',
+        month: 'Mars 2025',
+        role: 'Chef-opérateur',
+        coChefOp: 'À confirmer',
+        realisateurs: 'Victoria Baverey & Pierre Vaxelaire',
+        production: 'Cours Florent',
+        thumbnail: '/images/male-addict-thumb.jpg',
+        status: 'En post-production',
+        images: [],
+        description: 'Triangle amoureux toxique entre Mathis, Thalia et Tom. Mathis et Thalia ont une liaison secrète alors que Thalia est en couple avec Tom, le meilleur ami de Mathis.',
+        synopsis: 'L\'histoire explore la manipulation, la trahison et les conséquences d\'une relation destructrice entre trois jeunes adultes pris dans un jeu dangereux de désir et de mensonges.',
+        specs: {
+          format: 'Moyen-métrage fiction',
+          duree: '40-50min (estimation)',
+          jours: '10 jours (2 semaines)',
+          camera: 'Blackmagic 6K'
         }
-      ],
-      description: 'Série de trois trailers pour la collection "Insipide", créée par Mathilde Duquénoy. Clips mode conceptualisés par Theo Sury, Solal Alenda et Mathilde Duquénoy.',
-      synopsis: 'Trois univers distincts : La Valse (danse inquiétante), Le Mépris (tension solitaire), La Fuite (course éperdue).',
-      specs: {
-        production: 'Auto-produit - Suburb TV en assistance',
-        format: 'Clips mode',
-        etalonnage: 'Solal Alenda',
-        location: 'RVZ & Puzzle Video'
       },
-      cast: [
-        'La Valse : Ethan Wallevrick & Bill Tuan (Valseurs), Axel Lessieur (Angoisse)',
-        'Le Mépris : Clothilde Merlin (Jeune fille), Axel Lessieur (Angoisse)',
-        'La Fuite : Ariel Duquesne (Homme aux talons), Axel Lessieur (Angoisse), '
-      ]
-    },
-    {
-      id: 'casse-noisette',
-      title: 'Casse-Noisette',
-      year: '2024',
-      role: 'Chef-opérateur',
-      realisateur: 'Tristan Lonné',
-      production: 'ESEC',
-      thumbnail: '/images/casse-noisette-thumb.jpg',
-      images: [],
-      vimeoId: '1026723522',
-      description: 'Court-métrage studio tourné en une journée lors des portes ouvertes de l\'ESEC. Carte blanche, style inspiré de The Office mais en plus malaisant.',
-      specs: {
-        format: 'Court-métrage studio',
-        jours: '1 jour',
-        camera: 'Arri ALEXA Classic',
-        objectifs: 'Angénieux Optimo',
+      {
+        id: 'gate66',
+        title: 'Gate 66',
+        year: '2025',
+        month: 'Septembre 2025',
+        role: '1er assistant caméra B',
+        realisateur: 'Maël Kerever',
+        chefOp: 'Bastien Leprince',
+        production: 'École 24 × ArtFX',
+        thumbnail: '/images/gate66-thumb.jpg',
+        status: 'En post-production',
+        images: [],
+        specs: {
+          format: 'Court-métrage',
+          lieu: 'Plaine Image, Tourcoing',
+          tournage: 'Septembre 2025',
+          particularite: 'Dolly, machine à fumée, green screen'
+        }
       },
-      cast: [
-        'Frederic Chateau (Franck/Père Noël)',
-        'Noémie Garbarg (Maya)',
-        'Gary Muguet (Jordan)'
-      ]
-    },
-    {
-      id: 'revolte',
-      title: 'Le Révolté',
-      year: '2023',
-      role: 'Chef électro',
-      realisateur: 'Nicolas Baste',
-      cheffeOp: 'Louise Stein',
-      production: 'ESEC',
-      thumbnail: '/images/revolte-thumb.jpg',
-      images: [],
-      youtubeId: 'PPvxZQ_3x3c',
-      description: 'Louis, un fils d\'immigrés chinois manifestant en France contre la politique du gouvernement, entre en conflit avec son père quand il apprend que celui-ci désapprouve sa révolte dans ce qui est pour lui une terre d\'accueil. Film de fin de cycle 1.',
-      specs: {
-        format: 'Court-métrage fiction',
-        annee: '2023'
+      {
+        id: 'bbc',
+        title: 'BBC',
+        year: '2025',
+        month: 'Aout 2025',
+        role: 'Électricien',
+        realisateurs: 'Joaquim Tivoukou & Naïr Mlanao',
+        chefOp: 'Jerry Pradon',
+        chefElectro: 'Leo Aguiton',
+        production: 'MOLIMO Prod',
+        thumbnail: '/images/bbc-thumb.jpg',
+        status: 'En post-production',
+        images: [],
+        description: 'Xavier et Awa rentrent chez eux et croisent Madame Kogo dans l\'ascenseur. Elle apprend qu\'Awa va avoir une fille et confronte Xavier sur son passé, lui indiquant qu\'il doit procéder à un processus de réparation avant de devenir père.',
+        specs: {
+          format: 'Court-métrage fiction',
+          duree: '~15min',
+          jours: '6 jours',
+          camera: 'Arri ALEXA 35',
+          tournage: 'Août 2025',
+          lieu: 'Paris'
+        },
+        cast: [
+          'Joaquim Tivoukou (Xavier)',
+          'Loréna Massikini (Awa)',
+          'Elisabeth Milla (Mme Kogo)'
+        ]
       },
-      cast: [
-        'Andrea Zamparo',
-        'Longmon Wang',
-        'Rong-Ying Yang'
-      ]
-    },
-    {
-      id: 'gadfly',
-      title: 'GADFLY',
-      year: '2023',
-      role: 'Stagiaire Électricien / Machino',
-      realisateur: 'Taylor Knight',
-      chefElectro: 'Jérémie Dignac',
-      directricePhoto: 'Micaela Albanese',
-      production: 'Pictor Prod × BAVARD',
-      thumbnail: '/images/gadfly-thumb.jpg',
-      images: [
-        '/images/gadfly-snaps/gadfly-1.jpg',
-        '/images/gadfly-snaps/gadfly-2.jpg',
-        '/images/gadfly-snaps/gadfly-3.jpg',
-        '/images/gadfly-snaps/gadfly-4.jpg',
-        '/images/gadfly-snaps/gadfly-5.jpg',
-        '/images/gadfly-snaps/gadfly-6.jpg',
-        '/images/gadfly-snaps/gadfly-7.jpg'
-      ],
-      description: 'Court-métrage produit par Pictor Prod.',
-      specs: {
-        format: 'Court-métrage'
-      }
-    },
-    {
-      id: 'loverdance',
-      title: 'Loverdance',
-      year: '2024',
-      role: 'Régisseur adjoint',
-      realisateur: 'Victor Gomez',
-      directricePhoto: 'Louise Bernard Pallas',
-      production: 'ARTE × La Fémis',
-      thumbnail: '/images/loverdance-thumb.jpg',
-      images: [],
-      description: 'Lola rencontre Simon lors d\'un marathon de 24 heures de danse. Alors que la compétition bat son plein, ils développent une complicité qui la détourne de son objectif. Mais les éliminations se succèdent à un rythme effréné et, à bout de souffle, elle décide de s\'unir à lui pour une danse qui pourrait bien les mener à la victoire…',
-      arteId: '119915-009-A?autoplay=true&mute=0',
-      specs: {
-        format: 'Court-métrage fiction',
-        coproduction: 'Filmakademie Baden-Württemberg, La Fémis, ARTE, SWR',
-        pays: 'France',
-        annee: '2024'
+      {
+        id: 'verite-studio',
+        title: 'Vérité Studio',
+        year: '2025',
+        month: 'Juillet 2025',
+        role: 'Électricien',
+        realisatrice: 'Khadija Sy',
+        production: 'Point E × La Fémis',
+        thumbnail: '/images/verite-studio-thumb.jpg',
+        status: 'En post-production',
+        images: [],
+        specs: {
+          lieu: 'LCR Les Tailleurs, Villeneuve-d\'Ascq',
+          tournage: 'Juillet 2025'
+        }
       },
-      cast: [
-        'Yannick Blivet (Animateur)',
-        'Frederico Semedo (Simon)',
-        'Louise Luck (Lola)'
-      ]
-    },
-    {
-      id: 'quand-son-souffle',
-      title: 'Quand son souffle s\'est arrêté',
-      year: '2024',
-      role: '2e assistant caméra',
-      realisatrice: 'Nina Gavras',
-      chefOp: 'Léo Rodella',
-      production: 'ESEC',
-      thumbnail: '/images/quand-son-souffle-thumb.jpg',
-      images: [],
-      youtubeId: 'epDfHUrlK_0',
-      description: 'Film de fin d\'études ESEC.',
-      specs: {
-        format: 'Court-métrage fiction',
-        lieu: 'Maisons-Laffitte',
-        tournage: 'Avril 2024'
-      }
-    },
-    {
-      id: 'une-couronne',
-      title: 'Une Couronne',
-      year: '2022',
-      role: 'Auxiliaire de régie',
-      realisateurs: 'Salma Taibi & Bruno Ribuot-Hirsch',
-      cheffeOp: 'Syvian Qi',
-      production: 'ESEC',
-      thumbnail: '/images/une-couronne-thumb.jpg',
-      images: [],
-      youtubeId: 'c9wZt6gs-ZU',
-      description: 'Sybille est la comédienne la plus populaire de son époque. Mère dirigiste et autoritaire, elle pousse sa fille Flora à rentrer dans le milieu. Mais la jeunesse de Flora effacera le succès de sa mère qui semblait être éternel… Film de fin d\'études ESEC.',
-      specs: {
-        format: 'Court-métrage fiction',
-        annee: '2022'
+      {
+        id: 'azincourt',
+        title: 'Azincourt',
+        year: '2025',
+        month: 'Octobre 2025',
+        role: 'Électricien',
+        realisateur: 'Adrien Guillet',
+        chefOp: 'Axel Dos Santos',
+        chefElectro: 'Alexandre Chadha',
+        production: 'VHS Prod',
+        thumbnail: '/images/azincourt-thumb.jpg',
+        status: 'En post-production',
+        images: [],
+        specs: {
+          format: 'Court-métrage médiéval',
+          lieu: 'Château de la Lande, Montaigu-Vendée',
+          tournage: 'Octobre 2025',
+          particularite: 'Scènes de bataille, effets flèches 3D'
+        }
       },
-      cast: [
-        'Maëlle Genet',
-        'Olivia Jubin',
-        'François Ayrault'
-      ]
-    },
-    {
-      id: 'pardon',
-      title: 'Pardon',
-      year: '2024',
-      role: '1er assistant caméra',
-      realisatrice: 'Virginie Courteille',
-      chefOp: 'Isaac Gorin',
-      production: 'Nikon Film Festival',
-      thumbnail: '/images/pardon-thumb.jpg',
-      youtubeId: '9qQdzhmH8O0',
-      specs: {
-        format: 'Court-métrage',
-        lieu: 'Paris',
-        tournage: 'Décembre 2024'
-      }
-    },
-    
-    // ========== PROJETS EN POST-PRODUCTION ==========
-    {
-      id: 'male-addict',
-      title: 'Mâle Addict',
-      year: '2025',
-      month: 'Mars 2025',
-      role: 'Chef-opérateur',
-      coChefOp: 'À confirmer',
-      realisateurs: 'Victoria Baverey & Pierre Vaxelaire',
-      production: 'Moyen-métrage - Cours Florent',
-      thumbnail: '/images/male-addict-thumb.jpg',
-      status: 'En post-production',
-      images: [],
-      description: 'Triangle amoureux toxique entre Mathis, Thalia et Tom. Mathis et Thalia ont une liaison secrète alors que Thalia est en couple avec Tom, le meilleur ami de Mathis.',
-      synopsis: 'L\'histoire explore la manipulation, la trahison et les conséquences d\'une relation destructrice entre trois jeunes adultes pris dans un jeu dangereux de désir et de mensonges.',
-      specs: {
-        format: 'Moyen-métrage fiction',
-        duree: '40-50min (estimation)',
-        jours: '10 jours (2 semaines)',
-        camera: 'Blackmagic 6K'
-      }
-    },
-    {
-      id: 'bbc',
-      title: 'BBC',
-      year: '2025',
-      month: 'Août 2025',
-      role: 'Électricien',
-      realisateurs: 'Joaquim Tivoukou & Naïr Mlanao',
-      chefOp: 'Jerry Pradon',
-      chefElectro: 'Leo Aguiton',
-      production: 'MOLIMO Prod',
-      thumbnail: '/images/bbc-thumb.jpg',
-      status: 'En post-production',
-      images: [],
-      description: 'Xavier et Awa rentrent chez eux et croisent Madame Kogo dans l\'ascenseur. Elle apprend qu\'Awa va avoir une fille et confronte Xavier sur son passé, lui indiquant qu\'il doit procéder à un processus de réparation avant de devenir père.',
-      specs: {
-        format: 'Court-métrage',
-        duree: '~15min',
-        jours: '6 jours',
-        camera: 'Arri ALEXA 35',
-        tournage: 'Août 2025',
-        lieu: 'Paris'
+      {
+        id: 'armanaque',
+        title: 'Armanaque',
+        year: '2024',
+        month: 'Juillet 2024',
+        role: 'Chef-opérateur',
+        production: 'Auto-produit',
+        thumbnail: '/images/armanaque-thumb.jpg',
+        images: [],
+        description: 'Moyen-métrage fiction (45min52) tourné en 2 semaines en banlieue parisienne. Film auto-produit avec matériel prêté par le Cours Florent et l\'ESEC.',
+        synopsis: 'Lumière dure à contre-jour, soleil écrasant et zones cramées pour un rendu chaud et organique. Exploration du point de vue avec de nombreux champ-contre-champ, caméra au plus proche des personnages pour servir le ton comédie. Défi technique : moyen-métrage tourné en FS7 avec uniquement du tungstène.',
+        youtubeId: 'gJY3ENECfbQ',
+        specs: {
+          format: 'Moyen-métrage fiction',
+          duree: '45min52',
+          jours: '2 semaines',
+          lieu: 'Banlieue parisienne',
+          camera: 'Sony FS7',
+          budget: 'Très faible',
+          lumiere: 'Tungstène uniquement'
+        }
       },
-      cast: [
-        'Joaquim Tivoukou (Xavier)',
-        'Loréna Massikini (Awa)',
-        'Elisabeth Milla (Mme Kogo)'
-      ]
-    },
-    {
-      id: 'azincourt',
-      title: 'Azincourt',
-      year: '2024',
-      month: 'Octobre 2024',
-      role: 'Électricien',
-      realisateur: 'Adrien Guillet',
-      chefOp: 'Axel Dos Santos',
-      chefElectro: 'Alexandre Chadha',
-      production: 'Court-métrage médiéval - VHS Prod',
-      thumbnail: '/images/azincourt-thumb.jpg',
-      status: 'En post-production',
-      images: [],
-      specs: {
-        format: 'Court-métrage médiéval',
-        lieu: 'Château de la Lande, Montaigu-Vendée',
-        tournage: 'Octobre 2024',
-        particularite: 'Scènes de bataille, effets flèches 3D'
-      }
-    },
-    {
-      id: 'gate66',
-      title: 'Gate 66',
-      year: '2025',
-      month: 'Septembre 2025',
-      role: '1er assistant caméra B',
-      realisateur: 'Maël Kerever',
-      chefOp: 'Bastien Leprince',
-      production: 'Court-métrage - École 24 × ArtFX',
-      thumbnail: '/images/gate66-thumb.jpg',
-      status: 'En post-production',
-      images: [],
-      specs: {
-        format: 'Court-métrage',
-        lieu: 'Plaine Image, Tourcoing',
-        tournage: 'Septembre 2025',
-        particularite: 'Dolly, machine à fumée, green screen'
-      }
-    },
-    {
-      id: 'verite-studio',
-      title: 'Vérité Studio',
-      year: '2025',
-      month: 'Juillet 2025',
-      role: 'Électricien',
-      realisatrice: 'Khadija Sy',
-      production: 'Court-métrage - Point E × La Fémis',
-      thumbnail: '/images/verite-studio-thumb.jpg',
-      status: 'En post-production',
-      images: [],
-      specs: {
-        lieu: 'LCR Les Tailleurs, Villeneuve-d\'Ascq',
-        tournage: 'Juillet 2025'
-      }
-    }
-  ],
+      {
+        id: 'pardon',
+        title: 'Pardon',
+        year: '2024',
+        month: 'Décembre 2024',
+        role: '1er assistant caméra',
+        realisatrice: 'Virginie Courteille',
+        chefOp: 'Isaac Gorin',
+        production: 'Nikon Film Festival',
+        thumbnail: '/images/pardon-thumb.jpg',
+        youtubeId: '9qQdzhmH8O0',
+        specs: {
+          format: 'Court-métrage',
+          lieu: 'Paris',
+          tournage: 'Décembre 2024'
+        }
+      },
+      {
+        id: 'casse-noisette',
+        title: 'Casse-Noisette',
+        year: '2024',
+        month: 'Juin 2024',
+        role: 'Chef-opérateur',
+        realisateur: 'Tristan Lonné',
+        production: 'ESEC',
+        thumbnail: '/images/casse-noisette-thumb.jpg',
+        images: [],
+        vimeoId: '1026723522',
+        description: 'Court-métrage studio tourné en une journée lors des portes ouvertes de l\'ESEC. Carte blanche, style inspiré de The Office mais en plus malaisant.',
+        specs: {
+          format: 'Court-métrage studio',
+          jours: '1 jour',
+          camera: 'Arri ALEXA Classic',
+          objectifs: 'Angénieux Optimo',
+        },
+        cast: [
+          'Frederic Chateau (Franck/Père Noël)',
+          'Noémie Garbarg (Maya)',
+          'Gary Muguet (Jordan)'
+        ]
+      },
+      {
+        id: 'quand-son-souffle',
+        title: 'Quand son souffle s\'est arrêté',
+        year: '2024',
+        month: 'Avril 2024',
+        role: '2e assistant caméra',
+        realisatrice: 'Nina Gavras',
+        chefOp: 'Léo Rodella',
+        production: 'ESEC',
+        thumbnail: '/images/quand-son-souffle-thumb.jpg',
+        images: [],
+        youtubeId: 'epDfHUrlK_0',
+        description: 'Film de fin d\'études ESEC.',
+        specs: {
+          format: 'Court-métrage fiction',
+          lieu: 'Maisons-Laffitte',
+          tournage: 'Avril 2024'
+        }
+      },
+      {
+        id: 'loverdance',
+        title: 'Loverdance',
+        year: '2024',
+        month: 'Mars 2024',
+        role: 'Régisseur adjoint',
+        realisateur: 'Victor Gomez',
+        directricePhoto: 'Louise Bernard Pallas',
+        production: 'ARTE × La Fémis',
+        thumbnail: '/images/loverdance-thumb.jpg',
+        images: [],
+        description: 'Lola rencontre Simon lors d\'un marathon de 24 heures de danse. Alors que la compétition bat son plein, ils développent une complicité qui la détourne de son objectif. Mais les éliminations se succèdent à un rythme effréné et, à bout de souffle, elle décide de s\'unir à lui pour une danse qui pourrait bien les mener à la victoire…',
+        arteId: '119915-009-A?autoplay=true&mute=0',
+        specs: {
+          format: 'Court-métrage fiction',
+          coproduction: 'Filmakademie Baden-Württemberg, La Fémis, ARTE, SWR',
+          pays: 'France',
+          annee: '2024'
+        },
+        cast: [
+          'Yannick Blivet (Animateur)',
+          'Frederico Semedo (Simon)',
+          'Louise Luck (Lola)'
+        ]
+      },
+      {
+        id: 'insipide',
+        title: 'Insipide',
+        year: '2023',
+        month: 'Novembre 2023',
+        role: 'Réalisateur',
+        chefOp: 'Solal Alenda',
+        realisation: 'Theo Sury',
+        montage: 'Theo Sury',
+        thumbnail: '/images/insipide-valse-thumb.jpg',
+        images: [],
+        youtubeIds: [
+          {
+            id: 'tNIKhZKBRLk'
+          },
+          {
+            id: 'AJoQw8D-Ph4'
+          },
+          {
+            id: 'gXo5zLmihIA'
+          }
+        ],
+        description: 'Série de trois trailers pour la collection "Insipide", créée par Mathilde Duquénoy. Clips mode conceptualisés par Theo Sury, Solal Alenda et Mathilde Duquénoy.',
+        synopsis: 'Trois univers distincts : La Valse (danse inquiétante), Le Mépris (tension solitaire), La Fuite (course éperdue).',
+        specs: {
+          production: 'Auto-produit - Suburb TV en assistance',
+          format: 'Clips mode',
+          etalonnage: 'Solal Alenda',
+          location: 'RVZ & Puzzle Video'
+        },
+        cast: [
+          'La Valse : Ethan Wallevrick & Bill Tuan (Valseurs), Axel Lessieur (Angoisse)',
+          'Le Mépris : Clothilde Merlin (Jeune fille), Axel Lessieur (Angoisse)',
+          'La Fuite : Ariel Duquesne (Homme aux talons), Axel Lessieur (Angoisse), '
+        ]
+      },
+      {
+        id: 'gadfly',
+        title: 'GADFLY',
+        year: '2023',
+        month: 'Octobre 2023',
+        role: 'Stagiaire Électricien / Machino',
+        realisateur: 'Taylor Knight',
+        chefElectro: 'Jérémie Dignac',
+        directricePhoto: 'Micaela Albanese',
+        production: 'Pictor Prod × BAVARD',
+        thumbnail: '/images/gadfly-thumb.jpg',
+        images: [
+          '/images/gadfly-snaps/gadfly-1.jpg',
+          '/images/gadfly-snaps/gadfly-2.jpg',
+          '/images/gadfly-snaps/gadfly-3.jpg',
+          '/images/gadfly-snaps/gadfly-4.jpg',
+          '/images/gadfly-snaps/gadfly-5.jpg',
+          '/images/gadfly-snaps/gadfly-6.jpg',
+          '/images/gadfly-snaps/gadfly-7.jpg'
+        ],
+        description: 'Court-métrage produit par Pictor Prod.',
+        specs: {
+          format: 'Court-métrage'
+        }
+      },
+      {
+        id: 'revolte',
+        title: 'Le Révolté',
+        year: '2023',
+        month: 'Mai 2023',
+        role: 'Chef électro',
+        realisateur: 'Nicolas Baste',
+        cheffeOp: 'Louise Stein',
+        production: 'ESEC',
+        thumbnail: '/images/revolte-thumb.jpg',
+        images: [],
+        youtubeId: 'PPvxZQ_3x3c',
+        description: 'Louis, un fils d\'immigrés chinois manifestant en France contre la politique du gouvernement, entre en conflit avec son père quand il apprend que celui-ci désapprouve sa révolte dans ce qui est pour lui une terre d\'accueil. Film de fin de cycle 1.',
+        specs: {
+          format: 'Court-métrage fiction',
+          annee: '2023'
+        },
+        cast: [
+          'Andrea Zamparo',
+          'Longmon Wang',
+          'Rong-Ying Yang'
+        ]
+      },
+      {
+        id: 'une-couronne',
+        title: 'Une Couronne',
+        year: '2022',
+        month: 'Juin 2022',
+        role: 'Auxiliaire de régie',
+        realisateurs: 'Salma Taibi & Bruno Ribuot-Hirsch',
+        cheffeOp: 'Syvian Qi',
+        production: 'ESEC',
+        thumbnail: '/images/une-couronne-thumb.jpg',
+        images: [],
+        youtubeId: 'c9wZt6gs-ZU',
+        description: 'Sybille est la comédienne la plus populaire de son époque. Mère dirigiste et autoritaire, elle pousse sa fille Flora à rentrer dans le milieu. Mais la jeunesse de Flora effacera le succès de sa mère qui semblait être éternel… Film de fin d\'études ESEC.',
+        specs: {
+          format: 'Court-métrage fiction',
+          annee: '2022'
+        },
+        cast: [
+          'Maëlle Genet',
+          'Olivia Jubin',
+          'François Ayrault'
+        ]
+      },
+    ];
+
+    // Trier tous les films (les composants filtreront ensuite)
+    return sortProjectsByDate(allFilms);
+  },
 
   // ========== AUTRES EXPÉRIENCES ==========
   autres: [

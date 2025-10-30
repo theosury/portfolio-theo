@@ -3,6 +3,7 @@ import './Header.css';
 
 function Header() {
   const [scrolled, setScrolled] = useState(false);
+  const [menuOpen, setMenuOpen] = useState(false);
 
   useEffect(() => {
     const handleScroll = () => {
@@ -19,6 +20,7 @@ function Header() {
 
   const scrollToSection = (e, sectionId) => {
     e.preventDefault();
+    setMenuOpen(false); // Fermer le menu après clic
     const section = document.getElementById(sectionId);
     if (section) {
       const offset = 80; // Hauteur du header
@@ -39,24 +41,28 @@ function Header() {
           Théo Sury
         </a>
         
-        <nav>
+        {/* Hamburger button */}
+        <button 
+          className={`hamburger ${menuOpen ? 'active' : ''}`}
+          onClick={() => setMenuOpen(!menuOpen)}
+          aria-label="Menu"
+        >
+          <span></span>
+          <span></span>
+          <span></span>
+        </button>
+
+        {/* Navigation */}
+        <nav className={menuOpen ? 'active' : ''}>
           <a href="#accueil" onClick={(e) => scrollToSection(e, 'hero')}>
             Accueil
           </a>
           <a href="#projets" onClick={(e) => scrollToSection(e, 'hero-projects')}>
             Films
           </a>
-          {/* <a href="#films" onClick={(e) => scrollToSection(e, 'films')}>
-            Films
-          </a>*/}
           <a href="#photographie" onClick={(e) => scrollToSection(e, 'photographie')}>
             Photos
           </a>
-        {/* 
-        <a href="#about" onClick={(e) => scrollToSection(e, 'about')}>
-          À propos
-        </a>
-        */}
           <a href="#contact" onClick={(e) => scrollToSection(e, 'contact')}>
             Contact
           </a>

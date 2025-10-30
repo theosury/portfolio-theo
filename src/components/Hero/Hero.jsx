@@ -20,13 +20,13 @@ function Hero() {
     setImages(shuffled);
   }, []);
 
-  // Change d'image toutes les 5 secondes
+  // Change d'image toutes les 7 secondes
   useEffect(() => {
     if (images.length === 0) return;
 
     const interval = setInterval(() => {
       setCurrentIndex(prevIndex => (prevIndex + 1) % images.length);
-    }, 5000);
+    }, 7000);
 
     return () => clearInterval(interval);
   }, [images]);

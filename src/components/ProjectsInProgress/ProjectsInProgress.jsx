@@ -7,7 +7,8 @@ import './ProjectsInProgress.css';
 const ProjectsInProgress = () => {
   const [selectedProject, setSelectedProject] = useState(null);
 
-  // Filtrer uniquement les projets avec status "En post-production"
+  // Filtrer ET trier les projets en post-production
+  // (les films sont déjà triés dans projectsData.js, donc on garde juste cet ordre)
   const projectsInProgress = projectsData.films.filter(
     project => project.status === 'En post-production'
   );

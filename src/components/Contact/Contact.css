@@ -1,6 +1,6 @@
 .contact {
   background: linear-gradient(180deg, #000000 0%, #0a0a0a 100%);
-  padding-bottom: var(--spacing-md); /* Réduit l'écart avec le footer */
+  padding-bottom: 0; /* Supprime l'espace avec le footer */
 }
 
 .contact__content {

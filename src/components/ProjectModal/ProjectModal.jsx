@@ -20,137 +20,138 @@ const ProjectModal = ({ project, onClose }) => {
     return () => window.removeEventListener('keydown', handleEscape);
   }, [onClose, showImageModal]);
 
-  // Empêcher le scroll du body quand la modale est ouverte
-  useEffect(() => {
-    // Pour tous les navigateurs
-    document.body.style.overflow = 'hidden';
-    document.body.style.overscrollBehavior = 'none';
+// Empêcher le scroll du body quand la modale est ouverte
+useEffect(() => {
+  // Sauvegarder la position actuelle du scroll
+  const scrollY = window.scrollY;
+  
+  // Pour tous les navigateurs
+  document.body.style.overflow = 'hidden';
+  document.body.style.overscrollBehavior = 'none';
+  
+  // Pour Safari iOS
+  document.body.style.position = 'fixed';
+  document.body.style.top = `-${scrollY}px`;
+  document.body.style.width = '100%';
+  document.body.style.WebkitOverflowScrolling = 'touch';
+  
+  return () => {
+    // IMPORTANT : Restaurer le scroll AVANT de retirer les styles
+    const bodyScrollTop = parseInt(document.body.style.top || '0') * -1;
     
-    // Pour Safari iOS
-    document.body.style.position = 'fixed';
-    document.body.style.width = '100%';
-    document.body.style.WebkitOverflowScrolling = 'touch';
+    // Retirer les styles
+    document.body.style.overflow = '';
+    document.body.style.overscrollBehavior = '';
+    document.body.style.position = '';
+    document.body.style.top = '';
+    document.body.style.width = '';
+    document.body.style.WebkitOverflowScrolling = '';
     
-    return () => {
-      document.body.style.overflow = 'unset';
-      document.body.style.overscrollBehavior = 'auto';
-      document.body.style.position = '';
-      document.body.style.width = '';
-      document.body.style.WebkitOverflowScrolling = '';
-    };
-  }, []);
+    // Restaurer la position immédiatement (sans smooth scroll)
+    window.scrollTo(0, bodyScrollTop);
+  };
+}, []);
 
-  // Swipe horizontal pour fermer la modal (style Tinder)
-  useEffect(() => {
-    let startX = 0;
-    let startY = 0;
-    let isDragging = false;
-    let isHorizontalSwipe = false;
-    let modalElement = null;
+// Swipe horizontal pour fermer la modal (version simplifiée et fluide)
+useEffect(() => {
+  let startX = 0;
+  let startY = 0;
+  let currentX = 0;
+  let isDragging = false;
+  let modalElement = null;
+  
+  const handleTouchStart = (e) => {
+    modalElement = document.querySelector('.modal');
+    if (!modalElement) return;
     
-    const handleTouchStart = (e) => {
-      modalElement = document.querySelector('.modal');
-      if (!modalElement) return;
-      
-      startX = e.touches[0].clientX;
-      startY = e.touches[0].clientY;
-      isDragging = true;
-      isHorizontalSwipe = false;
-    };
+    startX = e.touches[0].clientX;
+    startY = e.touches[0].clientY;
+    isDragging = true;
     
-    const handleTouchMove = (e) => {
-      if (!isDragging || !modalElement) return;
-      
-      const currentX = e.touches[0].clientX;
-      const currentY = e.touches[0].clientY;
-      
-      const diffX = currentX - startX;
-      const diffY = currentY - startY;
-      
-      // Déterminer si c'est un swipe horizontal (seulement au début du mouvement)
-      if (!isHorizontalSwipe && Math.abs(diffX) < 10 && Math.abs(diffY) < 10) {
-        return; // Mouvement trop petit, on attend
-      }
-      
-      if (!isHorizontalSwipe) {
-        // Déterminer la direction une seule fois
-        isHorizontalSwipe = Math.abs(diffX) > Math.abs(diffY);
-      }
-      
-      // Si c'est un swipe horizontal
-      if (isHorizontalSwipe) {
-        // Empêcher le scroll pendant le swipe horizontal
-        e.preventDefault();
-        
-        // Distance horizontale absolue
-        const distance = Math.abs(diffX);
-        
-        // Appliquer la transformation horizontale (suit le doigt à 100%)
-        const translateX = diffX;
-        
-        // Opacité basée sur la distance (commence à diminuer progressivement)
-        const opacity = Math.max(1 - distance / 800, 0.2);
-        
-        // Rotation progressive pour l'effet "carte qui part" (max 25deg)
-        const rotation = (diffX / window.innerWidth) * 25;
-        
-        modalElement.style.transform = `translateX(${translateX}px) rotate(${rotation}deg)`;
-        modalElement.style.opacity = `${opacity}`;
-        modalElement.style.transition = 'none';
-        
-        // Seuil basé sur la largeur de l'écran (30% de la largeur)
-        const threshold = window.innerWidth * 0.3;
-        
-        // Fermer si on dépasse 70% de la largeur de l'écran
-        if (distance > threshold) {
-          isDragging = false;
-          // Animation de sortie fluide - emmener complètement hors écran
-          modalElement.style.transition = 'transform 0.3s ease, opacity 0.3s ease';
-          const exitDistance = diffX > 0 ? window.innerWidth + 100 : -(window.innerWidth + 100);
-          modalElement.style.transform = `translateX(${exitDistance}px) rotate(${rotation * 1.5}deg)`;
-          modalElement.style.opacity = '0';
-          setTimeout(() => onClose(), 250);
-        }
-      }
-      // Sinon, c'est un scroll vertical, on laisse faire
-    };
+    // Désactiver la transition pendant le drag
+    modalElement.style.transition = 'none';
+  };
+  
+  const handleTouchMove = (e) => {
+    if (!isDragging || !modalElement) return;
     
-    const handleTouchEnd = () => {
-      if (!modalElement) return;
+    currentX = e.touches[0].clientX;
+    const currentY = e.touches[0].clientY;
+    
+    const diffX = currentX - startX;
+    const diffY = currentY - startY;
+    
+    // Si mouvement plus horizontal que vertical
+    if (Math.abs(diffX) > Math.abs(diffY) && Math.abs(diffX) > 10) {
+      // Empêcher le scroll pendant le swipe horizontal
+      e.preventDefault();
       
-      isDragging = false;
-      isHorizontalSwipe = false;
+      // Suivre le doigt à 100%
+      const translateX = diffX;
       
-      // Réinitialiser la position avec transition élastique (effet rebond)
+      // Opacité progressive
+      const distance = Math.abs(diffX);
+      const opacity = Math.max(1 - distance / 600, 0.3);
+      
+      // Rotation légère
+      const rotation = (diffX / window.innerWidth) * 15;
+      
+      modalElement.style.transform = `translateX(${translateX}px) rotate(${rotation}deg)`;
+      modalElement.style.opacity = `${opacity}`;
+    }
+  };
+  
+  const handleTouchEnd = () => {
+    if (!modalElement || !isDragging) return;
+    
+    isDragging = false;
+    
+    const diffX = currentX - startX;
+    const distance = Math.abs(diffX);
+    
+    // Seuil : 25% de la largeur de l'écran
+    const threshold = window.innerWidth * 0.25;
+    
+    if (distance > threshold) {
+      // Fermer avec animation
+      modalElement.style.transition = 'transform 0.3s ease, opacity 0.3s ease';
+      const exitDistance = diffX > 0 ? window.innerWidth + 100 : -(window.innerWidth + 100);
+      const rotation = (diffX / window.innerWidth) * 20;
+      modalElement.style.transform = `translateX(${exitDistance}px) rotate(${rotation}deg)`;
+      modalElement.style.opacity = '0';
+      setTimeout(() => onClose(), 300);
+    } else {
+      // Revenir en place avec effet rebond
       modalElement.style.transition = 'transform 0.4s cubic-bezier(0.34, 1.56, 0.64, 1), opacity 0.3s ease';
       modalElement.style.transform = '';
       modalElement.style.opacity = '';
       
-      // Nettoyer la transition après l'animation
+      // Nettoyer la transition après animation
       setTimeout(() => {
         if (modalElement) {
           modalElement.style.transition = '';
         }
       }, 400);
-    };
-    
-    const modal = document.querySelector('.modal');
-    if (modal) {
-      modal.addEventListener('touchstart', handleTouchStart, { passive: false });
-      modal.addEventListener('touchmove', handleTouchMove, { passive: false });
-      modal.addEventListener('touchend', handleTouchEnd, { passive: true });
-      modal.addEventListener('touchcancel', handleTouchEnd, { passive: true });
     }
-    
-    return () => {
-      if (modal) {
-        modal.removeEventListener('touchstart', handleTouchStart);
-        modal.removeEventListener('touchmove', handleTouchMove);
-        modal.removeEventListener('touchend', handleTouchEnd);
-        modal.removeEventListener('touchcancel', handleTouchEnd);
-      }
-    };
-  }, [onClose]);
+  };
+  
+  const modal = document.querySelector('.modal');
+  if (modal) {
+    modal.addEventListener('touchstart', handleTouchStart, { passive: false });
+    modal.addEventListener('touchmove', handleTouchMove, { passive: false });
+    modal.addEventListener('touchend', handleTouchEnd, { passive: true });
+    modal.addEventListener('touchcancel', handleTouchEnd, { passive: true });
+  }
+  
+  return () => {
+    if (modal) {
+      modal.removeEventListener('touchstart', handleTouchStart);
+      modal.removeEventListener('touchmove', handleTouchMove);
+      modal.removeEventListener('touchend', handleTouchEnd);
+      modal.removeEventListener('touchcancel', handleTouchEnd);
+    }
+  };
+}, [onClose]);
 
   const hasImages = project.images && project.images.length > 0;
   const hasVideo = project.youtubeId || project.vimeoId || project.arteId;

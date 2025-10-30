@@ -292,7 +292,7 @@ export const projectsData = {
         id: 'loverdance',
         title: 'Loverdance',
         year: '2024',
-        month: 'Mars 2024',
+        month: 'Juillet 2024',
         role: 'Régisseur adjoint',
         realisateur: 'Victor Gomez',
         directricePhoto: 'Louise Bernard Pallas',

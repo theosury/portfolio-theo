@@ -99,7 +99,7 @@ const ProjectModal = ({ project, onClose }) => {
         modalElement.style.transition = 'none';
         
         // Seuil basé sur la largeur de l'écran (70% de la largeur)
-        const threshold = window.innerWidth * 0.7;
+        const threshold = window.innerWidth * 0.5;
         
         // Fermer si on dépasse 70% de la largeur de l'écran
         if (distance > threshold) {

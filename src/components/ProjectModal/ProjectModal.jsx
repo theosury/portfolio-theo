@@ -98,8 +98,8 @@ const ProjectModal = ({ project, onClose }) => {
         modalElement.style.opacity = `${opacity}`;
         modalElement.style.transition = 'none';
         
-        // Seuil basé sur la largeur de l'écran (70% de la largeur)
-        const threshold = window.innerWidth * 0.5;
+        // Seuil basé sur la largeur de l'écran (30% de la largeur)
+        const threshold = window.innerWidth * 0.3;
         
         // Fermer si on dépasse 70% de la largeur de l'écran
         if (distance > threshold) {

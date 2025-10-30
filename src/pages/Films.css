@@ -8,12 +8,45 @@
   padding: var(--spacing-xl) 0;
 }
 
+/* ==========================================
+   HEADER - Typo élégante et minimaliste
+   ========================================== */
+
+.films-page__header {
+  text-align: left;
+  padding: var(--spacing-lg) 0 var(--spacing-xl);
+}
+
+.films-page__title {
+  font-size: clamp(3rem, 6vw, 5rem);
+  font-weight: var(--font-weight-bold);
+  margin: 0;
+  margin-bottom: var(--spacing-xs);
+  letter-spacing: -0.02em;
+}
+
+.films-page__subtitle {
+  font-size: 1.1rem;
+  color: var(--color-text-secondary);
+  opacity: 0.7;
+  margin: 0;
+  font-weight: var(--font-weight-light);
+}
+
+/* ==========================================
+   GRILLE DE PROJETS
+   ========================================== */
+
 .films-page__grid {
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
   gap: var(--spacing-lg);
   margin-bottom: var(--spacing-xl);
 }
+
+/* ==========================================
+   SECTION POST-PRODUCTION
+   ========================================== */
 
 /* Séparateur entre films terminés et post-prod */
 .films-page__separator {
@@ -42,12 +75,6 @@
   letter-spacing: 0.05em;
 }
 
-/* Titre principal (quand utilisé seul en haut de page) */
-.films-page__section > .container > .films-page__postprod-title {
-  text-align: center;
-  margin-bottom: var(--spacing-lg);
-}
-
 .films-page__postprod-subtitle {
   font-size: 1rem;
   color: var(--color-text-secondary);
@@ -56,7 +83,7 @@
   letter-spacing: 0.15em;
 }
 
-/* Grille post-prod avec style légèrement différent */
+/* Grille post-prod */
 .films-page__grid--postprod {
   margin-bottom: 0;
 }
@@ -69,14 +96,21 @@
   opacity: 1;
 }
 
-/* Responsive */
-@media (max-width: 768px) {
-  .films-page {
-    padding-top: calc(var(--header-height) + var(--spacing-lg));
-  }
+/* ==========================================
+   RESPONSIVE
+   ========================================== */
 
+@media (max-width: 768px) {
   .films-page__section {
     padding: var(--spacing-lg) 0;
+  }
+
+  .films-page__header {
+    padding: var(--spacing-xl) 0 var(--spacing-lg);
+  }
+
+  .films-page__title {
+    font-size: 2.5rem;
   }
 
   .films-page__grid {
@@ -95,5 +129,11 @@
 
   .films-page__postprod-subtitle {
     font-size: 0.9rem;
+  }
+}
+
+@media (max-width: 480px) {
+  .films-page__title {
+    font-size: 2rem;
   }
 }

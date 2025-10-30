@@ -1,7 +1,8 @@
 .home-cta {
   background-color: var(--color-bg);
   text-align: center;
-  padding: var(--spacing-xl) 0;
+  padding: var(--spacing-lg) 0; /* Réduit de xl à lg */
+  min-height: auto; /* Override du min-height de .section */
 }
 
 .home-cta .btn {

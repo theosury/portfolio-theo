@@ -25,6 +25,7 @@ const Films = () => {
     <div className="films-page">
       <section className="films-page__section">
         <div className="container">
+          <h1 className="films-page__postprod-title" style={{ marginBottom: 'var(--spacing-lg)' }}>Tous mes projets</h1>
           {/* Grille de tous les films terminés */}
           <div className="films-page__grid">
             {completedFilms.map((film) => (

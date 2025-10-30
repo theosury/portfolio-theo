@@ -1,12 +1,24 @@
 .hero-projects {
   background-color: var(--color-bg);
   padding-top: calc(var(--spacing-xl) + var(--header-height));
+  padding-bottom: var(--spacing-xl);
+  min-height: auto; /* Override du min-height de .section */
 }
 
 .hero-projects__grid {
   display: grid;
   grid-template-columns: 1fr;
   gap: var(--spacing-xl);
+}
+
+.hero-projects__cta {
+  text-align: center;
+  margin-top: var(--spacing-xl);
+}
+
+.hero-projects__cta .btn {
+  font-size: 1.1rem;
+  padding: 1.2rem 3rem;
 }
 
 .hero-project {
@@ -182,6 +194,11 @@
   
   .hero-projects__grid {
     gap: var(--spacing-lg);
+  }
+
+  .hero-projects__cta .btn {
+    font-size: 1rem;
+    padding: 1rem 2rem;
   }
   
   .hero-project__title {

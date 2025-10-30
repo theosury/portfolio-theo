@@ -32,71 +32,76 @@ const sortProjectsByDate = (projects) => {
 };
 
 export const projectsData = {
-  // ========== PROJETS HERO ==========
-  heroProjects: [
-   {
-    id: 'vedette',
-    title: 'Vedette !',
-    year: '2024',
-    month: 'Février-Mars 2024',
-    role: 'Chef-opérateur / Cadreur',
-    coChefOp: 'Isaac Gorin',
-    realisateurs: 'Augustin Provost & Konrad Galice',
-    production: 'ESEC',
-    thumbnail: '/images/vedette-thumb.jpg',
-    images: [],
-    youtubeId: 'huDt5YegK_k',
-    description: 'Claude, une ancienne vedette en déclin, se bat avec le réalisateur pour tourner une scène romantique avec sa co-star Olivia Ricci. Il regrette alors son souhait lorsqu\'il découvre qu\'Olivia est en réalité sa fille, mais le réalisateur est décidé à lui faire tourner cette scène et Olivia est bien décidée à lui faire regretter son abandon de responsabilité paternel.',
-    synopsis: 'Pastiche des années 50 tourné en studio. Deux ambiances distinctes : le "film dans le film" avec un éclairage doux très studio, dolly et longues focales, et la partie "hors du film" très contrastée, en plans fixes stricts au 18mm.',
-    etalonneur: 'Marion de Ravel de l\'Argentière',
-    specs: {
-      format: 'Court-métrage fiction',
-      duree: '14min08',
-      jours: '2 jours',
-      lieu: 'Studio',
-      camera: 'Arri ALEXA SXT Plus',
-      objectifs: 'Cooke S4',
-    },
-    cast: [
-      'Gilbert Coudurier (Claude Berr)',
-      'Luna Kozaczka (Olivia Ricci)',
-      'Stéphane de Oliveira (Réalisateur)'
-    ]
-    },
-    {
-      id: 'vagues',
-      title: 'Ce que laissent les vagues',
-      year: '2024',
-      month: 'Mai 2024',
-      role: 'Cadreur',
-      chefOp: 'Isaac Gorin',
-      realisatrices: 'Luce Paz & Ana Maria Garza Flores',
-      production: 'ESEC',
-      thumbnail: '/images/vagues-thumb.jpg',
-      images: [],
-      youtubeId: 'BC1k5pwd-_8',
-      description: 'Pablo est un gitan qui vit seul près de la mer. Ce lieu est devenu son refuge depuis ses 19 ans, âge auquel il est tombé amoureux de son unique amour, Alice, avant de la perdre tragiquement cette même année. Forcé de quitter le seul endroit où il a vu son bonheur, il replonge dans ses souvenirs comme pour plonger avec Alice, la retrouver, quitte à ne plus en émerger.',
-      synopsis: 'Deux époques se confrontent : un présent sombre et désaturé face à un passé chaud aux couleurs vives. Tournage en Bretagne avec Easyrig pour suivre les mouvements des personnages sur la plage. Plans dynamiques et sensoriels pour traduire la mémoire de Pablo.',
-      specs: {
-        format: 'Court-métrage fiction',
-        duree: '12min44',
-        jours: '5 jours',
-        lieu: 'Bretagne',
-        camera: 'Arri ALEXA SXT Plus',
-        objectifs: 'Cooke S4',
-        cadrage: 'Easyrig'
-      },
-      cast: [
-        'Ambryn Guedin (Pablo Jeune)',
-        'Audrey Bauer (Alice)',
-        'Joel Perruch (Pablo Vieux)'
-      ]
-    },
-  ],
+  // ========== IDs DES PROJETS HERO ==========
+  // Pour ajouter un projet en hero, ajoute simplement son ID ici
+  heroProjectIds: ['vedette', 'vagues'],
+
+  // ========== PROJETS HERO (générés automatiquement depuis films) ==========
+  get heroProjects() {
+    return this.films.filter(film => this.heroProjectIds.includes(film.id));
+  },
 
   // ========== TOUS LES PROJETS (triés automatiquement par catégorie) ==========
   get films() {
     const allFilms = [
+      {
+        id: 'vedette',
+        title: 'Vedette !',
+        year: '2024',
+        month: 'Février-Mars 2024',
+        role: 'Chef-opérateur / Cadreur',
+        coChefOp: 'Isaac Gorin',
+        realisateurs: 'Augustin Provost & Konrad Galice',
+        production: 'ESEC',
+        thumbnail: '/images/vedette-thumb.jpg',
+        images: [],
+        youtubeId: 'huDt5YegK_k',
+        description: 'Claude, une ancienne vedette en déclin, se bat avec le réalisateur pour tourner une scène romantique avec sa co-star Olivia Ricci. Il regrette alors son souhait lorsqu\'il découvre qu\'Olivia est en réalité sa fille, mais le réalisateur est décidé à lui faire tourner cette scène et Olivia est bien décidée à lui faire regretter son abandon de responsabilité paternel.',
+        synopsis: 'Pastiche des années 50 tourné en studio. Deux ambiances distinctes : le "film dans le film" avec un éclairage doux très studio, dolly et longues focales, et la partie "hors du film" très contrastée, en plans fixes stricts au 18mm.',
+        etalonneur: 'Marion de Ravel de l\'Argentière',
+        specs: {
+          format: 'Court-métrage fiction',
+          duree: '14min08',
+          jours: '2 jours',
+          lieu: 'Studio',
+          camera: 'Arri ALEXA SXT Plus',
+          objectifs: 'Cooke S4',
+        },
+        cast: [
+          'Gilbert Coudurier (Claude Berr)',
+          'Luna Kozaczka (Olivia Ricci)',
+          'Stéphane de Oliveira (Réalisateur)'
+        ]
+      },
+      {
+        id: 'vagues',
+        title: 'Ce que laissent les vagues',
+        year: '2024',
+        month: 'Mai 2024',
+        role: 'Cadreur',
+        chefOp: 'Isaac Gorin',
+        realisatrices: 'Luce Paz & Ana Maria Garza Flores',
+        production: 'ESEC',
+        thumbnail: '/images/vagues-thumb.jpg',
+        images: [],
+        youtubeId: 'BC1k5pwd-_8',
+        description: 'Pablo est un gitan qui vit seul près de la mer. Ce lieu est devenu son refuge depuis ses 19 ans, âge auquel il est tombé amoureux de son unique amour, Alice, avant de la perdre tragiquement cette même année. Forcé de quitter le seul endroit où il a vu son bonheur, il replonge dans ses souvenirs comme pour plonger avec Alice, la retrouver, quitte à ne plus en émerger.',
+        synopsis: 'Deux époques se confrontent : un présent sombre et désaturé face à un passé chaud aux couleurs vives. Tournage en Bretagne avec Easyrig pour suivre les mouvements des personnages sur la plage. Plans dynamiques et sensoriels pour traduire la mémoire de Pablo.',
+        specs: {
+          format: 'Court-métrage fiction',
+          duree: '12min44',
+          jours: '5 jours',
+          lieu: 'Bretagne',
+          camera: 'Arri ALEXA SXT Plus',
+          objectifs: 'Cooke S4',
+          cadrage: 'Easyrig'
+        },
+        cast: [
+          'Ambryn Guedin (Pablo Jeune)',
+          'Audrey Bauer (Alice)',
+          'Joel Perruch (Pablo Vieux)'
+        ]
+      },
       {
         id: 'male-addict',
         title: 'Mâle Addict',

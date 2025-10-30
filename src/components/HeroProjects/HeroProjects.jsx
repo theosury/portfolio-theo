@@ -10,6 +10,10 @@ const HeroProjects = () => {
     navigate(`/films/${project.id}`);
   };
 
+  const handleViewAllProjects = () => {
+    navigate('/films');
+  };
+
   return (
     <section className="hero-projects section" id="hero-projects">
       <div className="container">
@@ -63,6 +67,13 @@ const HeroProjects = () => {
               </div>
             </div>
           ))}
+        </div>
+
+        {/* CTA pour voir tous les projets */}
+        <div className="hero-projects__cta">
+          <button onClick={handleViewAllProjects} className="btn btn-primary">
+            Voir tous les projets
+          </button>
         </div>
       </div>
     </section>

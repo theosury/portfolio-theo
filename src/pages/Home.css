@@ -1,0 +1,21 @@
+.home-cta {
+  background-color: var(--color-bg);
+  text-align: center;
+  padding: var(--spacing-xl) 0;
+}
+
+.home-cta .btn {
+  font-size: 1.1rem;
+  padding: 1.2rem 3rem;
+}
+
+@media (max-width: 768px) {
+  .home-cta {
+    padding: var(--spacing-lg) 0;
+  }
+  
+  .home-cta .btn {
+    font-size: 1rem;
+    padding: 1rem 2rem;
+  }
+}

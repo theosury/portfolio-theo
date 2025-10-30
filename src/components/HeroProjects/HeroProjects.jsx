@@ -1,17 +1,13 @@
-import React, { useState } from 'react';
+import React from 'react';
+import { useNavigate } from 'react-router-dom';
 import { projectsData } from '../../data/projectsData';
-import ProjectModal from '../ProjectModal/ProjectModal';
 import './HeroProjects.css';
 
 const HeroProjects = () => {
-  const [selectedProject, setSelectedProject] = useState(null);
+  const navigate = useNavigate();
 
   const handleProjectClick = (project) => {
-    setSelectedProject(project);
-  };
-
-  const handleCloseModal = () => {
-    setSelectedProject(null);
+    navigate(`/films/${project.id}`);
   };
 
   return (
@@ -69,14 +65,6 @@ const HeroProjects = () => {
           ))}
         </div>
       </div>
-
-      {/* Modal pour afficher le projet en détail */}
-      {selectedProject && (
-        <ProjectModal
-          project={selectedProject}
-          onClose={handleCloseModal}
-        />
-      )}
     </section>
   );
 };

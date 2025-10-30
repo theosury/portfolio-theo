@@ -1,9 +1,11 @@
 import React, { useState, useEffect } from 'react';
+import { Link, useLocation } from 'react-router-dom';
 import './Header.css';
 
 function Header() {
   const [scrolled, setScrolled] = useState(false);
   const [menuOpen, setMenuOpen] = useState(false);
+  const location = useLocation();
 
   useEffect(() => {
     const handleScroll = () => {
@@ -18,28 +20,18 @@ function Header() {
     return () => window.removeEventListener('scroll', handleScroll);
   }, []);
 
-  const scrollToSection = (e, sectionId) => {
-    e.preventDefault();
-    setMenuOpen(false); // Fermer le menu après clic
-    const section = document.getElementById(sectionId);
-    if (section) {
-      const offset = 80; // Hauteur du header
-      const elementPosition = section.getBoundingClientRect().top;
-      const offsetPosition = elementPosition + window.pageYOffset - offset;
-
-      window.scrollTo({
-        top: offsetPosition,
-        behavior: 'smooth'
-      });
-    }
-  };
+  // Fermer le menu après navigation
+  useEffect(() => {
+    setMenuOpen(false);
+    window.scrollTo(0, 0); // Scroll to top sur changement de page
+  }, [location]);
 
   return (
     <header className={`header ${scrolled ? 'scrolled' : ''}`}>
       <div className="container">
-        <a href="#" className="logo" onClick={(e) => scrollToSection(e, 'hero')}>
+        <Link to="/" className="logo">
           Théo Sury
-        </a>
+        </Link>
         
         {/* Hamburger button */}
         <button 
@@ -54,18 +46,30 @@ function Header() {
 
         {/* Navigation */}
         <nav className={menuOpen ? 'active' : ''}>
-          <a href="#accueil" onClick={(e) => scrollToSection(e, 'hero')}>
+          <Link 
+            to="/" 
+            className={location.pathname === '/' ? 'active' : ''}
+          >
             Accueil
-          </a>
-          <a href="#projets" onClick={(e) => scrollToSection(e, 'hero-projects')}>
+          </Link>
+          <Link 
+            to="/films" 
+            className={location.pathname.startsWith('/films') ? 'active' : ''}
+          >
             Films
-          </a>
-          <a href="#photographie" onClick={(e) => scrollToSection(e, 'photographie')}>
+          </Link>
+          <Link 
+            to="/photos" 
+            className={location.pathname === '/photos' ? 'active' : ''}
+          >
             Photos
-          </a>
-          <a href="#contact" onClick={(e) => scrollToSection(e, 'contact')}>
+          </Link>
+          <Link 
+            to="/contact" 
+            className={location.pathname === '/contact' ? 'active' : ''}
+          >
             Contact
-          </a>
+          </Link>
         </nav>
       </div>
     </header>

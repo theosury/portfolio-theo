@@ -6,6 +6,7 @@
   padding: var(--spacing-xl) 0; /* 6rem sur desktop */
   background: #000000;
 }
+
 .photos-section .section-title {
   color: #ffffff;
   font-size: 2.5rem;

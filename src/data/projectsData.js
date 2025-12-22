@@ -10,7 +10,7 @@ const parseDate = (project) => {
     if (match) {
       const monthsMap = {
         'janvier': 1, 'février': 2, 'mars': 3, 'avril': 4, 'mai': 5, 'juin': 6,
-        'juillet': 7, 'aout': 8, 'septembre': 9, 'octobre': 10, 'novembre': 11, 'décembre': 12
+        'juillet': 7, 'aout': 8, 'septembre': 9, 'octobre': 10, 'novembre': 11, 'decembre': 12
       };
       const monthName = match[2] ? match[2].toLowerCase() : match[1].toLowerCase();
       const month = monthsMap[monthName] || 1;
@@ -177,7 +177,9 @@ export const projectsData = {
         month: 'Juillet 2025',
         role: 'Électricien',
         realisatrice: 'Khadija Sy',
-        production: 'Point E × La Fémis',
+        chefOp: 'Léo Salomé',
+        chefElectro: 'Loïc Latapie',
+        production: 'Point E',
         thumbnail: '/images/verite-studio-thumb.jpg',
         status: 'En post-production',
         images: [],
@@ -204,6 +206,26 @@ export const projectsData = {
           lieu: 'Château de la Lande, Montaigu-Vendée',
           tournage: 'Octobre 2025',
           particularite: 'Scènes de bataille, effets flèches 3D'
+        }
+      },
+      {
+        id: 'jugement-dernier',
+        title: 'Jugement Dernier',
+        year: '2025',
+        month: 'Decembre 2025',
+        role: 'Chef-opérateur',
+        realisateur: 'Matthis Geffroy',
+        chefOp: 'Theo Sury',
+        chefElectro: 'Lothaire Girault',
+        production: 'Make My Day',
+        thumbnail: '/images/jugement-dernier-thumb.jpg',
+        status: 'En post-production',
+        images: [],
+        specs: {
+          format: 'Clip',
+          lieu: 'Château du Bec, Saint-Martin-Du-Bec, Normandie',
+          tournage: 'Decembre 2025',
+          particularite: 'Scènes de torture, VFX'
         }
       },
       {

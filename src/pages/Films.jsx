@@ -28,7 +28,7 @@ const Films = () => {
           {/* Header simple et élégant */}
           <div className="films-page__header">
             <h1 className="films-page__title">Filmographie</h1>
-            <p className="films-page__subtitle">Courts & moyens-métrages de fiction</p>
+            <p className="films-page__subtitle"></p>
           </div>
 
           {/* Grille de films */}

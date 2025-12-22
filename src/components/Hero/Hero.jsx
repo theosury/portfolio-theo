@@ -47,7 +47,7 @@ function Hero() {
       
       <div className="hero-content">
         <h1 className="hero-title">Théo Sury</h1>
-        <p className="hero-subtitle">CHEF-OPÉRATEUR - LILLE / PARIS</p>
+        <p className="hero-subtitle">CHEF-OPÉRATEUR - LILLE /PARIS</p>
       </div>
       
       <button

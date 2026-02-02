@@ -279,7 +279,6 @@ export const projectsData = {
         ]
       },
 
-      /*
       {
         id: 'gate66',
         title: 'Gate 66',
@@ -299,7 +298,6 @@ export const projectsData = {
           particularite: 'Dolly, machine à fumée, green screen'
         }
       },
-      */
 
       /*
       {
@@ -670,7 +668,7 @@ export const projectsData = {
         monteur: 'Theo Sury',
         etalonneur: 'Solal Alenda',
         production: 'ESMOD',
-        thumbnail: '/images/insipide-valse-thumb.jpg',
+        thumbnail: '/images/insipide-fuite-thumb.jpg',
         images: [],
         youtubeIds: [
           {
@@ -731,7 +729,8 @@ export const projectsData = {
           '/images/gadfly-snaps/gadfly-6.jpg',
           '/images/gadfly-snaps/gadfly-7.jpg'
         ],
-        description: 'Joe passe une soirée banale dans un diner parisien qui bascule progressivement dans l\'étrange. Entre lumières vacillantes, amis qui disparaissent et réapparaissent mystérieusement, et la présence énigmatique d\'un homme en djellaba, il erre dans Paris à la recherche de repères qui se dérobent. Une nuit hallucinatoire où la réalité se disloque jusqu\'à ce que minuit sonne et fige le temps.',
+        description: 'Une nuit, dans un diner faiblement éclairé, une simple erreur de commande plonge Joe dans un voyage surréaliste et troublant. Le temps se distord, la réalité bascule, et les visages familiers adoptent des rôles énigmatiques alors qu\'il cherche quelque chose qui n\'a peut-être jamais existé.',
+        synopsis: 'Mêlant tension psychologique et absurdité onirique, Gadfly explore la frontière fragile entre le réel et l\'imaginaire, entraînant son protagoniste (et le spectateur) dans un monde où rien n\'est vraiment ce qu\'il semble être.',
         specs: {
           format: 'Court-métrage'
         },

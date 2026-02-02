@@ -4,10 +4,13 @@ import './Contact.css';
 
 const Contact = () => {
   return (
-    <section className="contact section" id="contact">
-      <div className="container">
+    <section className="contact-section" id="contact">
+      <div className="contact-container">
+        <header className="page-header-unified">
+          <h2 className="page-title-unified">Contact</h2>
+        </header>
+
         <div className="contact__content">
-          <h2 className="contact__title">Me contacter</h2>
           <p className="contact__subtitle">
             Intéressé par une collaboration ? N'hésitez pas à me contacter.
           </p>

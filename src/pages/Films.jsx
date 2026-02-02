@@ -15,7 +15,7 @@ const Films = () => {
     <div className="films-page">
       <div className="films-container">
         <header className="page-header-unified">
-          <h2 className="page-title-unified">Filmographie</h2>
+          <h2 className="page-title-unified">Films</h2>
         </header>
 
         <div className="films-grid">

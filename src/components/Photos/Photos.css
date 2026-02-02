@@ -3,18 +3,22 @@
    =================================== */
 
 .photos-section {
-  padding: var(--spacing-xl) 0; /* 6rem sur desktop */
+  padding: 0;
   background: #000000;
 }
 
-.photos-section .section-title {
-  color: #ffffff;
-  font-size: 2.5rem;
-  font-weight: 600;
-  margin-bottom: 4rem;
+.photos-section .page-header-unified {
   text-align: center;
+  padding: 3rem 0;
+}
+
+.photos-section .page-title-unified {
+  font-family: var(--font-main);
+  font-size: 2.2rem;
+  font-weight: 400;
   text-transform: uppercase;
-  letter-spacing: 0.1em;
+  letter-spacing: 0.25em;
+  color: var(--color-text);
 }
 
 /* ===================================

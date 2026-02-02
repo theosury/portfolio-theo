@@ -1,17 +1,42 @@
-.contact {
-  background: linear-gradient(180deg, #000000 0%, #0a0a0a 100%);
-  padding-bottom: 0; /* Supprime l'espace avec le footer */
+.contact-section {
+  background: var(--color-bg);
+  padding: 0;
+  min-height: calc(100vh - var(--header-height));
+  position: relative;
+}
+
+.contact-container {
+  max-width: 1600px;
+  margin: 0 auto;
+  padding: 0 2rem;
+}
+
+.contact-section .page-header-unified {
+  text-align: center;
+  padding: 3rem 0;
+}
+
+.contact-section .page-title-unified {
+  font-family: var(--font-main);
+  font-size: 2.2rem;
+  font-weight: 400;
+  text-transform: uppercase;
+  letter-spacing: 0.25em;
+  color: var(--color-text);
 }
 
 .contact__content {
   max-width: 700px;
   margin: 0 auto;
   text-align: center;
-}
-
-.contact__title {
-  font-size: clamp(2.5rem, 5vw, 4rem);
-  margin-bottom: var(--spacing-sm);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: calc(100% - 4rem);
 }
 
 .contact__subtitle {
@@ -24,7 +49,6 @@
   display: grid;
   grid-template-columns: 1fr;
   gap: var(--spacing-sm);
-  margin-bottom: var(--spacing-lg);
 }
 
 .contact__method {
@@ -59,10 +83,6 @@
   color: var(--color-text);
 }
 
-.contact__cta {
-  margin-top: var(--spacing-lg);
-}
-
 @media (min-width: 600px) {
   .contact__methods {
     grid-template-columns: repeat(2, 1fr);
@@ -73,7 +93,7 @@
   .contact__method {
     padding: var(--spacing-sm);
   }
-  
+
   .contact__method-value {
     font-size: 1rem;
   }

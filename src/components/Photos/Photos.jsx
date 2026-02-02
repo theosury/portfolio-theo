@@ -69,7 +69,9 @@ function Photos() {
   return (
     <section id="photographie" className="photos-section">
       <div className="container">
-        <h2 className="section-title">Photographie</h2>
+        <header className="page-header-unified">
+          <h2 className="page-title-unified">Photos</h2>
+        </header>
         
         <div className="photos-grid">
           {photos.map((photo, index) => (

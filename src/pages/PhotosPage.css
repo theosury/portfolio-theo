@@ -1,6 +1,7 @@
 .photos-page {
   background-color: var(--color-bg);
   min-height: 100vh;
+  /* On garde juste la hauteur du header pour ne pas que le titre passe dessous */
   padding-top: var(--header-height);
 }
 

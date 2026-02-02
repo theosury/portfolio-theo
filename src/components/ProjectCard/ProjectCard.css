@@ -1,24 +1,20 @@
 .project-card {
   position: relative;
   cursor: pointer;
-  transition: transform 0.3s ease, box-shadow 0.3s ease;
   overflow: hidden;
-  border-radius: 12px;
-  /* Bordure subtile style Apple */
-  border: 0.5px solid rgba(255, 255, 255, 0.08);
-  background: rgba(255, 255, 255, 0.02);
+  border-radius: 8px; /* Rayon réduit pour un look plus pro */
+  background: transparent;
+  transition: transform 0.3s ease;
 }
 
 .project-card:hover {
-  transform: translateY(-6px);
-  box-shadow: 0 12px 40px rgba(0, 0, 0, 0.4);
-  border-color: rgba(255, 255, 255, 0.15);
+  transform: translateY(-4px);
 }
 
 .project-card__image-wrapper {
   position: relative;
   width: 100%;
-  padding-bottom: 56.25%; /* 16:9 aspect ratio */
+  padding-bottom: 56.25%; /* Ratio 16:9 */
   overflow: hidden;
 }
 
@@ -29,97 +25,63 @@
   width: 100%;
   height: 100%;
   object-fit: cover;
-  transition: transform 0.3s ease;
+  /* IMAGE BRUTE : On retire tout ce qui altère l'image */
+  filter: none !important;
+  opacity: 1 !important;
 }
 
-.project-card:hover .project-card__image {
-  transform: scale(1.05);
-}
-
-/* Overlay gradient - RÉDUIT pour moins d'assombrissement */
+/* On masque l'overlay par défaut pour ne pas assombrir l'image */
 .project-card__overlay {
-  position: absolute;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  background: linear-gradient(
-    to bottom,
-    rgba(0, 0, 0, 0) 0%,
-    rgba(0, 0, 0, 0.07) 50%,
-    rgba(0, 0, 0, 0.4) 100%
-  );
-  pointer-events: none;
+  display: none !important;
 }
 
-/* Content overlay */
 .project-card__content {
   position: absolute;
   bottom: 0;
   left: 0;
   right: 0;
   padding: 1.5rem;
-  color: white;
   z-index: 2;
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
 }
 
 .project-card__title {
-  font-size: 1.25rem;
+  font-family: var(--font-main);
+  font-size: 1.2rem;
   font-weight: 600;
-  margin: 0 0 0.5rem 0;
-  line-height: 1.3;
-  text-shadow: 0 2px 8px rgba(0, 0, 0, 0.6);
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  color: white;
+  margin: 0;
+  /* Ombre portée pour que le texte soit lisible sur l'image brute */
+  text-shadow: 0 2px 4px rgba(0, 0, 0, 0.8);
 }
 
 .project-card__meta {
   display: flex;
   align-items: center;
-  gap: 0.5rem;
-  font-size: 0.9rem;
-  color: rgba(255, 255, 255, 0.9);
-  margin-bottom: 0.25rem;
-  text-shadow: 0 1px 6px rgba(0, 0, 0, 0.5);
-}
-
-.project-card__month {
+  flex-wrap: nowrap; /* Force une seule ligne */
+  font-family: var(--font-main);
+  font-size: 0.75rem;
   font-weight: 500;
-}
-
-.project-card__separator {
-  color: rgba(255, 255, 255, 0.5);
+  text-transform: uppercase;
+  color: white;
+  text-shadow: 0 1px 3px rgba(0, 0, 0, 0.9);
 }
 
 .project-card__role {
-  color: rgba(255, 255, 255, 0.85);
+  color: rgba(255, 255, 255, 0.9);
 }
 
-.project-card__production {
-  font-size: 0.85rem;
-  color: rgba(255, 255, 255, 0.75);
-  margin: 0.25rem 0 0 0;
-  line-height: 1.4;
-  text-shadow: 0 1px 6px rgba(0, 0, 0, 0.5);
+.project-card__separator {
+  margin: 0 6px;
+  color: var(--color-accent); /* Ton rouge pour séparer les infos */
 }
 
-/* Responsive */
-@media (max-width: 768px) {
-  .project-card {
-    border-radius: 10px;
-  }
-
-  .project-card__content {
-    padding: 1rem;
-  }
-
-  .project-card__title {
-    font-size: 1.1rem;
-  }
-
-  .project-card__meta {
-    font-size: 0.85rem;
-  }
-
-  .project-card__production {
-    font-size: 0.8rem;
-  }
+.project-card__status {
+  color: var(--color-accent);
+  font-weight: 700;
+  white-space: nowrap; /* Évite que le statut passe à la ligne */
 }

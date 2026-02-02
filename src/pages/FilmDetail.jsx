@@ -8,6 +8,7 @@ const FilmDetail = () => {
   const navigate = useNavigate();
   const [currentImageIndex, setCurrentImageIndex] = useState(0);
   const [showImageModal, setShowImageModal] = useState(false);
+  const [currentVideoIndex, setCurrentVideoIndex] = useState(0);
 
   // Trouver le projet correspondant au slug
   const project = projectsData.films.find(film => film.id === slug);
@@ -54,6 +55,20 @@ const FilmDetail = () => {
     }
   };
 
+  const nextVideo = () => {
+    if (hasMultipleVideos) {
+      setCurrentVideoIndex((prev) => (prev + 1) % project.youtubeIds.length);
+    }
+  };
+
+  const prevVideo = () => {
+    if (hasMultipleVideos) {
+      setCurrentVideoIndex((prev) => 
+        prev === 0 ? project.youtubeIds.length - 1 : prev - 1
+      );
+    }
+  };
+
   const openImageModal = (index) => {
     setCurrentImageIndex(index);
     setShowImageModal(true);
@@ -62,24 +77,14 @@ const FilmDetail = () => {
   // Rendu du player vidéo selon la plateforme
   const renderVideoPlayer = () => {
     if (project.youtubeId) {
-      return (
-        <div className="film-detail__video">
-          <iframe
-            src={`https://www.youtube.com/embed/${project.youtubeId}?autoplay=1&mute=0`}
-            title={project.title}
-            frameBorder="0"
-            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-            allowFullScreen
-          ></iframe>
-        </div>
-      );
+      return <YouTubePlayer videoId={project.youtubeId} title={project.title} />;
     }
     
     if (project.vimeoId) {
       return (
         <div className="film-detail__video">
           <iframe
-            src={`https://player.vimeo.com/video/${project.vimeoId}?autoplay=1&muted=0`}
+            src={`https://player.vimeo.com/video/${project.vimeoId}?autoplay=0&quality=1080p`}
             title={project.title}
             frameBorder="0"
             allow="autoplay; fullscreen; picture-in-picture"
@@ -106,30 +111,55 @@ const FilmDetail = () => {
     return null;
   };
 
-  // Rendu de plusieurs vidéos YouTube
-  const renderMultipleVideos = () => {
+  // Rendu carrousel de vidéos YouTube
+  const renderVideoCarousel = () => {
     if (!project.youtubeIds || project.youtubeIds.length === 0) return null;
     
-    const shouldMute = project.youtubeIds.length > 1 ? 1 : 0;
+    const currentVideo = project.youtubeIds[currentVideoIndex];
     
     return (
-      <div className="film-detail__videos-grid" data-video-count={project.youtubeIds.length}>
-        {project.youtubeIds.map((videoData, index) => (
-          <div key={index} className="film-detail__video-item">
-            {videoData.title && (
-              <h4 className="film-detail__video-title">{videoData.title}</h4>
-            )}
-            <div className="film-detail__video">
-              <iframe
-                src={`https://www.youtube.com/embed/${videoData.id}?autoplay=1&mute=${shouldMute}`}
-                title={videoData.title || `${project.title} - Vidéo ${index + 1}`}
-                frameBorder="0"
-                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-                allowFullScreen
-              ></iframe>
-            </div>
+      <div className="film-detail__video-carousel">
+        {currentVideo.title && (
+          <h4 className="film-detail__video-carousel-title">{currentVideo.title}</h4>
+        )}
+        
+        <div className="film-detail__video-carousel-container">
+          <YouTubePlayer 
+            videoId={currentVideo.id} 
+            title={currentVideo.title || `${project.title} - Vidéo ${currentVideoIndex + 1}`}
+            muted={false}
+          />
+          
+          {project.youtubeIds.length > 1 && (
+            <>
+              <button 
+                className="film-detail__video-nav film-detail__video-nav--prev" 
+                onClick={prevVideo}
+              >
+                ‹
+              </button>
+              <button 
+                className="film-detail__video-nav film-detail__video-nav--next" 
+                onClick={nextVideo}
+              >
+                ›
+              </button>
+            </>
+          )}
+        </div>
+        
+        {project.youtubeIds.length > 1 && (
+          <div className="film-detail__video-dots">
+            {project.youtubeIds.map((_, index) => (
+              <button
+                key={index}
+                className={`film-detail__video-dot ${index === currentVideoIndex ? 'active' : ''}`}
+                onClick={() => setCurrentVideoIndex(index)}
+                aria-label={`Voir vidéo ${index + 1}`}
+              />
+            ))}
           </div>
-        ))}
+        )}
       </div>
     );
   };
@@ -144,7 +174,7 @@ const FilmDetail = () => {
             {/* Vidéo(s) ou Images */}
             {hasMultipleVideos ? (
               <>
-                {renderMultipleVideos()}
+                {renderVideoCarousel()}
                 
                 {/* Galerie de thumbnails sous les vidéos */}
                 {hasImages && (
@@ -206,7 +236,13 @@ const FilmDetail = () => {
             {/* Informations */}
             <div className="film-detail__info">
               <h1 className="film-detail__title">{project.title}</h1>
-              
+
+              {project.status && (
+                <div className="film-detail__status">
+                  <span className="film-detail__status-badge">{project.status}</span>
+                </div>
+              )}
+
               <div className="film-detail__meta">
                 <span className="film-detail__year">{project.month || project.year}</span>
                 <span className="film-detail__separator">•</span>
@@ -239,16 +275,19 @@ const FilmDetail = () => {
 
               {/* Équipe */}
               {(() => {
-                const teamFields = [
-                  'realisateur', 'realisateurs', 'realisatrice', 'assistantReal', 'script',
-                  'chefOp', 'coChefOp', 'assistantCam', 'secondAssistantCam', 'troisiemeAssistantCam',
-                  'dit', 'steadicam', 'photo', 'chefElectro', 'electros', 'chefMachino',
-                  'machino', 'renforts', 'son', 'perchman', 'mixage', 'soundDesign', 'musique',
-                  'monteur', 'montageSon', 'etalonneur', 'vfx', 'graphisme', 'generique',
-                  'directionArtistique', 'deco', 'accessoiriste', 'costume', 'maquillage',
-                  'coiffure', 'regisseur', 'assistRegie', 'producteur', 'prodExec',
-                  'assistProd', 'stagiaires'
-                ];
+              const teamFields = [
+                'artiste', 'realisateur', 'realisateurs', 'realisatrice', 'realisatrices', 'scenariste', 'dirProd', 'producteur', 'chargeeProd',
+                'premierAssReal', 'secondAssReal', 'troisiemeAssistantReal', 'script', 'scripte', 'choregraphe',
+                'chefOp', 'cheffeOp', 'coChefOp', 'cadreur', 'cadreurB', 'assistantCam', 'secondAssistantCam', 'troisiemeAssistantCam',
+                'dit', 'steadicam', 'photo', 'chefElectro', 'chefElectroRenfort', 'electros', 'chefMachino', 'cheffeMachino',
+                'machino', 'machinos', 'assistantMachino', 'renforts', 'son', 'assistantSon', 'assistantsSon', 'perchman', 'mixage', 'soundDesign', 'musique', 'monteurSon',
+                'monteur', 'montageSon', 'etalonneur', 'vfx', 'graphisme', 'generique',
+                'directionArtistique', 'directriceArtistique', 'assDirectriceArtistique', 'cheffeDecoratrice', 'assistanteDecoratrice',
+                'deco', 'renfortDeco', 'accessoiriste', 'costume', 'costumiere', 'chefHMC', 'maquillage',
+                'coiffure', 'regisseur', 'regisseurs', 'regisseurGeneral', 'assistRegie', 'prodExec',
+                'assistProd', 'stagiaires', 'conseillereMontage', 'mastering', 'casting', 'cadreuse', 'concept',
+                'coordinatriceIntimite', 'responsableSecurite'
+              ];
                 const hasTeamInfo = teamFields.some(field => project[field]);
                 return hasTeamInfo;
               })() && (
@@ -256,13 +295,26 @@ const FilmDetail = () => {
                   <h3>Équipe</h3>
                   <ul>
                     {Object.entries({
+                      artiste: "Artiste",
                       realisateur: "Réalisation",
                       realisateurs: "Réalisation",
                       realisatrice: "Réalisation",
-                      assistantReal: "Assistant réalisation",
+                      realisatrices: "Réalisation",
+                      scenariste: "Scénario",
+                      dirProd: "Direction de production",
+                      producteur: "Producteur",
+                      chargeeProd: "Chargée de production",
+                      premierAssReal: "1er assistant réalisation",
+                      secondAssReal: "2ème assistant réalisation",
+                      troisiemeAssistantReal: "3ème assistant réalisation",
                       script: "Script",
+                      scripte: "Scripte",
+                      choregraphe: "Chorégraphe",
                       chefOp: "Chef opérateur",
+                      cheffeOp: "Cheffe opératrice",
                       coChefOp: "Co-chef opérateur",
+                      cadreur: "Cadreur",
+                      cadreurB: "Cadreur caméra B",
                       assistantCam: "1er assistant caméra",
                       secondAssistantCam: "2ème assistant caméra",
                       troisiemeAssistantCam: "3ème assistant caméra",
@@ -270,15 +322,22 @@ const FilmDetail = () => {
                       steadicam: "Steadicam",
                       photo: "Photographe plateau",
                       chefElectro: "Chef électricien",
-                      electros: "Électros",
+                      chefElectroRenfort: "Chef électricien renfort",
+                      electros: "Électriciens",
                       chefMachino: "Chef machiniste",
+                      cheffeMachino: "Cheffe machiniste",
                       machino: "Machiniste",
+                      machinos: "Machinistes",
+                      assistantMachino: "Assistant machiniste",
                       renforts: "Renforts",
                       son: "Prise de son",
+                      assistantSon: "Assistant son",
+                      assistantsSon: "Assistants son",
                       perchman: "Perchman",
                       mixage: "Mixage",
                       soundDesign: "Sound design",
                       musique: "Musique originale",
+                      monteurSon: "Monteur son",
                       monteur: "Montage image",
                       montageSon: "Montage son",
                       etalonneur: "Étalonnage",
@@ -286,17 +345,32 @@ const FilmDetail = () => {
                       graphisme: "Graphisme",
                       generique: "Générique",
                       directionArtistique: "Direction artistique",
+                      directriceArtistique: "Directrice artistique",
+                      assDirectriceArtistique: "Assistante direction artistique",
+                      cheffeDecoratrice: "Cheffe décoratrice",
+                      assistanteDecoratrice: "Assistante décoration",
                       deco: "Décoration",
+                      renfortDeco: "Renfort décoration",
                       accessoiriste: "Accessoiriste",
                       costume: "Costume",
+                      costumiere: "Costumière",
+                      chefHMC: "Chef HMC",
                       maquillage: "Maquillage",
                       coiffure: "Coiffure",
                       regisseur: "Régisseur général",
+                      regisseurs: "Régie",
+                      regisseurGeneral: "Régie générale",
                       assistRegie: "Assistant régie",
-                      producteur: "Producteur",
                       prodExec: "Production exécutive",
                       assistProd: "Assistant production",
                       stagiaires: "Stagiaires",
+                      conseillereMontage: "Conseillère montage",
+                      mastering: "Mastering",
+                      casting: "Casting",
+                      cadreuse: "Cadreuse",
+                      concept: "Concept",
+                      coordinatriceIntimite: "Coordinatrice d'intimité",
+                      responsableSecurite: "Responsable sécurité"
                     }).map(([key, label]) =>
                       project[key] ? (
                         <li key={key}>
@@ -312,11 +386,7 @@ const FilmDetail = () => {
               {project.cast && project.cast.length > 0 && (
                 <div className="film-detail__cast">
                   <h3>Distribution</h3>
-                  <ul>
-                    {project.cast.map((actor, index) => (
-                      <li key={index}>{actor}</li>
-                    ))}
-                  </ul>
+                  <p>{project.cast.join(', ')}</p>
                 </div>
               )}
             </div>
@@ -349,6 +419,28 @@ const FilmDetail = () => {
         </div>
       )}
     </>
+  );
+};
+
+// Composant YouTube Player - iframe simple avec qualité HD
+const YouTubePlayer = ({ videoId, title }) => {
+  // Paramètres pour forcer la qualité HD :
+  // - vq=hd1080 : suggère 1080p (peut être ignoré par YouTube mais c'est le mieux qu'on puisse faire)
+  // - rel=0 : pas de vidéos suggérées d'autres chaînes
+  // - modestbranding=1 : logo YouTube réduit
+  // - playsinline=1 : lecture inline sur mobile
+  const embedUrl = `https://www.youtube.com/embed/${videoId}?rel=0&modestbranding=1&playsinline=1&vq=hd1080`;
+
+  return (
+    <div className="film-detail__video">
+      <iframe
+        src={embedUrl}
+        title={title}
+        frameBorder="0"
+        allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+        allowFullScreen
+      ></iframe>
+    </div>
   );
 };
 

@@ -273,7 +273,7 @@ useEffect(() => {
                         className="modal__thumbnail"
                         onClick={() => openImageModal(index)}
                       >
-                        <img src={image} alt={`${project.title} - Photo ${index + 1}`} />
+                        <img src={image} alt={`${project.title} - Photo ${index + 1}`} loading="lazy" />
                       </div>
                     ))}
                   </div>
@@ -292,7 +292,7 @@ useEffect(() => {
                         className="modal__thumbnail"
                         onClick={() => openImageModal(index)}
                       >
-                        <img src={image} alt={`${project.title} - Photo ${index + 1}`} />
+                        <img src={image} alt={`${project.title} - Photo ${index + 1}`} loading="lazy" />
                       </div>
                     ))}
                   </div>

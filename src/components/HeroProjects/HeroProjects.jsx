@@ -32,10 +32,11 @@ const HeroProjects = () => {
                   ></iframe>
                 ) : (
                   <div className="hero-project__placeholder">
-                    <img 
-                      src={project.thumbnail} 
+                    <img
+                      src={project.thumbnail}
                       alt={project.title}
                       className="hero-project__thumbnail"
+                      loading="lazy"
                     />
                     <div className="hero-project__overlay">
                       <span className="hero-project__coming-soon">Vidéo bientôt disponible</span>

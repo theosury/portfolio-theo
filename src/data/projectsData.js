@@ -260,6 +260,7 @@ export const projectsData = {
           format: 'Court-métrage fiction',
           lieu: 'Appartement Parisien',
           tournage: 'Janvier 2026',
+          camera: 'Sony FX9',
           particularite: 'Plans séquences / Travellings importants / Easyrig'
         },
         cast: [
@@ -295,6 +296,8 @@ export const projectsData = {
           format: 'Court-métrage',
           lieu: 'Plaine Image, Tourcoing',
           tournage: 'Septembre 2025',
+          camera: 'Alexa 35 / Sony A7S IV',
+          objectifs: 'Cooke Varotal / Cooke S8/i FF',
           particularite: 'Dolly, machine à fumée, green screen'
         }
       },
@@ -366,7 +369,9 @@ export const projectsData = {
         images: [],
         specs: {
           lieu: 'LCR Les Tailleurs, Villeneuve-d\'Ascq',
-          tournage: 'Juillet 2025'
+          tournage: 'Juillet 2025',
+          camera: 'Alexa 35',
+          objectifs: 'Panavision Primo'
         },
         cast: [
           'Nathalie N\'Songan',
@@ -401,6 +406,8 @@ export const projectsData = {
           format: 'Court-métrage médiéval',
           lieu: 'Château de la Lande, Montaigu-Vendée',
           tournage: 'Octobre 2025',
+          camera: 'Alexa Mini LF',
+          objectifs: 'Panavision Primo',
           particularite: 'Scènes de bataille, effets flèches 3D'
         }
       },
@@ -439,6 +446,8 @@ export const projectsData = {
           format: 'Clip',
           lieu: 'Château du Bec, Saint-Martin-Du-Bec, Normandie',
           tournage: 'Decembre 2025',
+          camera: 'RED Komodo X',
+          objectifs: 'Atlas Mercury Anamorphiques',
           particularite: 'Scènes de torture, VFX'
         },
         cast: [
@@ -484,6 +493,7 @@ export const projectsData = {
           jours: '2 semaines',
           lieu: 'Banlieue parisienne',
           camera: 'Sony FS7',
+          objectifs: 'Sony G Master',
           budget: 'Très faible',
           lumiere: 'Tungstène uniquement'
         }
@@ -553,7 +563,7 @@ export const projectsData = {
         specs: {
           format: 'Court-métrage studio',
           jours: '1 jour',
-          camera: 'Arri ALEXA Classic',
+          camera: 'Arri ALEXA Classic (SXT Plus)',
           objectifs: 'Angénieux Optimo',
         },
         cast: [
@@ -601,7 +611,9 @@ export const projectsData = {
         specs: {
           format: 'Court-métrage fiction',
           lieu: 'Maisons-Laffitte',
-          tournage: 'Avril 2024'
+          tournage: 'Avril 2024',
+          camera: 'Arri ALEXA Classic (SXT Plus)',
+          objectifs: 'Cooke S4/i'
         }
       },
       {
@@ -644,7 +656,9 @@ export const projectsData = {
           format: 'Court-métrage fiction',
           coproduction: 'Filmakademie Baden-Württemberg, La Fémis, ARTE, SWR',
           pays: 'France / Allemagne',
-          annee: '2024'
+          annee: '2024',
+          camera: 'Alexa Mini LF',
+          objectifs: 'Angénieux Style Optimo / ARRI Signature Zoom'
         },
         cast: [
           'Louise Luck (Lola)',
@@ -687,7 +701,9 @@ export const projectsData = {
           format: 'Création vidéo',
           duree: '3 x 2min',
           pays: 'France',
-          location: 'RVZ & Puzzle Video'
+          location: 'RVZ & Puzzle Video',
+          camera: 'RED Komodo',
+          objectifs: 'Zeiss Standard'
         },
         cast: [
           'La Valse : Ethan Wallevrick & Bill Tuan (Valseurs), Axel Lessieur (Angoisse)',
@@ -766,7 +782,9 @@ export const projectsData = {
         description: 'Louis, un fils d\'immigrés chinois manifestant en France contre la politique du gouvernement, entre en conflit avec son père quand il apprend que celui-ci désapprouve sa révolte dans ce qui est pour lui une terre d\'accueil. Film de fin de cycle 1.',
         specs: {
           format: 'Court-métrage fiction',
-          annee: '2023'
+          annee: '2023',
+          camera: 'Sony FS7',
+          objectifs: 'Sony G Master Zoom'
         },
         cast: [
           'Andrea Zamparo',
@@ -805,7 +823,9 @@ export const projectsData = {
         description: 'Sybille est la comédienne la plus populaire de son époque. Mère dirigiste et autoritaire, elle pousse sa fille Flora à rentrer dans le milieu. Mais la jeunesse de Flora effacera le succès de sa mère qui semblait être éternel… Film de fin d\'études ESEC.',
         specs: {
           format: 'Court-métrage fiction',
-          annee: '2022'
+          annee: '2022',
+          camera: 'Arri ALEXA Classic (SXT Plus)',
+          objectifs: 'Cooke S4/i'
         },
         cast: [
           'Maëlle Genet',

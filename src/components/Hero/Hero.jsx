@@ -66,10 +66,8 @@ function Hero() {
     return () => clearInterval(interval);
   }, [images]);
 
-  if (images.length === 0) return null;
-
-  const currentUrl = images[currentIndex];
-  const prevUrl = prevIndex !== null ? images[prevIndex] : null;
+  const currentUrl = images.length > 0 ? images[currentIndex] : null;
+  const prevUrl = prevIndex !== null && images.length > 0 ? images[prevIndex] : null;
 
   return (
     <section id="hero" className="hero">
@@ -82,7 +80,7 @@ function Hero() {
           />
         )}
         {/* Slide courante (par-dessus, fade in) */}
-        {loadedImages.has(currentUrl) && (
+        {currentUrl && loadedImages.has(currentUrl) && (
           <div
             key={currentIndex}
             className="hero-slide hero-slide--fade-in"

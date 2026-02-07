@@ -524,7 +524,8 @@ export const projectsData = {
         specs: {
           format: 'Court-métrage',
           lieu: 'Paris',
-          tournage: 'Décembre 2024'
+          tournage: 'Décembre 2024',
+          camera: 'Sony FX3'
         },
         cast: [
           'Eva Mostrou',

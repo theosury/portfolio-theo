@@ -1,4 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   <url><loc>https://theosury.fr/</loc></url>
+  <url><loc>https://theosury.fr/films</loc></url>
+  <url><loc>https://theosury.fr/photos</loc></url>
+  <url><loc>https://theosury.fr/contact</loc></url>
 </urlset>

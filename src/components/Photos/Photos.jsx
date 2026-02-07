@@ -18,7 +18,7 @@ function Photos() {
 
   useEffect(() => {
     // Charge automatiquement toutes les images du dossier /images/photos/
-    const imageModules = import.meta.glob('/public/images/photos/*.{jpg,jpeg,png,webp,JPG,JPEG,PNG,WEBP}', { 
+    const imageModules = import.meta.glob('/public/images/photos/*.{jpg,jpeg,png,webp,JPG,JPEG,PNG,WEBP}', {
       eager: true,
       as: 'url'
     });
@@ -33,15 +33,25 @@ function Photos() {
     setPhotos(shuffledPhotos);
   }, []);
 
+  // Gestion du scroll du body via useEffect
+  useEffect(() => {
+    if (lightboxOpen) {
+      document.body.style.overflow = 'hidden';
+    } else {
+      document.body.style.overflow = '';
+    }
+    return () => {
+      document.body.style.overflow = '';
+    };
+  }, [lightboxOpen]);
+
   const openLightbox = (index) => {
     setCurrentIndex(index);
     setLightboxOpen(true);
-    document.body.style.overflow = 'hidden'; // Empêche le scroll
   };
 
   const closeLightbox = () => {
     setLightboxOpen(false);
-    document.body.style.overflow = 'auto'; // Réactive le scroll
   };
 
   const goToNext = () => {
@@ -72,15 +82,18 @@ function Photos() {
         <header className="page-header-unified">
           <h2 className="page-title-unified">Photos</h2>
         </header>
-        
-        <div className="photos-grid">
+
+        <div className="photos-grid" role="list">
           {photos.map((photo, index) => (
-            <div 
-              key={index} 
+            <div
+              key={index}
               className="photo-item"
+              role="listitem"
+              tabIndex={0}
               onClick={() => openLightbox(index)}
+              onKeyDown={(e) => { if (e.key === 'Enter') openLightbox(index); }}
             >
-              <img src={photo} alt={`Photo ${index + 1}`} loading="lazy" />
+              <img src={photo} alt={`Photographie ${index + 1}`} loading="lazy" />
             </div>
           ))}
         </div>
@@ -92,13 +105,14 @@ function Photos() {
 
       {/* Lightbox */}
       {lightboxOpen && (
-        <div className="lightbox" onClick={closeLightbox}>
-          <button className="lightbox-close" onClick={closeLightbox}>
+        <div className="lightbox" role="dialog" aria-label="Visionneuse de photos" onClick={closeLightbox}>
+          <button className="lightbox-close" onClick={closeLightbox} aria-label="Fermer">
             ×
           </button>
-          
-          <button 
-            className="lightbox-nav lightbox-prev" 
+
+          <button
+            className="lightbox-nav lightbox-prev"
+            aria-label="Photo précédente"
             onClick={(e) => {
               e.stopPropagation();
               goToPrevious();
@@ -106,15 +120,16 @@ function Photos() {
           >
             ‹
           </button>
-          
-          <img 
-            src={photos[currentIndex]} 
-            alt={`Photo ${currentIndex + 1}`}
+
+          <img
+            src={photos[currentIndex]}
+            alt={`Photographie ${currentIndex + 1}`}
             onClick={(e) => e.stopPropagation()}
           />
-          
-          <button 
-            className="lightbox-nav lightbox-next" 
+
+          <button
+            className="lightbox-nav lightbox-next"
+            aria-label="Photo suivante"
             onClick={(e) => {
               e.stopPropagation();
               goToNext();
@@ -123,7 +138,7 @@ function Photos() {
             ›
           </button>
 
-          <div className="lightbox-counter">
+          <div className="lightbox-counter" aria-live="polite">
             {currentIndex + 1} / {photos.length}
           </div>
         </div>

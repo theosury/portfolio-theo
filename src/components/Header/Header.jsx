@@ -34,10 +34,11 @@ function Header() {
         </Link>
         
         {/* Hamburger button */}
-        <button 
+        <button
           className={`hamburger ${menuOpen ? 'active' : ''}`}
           onClick={() => setMenuOpen(!menuOpen)}
-          aria-label="Menu"
+          aria-label={menuOpen ? 'Fermer le menu' : 'Ouvrir le menu'}
+          aria-expanded={menuOpen}
         >
           <span></span>
           <span></span>
@@ -45,7 +46,7 @@ function Header() {
         </button>
 
         {/* Navigation */}
-        <nav className={menuOpen ? 'active' : ''}>
+        <nav className={menuOpen ? 'active' : ''} aria-label="Navigation principale">
           <Link 
             to="/" 
             className={location.pathname === '/' ? 'active' : ''}

@@ -1,14 +1,16 @@
-import React from 'react';
+import React, { lazy, Suspense } from 'react';
 import { BrowserRouter as Router, Routes, Route, useLocation } from 'react-router-dom';
 import Header from './components/Header/Header';
 import Footer from './components/Footer/Footer';
-import Home from './pages/Home';
-import Films from './pages/Films';
-import FilmDetail from './pages/FilmDetail';
-import PhotosPage from './pages/PhotosPage';
-import ContactPage from './pages/ContactPage';
+import ErrorBoundary from './components/ErrorBoundary';
 import PageTransition from './components/PageTransition/PageTransition';
 import './styles/global.css';
+
+const Home = lazy(() => import('./pages/Home'));
+const Films = lazy(() => import('./pages/Films'));
+const FilmDetail = lazy(() => import('./pages/FilmDetail'));
+const PhotosPage = lazy(() => import('./pages/PhotosPage'));
+const ContactPage = lazy(() => import('./pages/ContactPage'));
 
 function AppContent() {
   const location = useLocation();
@@ -17,15 +19,19 @@ function AppContent() {
     <div className="app">
       <Header />
       <main>
-        <PageTransition location={location}>
-          <Routes location={location}>
-            <Route path="/" element={<Home />} />
-            <Route path="/films" element={<Films />} />
-            <Route path="/films/:slug" element={<FilmDetail />} />
-            <Route path="/photos" element={<PhotosPage />} />
-            <Route path="/contact" element={<ContactPage />} />
-          </Routes>
-        </PageTransition>
+        <ErrorBoundary>
+          <Suspense fallback={null}>
+            <PageTransition location={location}>
+              <Routes location={location}>
+                <Route path="/" element={<Home />} />
+                <Route path="/films" element={<Films />} />
+                <Route path="/films/:slug" element={<FilmDetail />} />
+                <Route path="/photos" element={<PhotosPage />} />
+                <Route path="/contact" element={<ContactPage />} />
+              </Routes>
+            </PageTransition>
+          </Suspense>
+        </ErrorBoundary>
       </main>
       <Footer />
     </div>

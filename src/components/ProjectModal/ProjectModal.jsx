@@ -1,9 +1,10 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import './ProjectModal.css';
 
 const ProjectModal = ({ project, onClose }) => {
   const [currentImageIndex, setCurrentImageIndex] = useState(0);
   const [showImageModal, setShowImageModal] = useState(false);
+  const modalRef = useRef(null);
 
   // Fermer avec la touche Escape
   useEffect(() => {
@@ -20,138 +21,102 @@ const ProjectModal = ({ project, onClose }) => {
     return () => window.removeEventListener('keydown', handleEscape);
   }, [onClose, showImageModal]);
 
-// Empêcher le scroll du body quand la modale est ouverte
-useEffect(() => {
-  // Sauvegarder la position actuelle du scroll
-  const scrollY = window.scrollY;
-  
-  // Pour tous les navigateurs
-  document.body.style.overflow = 'hidden';
-  document.body.style.overscrollBehavior = 'none';
-  
-  // Pour Safari iOS
-  document.body.style.position = 'fixed';
-  document.body.style.top = `-${scrollY}px`;
-  document.body.style.width = '100%';
-  document.body.style.WebkitOverflowScrolling = 'touch';
-  
-  return () => {
-    // IMPORTANT : Restaurer le scroll AVANT de retirer les styles
-    const bodyScrollTop = parseInt(document.body.style.top || '0') * -1;
-    
-    // Retirer les styles
-    document.body.style.overflow = '';
-    document.body.style.overscrollBehavior = '';
-    document.body.style.position = '';
-    document.body.style.top = '';
-    document.body.style.width = '';
-    document.body.style.WebkitOverflowScrolling = '';
-    
-    // Restaurer la position immédiatement (sans smooth scroll)
-    window.scrollTo(0, bodyScrollTop);
-  };
-}, []);
+  // Empêcher le scroll du body quand la modale est ouverte
+  useEffect(() => {
+    const scrollY = window.scrollY;
 
-// Swipe horizontal pour fermer la modal (version simplifiée et fluide)
-useEffect(() => {
-  let startX = 0;
-  let startY = 0;
-  let currentX = 0;
-  let isDragging = false;
-  let modalElement = null;
-  
-  const handleTouchStart = (e) => {
-    modalElement = document.querySelector('.modal');
-    if (!modalElement) return;
-    
-    startX = e.touches[0].clientX;
-    startY = e.touches[0].clientY;
-    isDragging = true;
-    
-    // Désactiver la transition pendant le drag
-    modalElement.style.transition = 'none';
-  };
-  
-  const handleTouchMove = (e) => {
-    if (!isDragging || !modalElement) return;
-    
-    currentX = e.touches[0].clientX;
-    const currentY = e.touches[0].clientY;
-    
-    const diffX = currentX - startX;
-    const diffY = currentY - startY;
-    
-    // Si mouvement plus horizontal que vertical
-    if (Math.abs(diffX) > Math.abs(diffY) && Math.abs(diffX) > 10) {
-      // Empêcher le scroll pendant le swipe horizontal
-      e.preventDefault();
-      
-      // Suivre le doigt à 100%
-      const translateX = diffX;
-      
-      // Opacité progressive
+    document.body.style.overflow = 'hidden';
+    document.body.style.overscrollBehavior = 'none';
+    document.body.style.position = 'fixed';
+    document.body.style.top = `-${scrollY}px`;
+    document.body.style.width = '100%';
+    document.body.style.WebkitOverflowScrolling = 'touch';
+
+    return () => {
+      const bodyScrollTop = parseInt(document.body.style.top || '0') * -1;
+
+      document.body.style.overflow = '';
+      document.body.style.overscrollBehavior = '';
+      document.body.style.position = '';
+      document.body.style.top = '';
+      document.body.style.width = '';
+      document.body.style.WebkitOverflowScrolling = '';
+
+      window.scrollTo(0, bodyScrollTop);
+    };
+  }, []);
+
+  // Swipe horizontal pour fermer la modal via ref
+  useEffect(() => {
+    const modal = modalRef.current;
+    if (!modal) return;
+
+    let startX = 0;
+    let startY = 0;
+    let currentX = 0;
+    let isDragging = false;
+
+    const handleTouchStart = (e) => {
+      startX = e.touches[0].clientX;
+      startY = e.touches[0].clientY;
+      isDragging = true;
+      modal.style.transition = 'none';
+    };
+
+    const handleTouchMove = (e) => {
+      if (!isDragging) return;
+
+      currentX = e.touches[0].clientX;
+      const currentY = e.touches[0].clientY;
+      const diffX = currentX - startX;
+      const diffY = currentY - startY;
+
+      if (Math.abs(diffX) > Math.abs(diffY) && Math.abs(diffX) > 10) {
+        e.preventDefault();
+        const opacity = Math.max(1 - Math.abs(diffX) / 600, 0.3);
+        const rotation = (diffX / window.innerWidth) * 15;
+        modal.style.transform = `translateX(${diffX}px) rotate(${rotation}deg)`;
+        modal.style.opacity = `${opacity}`;
+      }
+    };
+
+    const handleTouchEnd = () => {
+      if (!isDragging) return;
+      isDragging = false;
+
+      const diffX = currentX - startX;
       const distance = Math.abs(diffX);
-      const opacity = Math.max(1 - distance / 600, 0.3);
-      
-      // Rotation légère
-      const rotation = (diffX / window.innerWidth) * 15;
-      
-      modalElement.style.transform = `translateX(${translateX}px) rotate(${rotation}deg)`;
-      modalElement.style.opacity = `${opacity}`;
-    }
-  };
-  
-  const handleTouchEnd = () => {
-    if (!modalElement || !isDragging) return;
-    
-    isDragging = false;
-    
-    const diffX = currentX - startX;
-    const distance = Math.abs(diffX);
-    
-    // Seuil : 25% de la largeur de l'écran
-    const threshold = window.innerWidth * 0.25;
-    
-    if (distance > threshold) {
-      // Fermer avec animation
-      modalElement.style.transition = 'transform 0.3s ease, opacity 0.3s ease';
-      const exitDistance = diffX > 0 ? window.innerWidth + 100 : -(window.innerWidth + 100);
-      const rotation = (diffX / window.innerWidth) * 20;
-      modalElement.style.transform = `translateX(${exitDistance}px) rotate(${rotation}deg)`;
-      modalElement.style.opacity = '0';
-      setTimeout(() => onClose(), 300);
-    } else {
-      // Revenir en place avec effet rebond
-      modalElement.style.transition = 'transform 0.4s cubic-bezier(0.34, 1.56, 0.64, 1), opacity 0.3s ease';
-      modalElement.style.transform = '';
-      modalElement.style.opacity = '';
-      
-      // Nettoyer la transition après animation
-      setTimeout(() => {
-        if (modalElement) {
-          modalElement.style.transition = '';
-        }
-      }, 400);
-    }
-  };
-  
-  const modal = document.querySelector('.modal');
-  if (modal) {
+      const threshold = window.innerWidth * 0.25;
+
+      if (distance > threshold) {
+        modal.style.transition = 'transform 0.3s ease, opacity 0.3s ease';
+        const exitDistance = diffX > 0 ? window.innerWidth + 100 : -(window.innerWidth + 100);
+        const rotation = (diffX / window.innerWidth) * 20;
+        modal.style.transform = `translateX(${exitDistance}px) rotate(${rotation}deg)`;
+        modal.style.opacity = '0';
+        setTimeout(() => onClose(), 300);
+      } else {
+        modal.style.transition = 'transform 0.4s cubic-bezier(0.34, 1.56, 0.64, 1), opacity 0.3s ease';
+        modal.style.transform = '';
+        modal.style.opacity = '';
+        setTimeout(() => {
+          if (modal) modal.style.transition = '';
+        }, 400);
+      }
+    };
+
     modal.addEventListener('touchstart', handleTouchStart, { passive: false });
     modal.addEventListener('touchmove', handleTouchMove, { passive: false });
     modal.addEventListener('touchend', handleTouchEnd, { passive: true });
     modal.addEventListener('touchcancel', handleTouchEnd, { passive: true });
-  }
-  
-  return () => {
-    if (modal) {
+
+    return () => {
       modal.removeEventListener('touchstart', handleTouchStart);
       modal.removeEventListener('touchmove', handleTouchMove);
       modal.removeEventListener('touchend', handleTouchEnd);
       modal.removeEventListener('touchcancel', handleTouchEnd);
-    }
-  };
-}, [onClose]);
+    };
+  }, [onClose]);
 
   const hasImages = project.images && project.images.length > 0;
   const hasVideo = project.youtubeId || project.vimeoId || project.arteId;
@@ -165,7 +130,7 @@ useEffect(() => {
 
   const prevImage = () => {
     if (hasImages) {
-      setCurrentImageIndex((prev) => 
+      setCurrentImageIndex((prev) =>
         prev === 0 ? project.images.length - 1 : prev - 1
       );
     }
@@ -191,7 +156,7 @@ useEffect(() => {
         </div>
       );
     }
-    
+
     if (project.vimeoId) {
       return (
         <div className="modal__video">
@@ -205,7 +170,7 @@ useEffect(() => {
         </div>
       );
     }
-    
+
     if (project.arteId) {
       return (
         <div className="modal__video">
@@ -219,17 +184,16 @@ useEffect(() => {
         </div>
       );
     }
-    
+
     return null;
   };
 
   // Rendu de plusieurs vidéos YouTube
   const renderMultipleVideos = () => {
     if (!project.youtubeIds || project.youtubeIds.length === 0) return null;
-    
-    // Si plusieurs vidéos, on mute par défaut
+
     const shouldMute = project.youtubeIds.length > 1 ? 1 : 0;
-    
+
     return (
       <div className="modal__videos-grid" data-video-count={project.youtubeIds.length}>
         {project.youtubeIds.map((videoData, index) => (
@@ -254,24 +218,27 @@ useEffect(() => {
 
   return (
     <>
-      <div className="modal-overlay" onClick={onClose}>
-        <div className="modal" onClick={(e) => e.stopPropagation()}>
-          <button className="modal__close" onClick={onClose}>×</button>
-          
+      <div className="modal-overlay" role="dialog" aria-label={project.title} onClick={onClose}>
+        <div className="modal" ref={modalRef} onClick={(e) => e.stopPropagation()}>
+          <button className="modal__close" onClick={onClose} aria-label="Fermer">×</button>
+
           <div className="modal__content">
             {/* Vidéo(s) ou Images */}
             {hasMultipleVideos ? (
               <>
                 {renderMultipleVideos()}
-                
-                {/* Galerie de thumbnails sous les vidéos */}
+
                 {hasImages && (
                   <div className="modal__thumbnails">
                     {project.images.map((image, index) => (
                       <div
                         key={index}
                         className="modal__thumbnail"
+                        tabIndex={0}
+                        role="button"
+                        aria-label={`Voir photo ${index + 1}`}
                         onClick={() => openImageModal(index)}
+                        onKeyDown={(e) => { if (e.key === 'Enter') openImageModal(index); }}
                       >
                         <img src={image} alt={`${project.title} - Photo ${index + 1}`} loading="lazy" />
                       </div>
@@ -282,15 +249,18 @@ useEffect(() => {
             ) : hasVideo ? (
               <>
                 {renderVideoPlayer()}
-                
-                {/* Galerie de thumbnails sous la vidéo */}
+
                 {hasImages && (
                   <div className="modal__thumbnails">
                     {project.images.map((image, index) => (
                       <div
                         key={index}
                         className="modal__thumbnail"
+                        tabIndex={0}
+                        role="button"
+                        aria-label={`Voir photo ${index + 1}`}
                         onClick={() => openImageModal(index)}
+                        onKeyDown={(e) => { if (e.key === 'Enter') openImageModal(index); }}
                       >
                         <img src={image} alt={`${project.title} - Photo ${index + 1}`} loading="lazy" />
                       </div>
@@ -300,16 +270,16 @@ useEffect(() => {
               </>
             ) : hasImages ? (
               <div className="modal__gallery">
-                <img 
-                  src={project.images[currentImageIndex]} 
+                <img
+                  src={project.images[currentImageIndex]}
                   alt={`${project.title} - ${currentImageIndex + 1}`}
                   className="modal__image"
                 />
                 {project.images.length > 1 && (
                   <>
-                    <button className="modal__nav modal__nav--prev" onClick={prevImage}>‹</button>
-                    <button className="modal__nav modal__nav--next" onClick={nextImage}>›</button>
-                    <div className="modal__counter">
+                    <button className="modal__nav modal__nav--prev" onClick={prevImage} aria-label="Image précédente">‹</button>
+                    <button className="modal__nav modal__nav--next" onClick={nextImage} aria-label="Image suivante">›</button>
+                    <div className="modal__counter" aria-live="polite">
                       {currentImageIndex + 1} / {project.images.length}
                     </div>
                   </>
@@ -324,7 +294,7 @@ useEffect(() => {
             {/* Informations */}
             <div className="modal__info">
               <h2 className="modal__title">{project.title}</h2>
-              
+
               <div className="modal__meta">
                 <span className="modal__year">{project.month || project.year}</span>
                 <span className="modal__separator">•</span>
@@ -374,14 +344,11 @@ useEffect(() => {
                   <h3>Équipe</h3>
                   <ul>
                     {Object.entries({
-                      // 🎬 Réalisation
                       realisateur: "Réalisation",
                       realisateurs: "Réalisation",
                       realisatrice: "Réalisation",
                       assistantReal: "Assistant réalisation",
                       script: "Script",
-
-                      // 📷 Image
                       chefOp: "Chef opérateur",
                       coChefOp: "Co-chef opérateur",
                       assistantCam: "1er assistant caméra",
@@ -390,38 +357,28 @@ useEffect(() => {
                       dit: "DIT",
                       steadicam: "Steadicam",
                       photo: "Photographe plateau",
-
-                      // 💡 Lumière / machinerie
                       chefElectro: "Chef électricien",
                       electros: "Électros",
                       chefMachino: "Chef machiniste",
                       machino: "Machiniste",
                       renforts: "Renforts",
-
-                      // 🎙️ Son
                       son: "Prise de son",
                       perchman: "Perchman",
                       mixage: "Mixage",
                       soundDesign: "Sound design",
                       musique: "Musique originale",
-
-                      // 🖥️ Post-production
                       monteur: "Montage image",
                       montageSon: "Montage son",
                       etalonneur: "Étalonnage",
                       vfx: "VFX",
                       graphisme: "Graphisme",
                       generique: "Générique",
-
-                      // 🎨 Décors / habillage
                       directionArtistique: "Direction artistique",
                       deco: "Décoration",
                       accessoiriste: "Accessoiriste",
                       costume: "Costume",
                       maquillage: "Maquillage",
                       coiffure: "Coiffure",
-
-                      // 📋 Régie / production
                       regisseur: "Régisseur général",
                       assistRegie: "Assistant régie",
                       producteur: "Producteur",
@@ -457,21 +414,21 @@ useEffect(() => {
 
       {/* Modal plein écran pour les images (quand on clique sur un thumbnail) */}
       {showImageModal && hasImages && (
-        <div className="image-modal-overlay" onClick={() => setShowImageModal(false)}>
+        <div className="image-modal-overlay" role="dialog" aria-label="Image en plein écran" onClick={() => setShowImageModal(false)}>
           <div className="image-modal" onClick={(e) => e.stopPropagation()}>
-            <button className="image-modal__close" onClick={() => setShowImageModal(false)}>×</button>
-            
-            <img 
-              src={project.images[currentImageIndex]} 
+            <button className="image-modal__close" onClick={() => setShowImageModal(false)} aria-label="Fermer">×</button>
+
+            <img
+              src={project.images[currentImageIndex]}
               alt={`${project.title} - ${currentImageIndex + 1}`}
               className="image-modal__image"
             />
-            
+
             {project.images.length > 1 && (
               <>
-                <button className="image-modal__nav image-modal__nav--prev" onClick={prevImage}>‹</button>
-                <button className="image-modal__nav image-modal__nav--next" onClick={nextImage}>›</button>
-                <div className="image-modal__counter">
+                <button className="image-modal__nav image-modal__nav--prev" onClick={prevImage} aria-label="Image précédente">‹</button>
+                <button className="image-modal__nav image-modal__nav--next" onClick={nextImage} aria-label="Image suivante">›</button>
+                <div className="image-modal__counter" aria-live="polite">
                   {currentImageIndex + 1} / {project.images.length}
                 </div>
               </>

@@ -13,6 +13,13 @@ const FilmDetail = () => {
   // Trouver le projet correspondant au slug
   const project = projectsData.films.find(film => film.id === slug);
 
+  // Titre dynamique
+  useEffect(() => {
+    if (project) {
+      document.title = `${project.title} — Théo Sury`;
+    }
+  }, [project]);
+
   // Si projet introuvable, rediriger vers /films
   useEffect(() => {
     if (!project) {
@@ -124,23 +131,24 @@ const FilmDetail = () => {
         )}
         
         <div className="film-detail__video-carousel-container">
-          <YouTubePlayer 
-            videoId={currentVideo.id} 
+          <YouTubePlayer
+            videoId={currentVideo.id}
             title={currentVideo.title || `${project.title} - Vidéo ${currentVideoIndex + 1}`}
-            muted={false}
           />
           
           {project.youtubeIds.length > 1 && (
             <>
-              <button 
-                className="film-detail__video-nav film-detail__video-nav--prev" 
+              <button
+                className="film-detail__video-nav film-detail__video-nav--prev"
                 onClick={prevVideo}
+                aria-label="Vidéo précédente"
               >
                 ‹
               </button>
-              <button 
-                className="film-detail__video-nav film-detail__video-nav--next" 
+              <button
+                className="film-detail__video-nav film-detail__video-nav--next"
                 onClick={nextVideo}
+                aria-label="Vidéo suivante"
               >
                 ›
               </button>
@@ -168,7 +176,7 @@ const FilmDetail = () => {
     <>
       <div className="film-detail">
         <div className="film-detail__container">
-          <button className="film-detail__close" onClick={() => navigate('/films')}>×</button>
+          <button className="film-detail__close" onClick={() => navigate('/films')} aria-label="Retour aux films">×</button>
           
           <div className="film-detail__content">
             {/* Vidéo(s) ou Images */}
@@ -219,9 +227,9 @@ const FilmDetail = () => {
                 />
                 {project.images.length > 1 && (
                   <>
-                    <button className="film-detail__nav film-detail__nav--prev" onClick={prevImage}>‹</button>
-                    <button className="film-detail__nav film-detail__nav--next" onClick={nextImage}>›</button>
-                    <div className="film-detail__counter">
+                    <button className="film-detail__nav film-detail__nav--prev" onClick={prevImage} aria-label="Image précédente">‹</button>
+                    <button className="film-detail__nav film-detail__nav--next" onClick={nextImage} aria-label="Image suivante">›</button>
+                    <div className="film-detail__counter" aria-live="polite">
                       {currentImageIndex + 1} / {project.images.length}
                     </div>
                   </>
@@ -396,21 +404,21 @@ const FilmDetail = () => {
 
       {/* Modal plein écran pour les images */}
       {showImageModal && hasImages && (
-        <div className="image-modal-overlay" onClick={() => setShowImageModal(false)}>
+        <div className="image-modal-overlay" role="dialog" aria-label="Image en plein écran" onClick={() => setShowImageModal(false)}>
           <div className="image-modal" onClick={(e) => e.stopPropagation()}>
-            <button className="image-modal__close" onClick={() => setShowImageModal(false)}>×</button>
-            
-            <img 
-              src={project.images[currentImageIndex]} 
+            <button className="image-modal__close" onClick={() => setShowImageModal(false)} aria-label="Fermer">×</button>
+
+            <img
+              src={project.images[currentImageIndex]}
               alt={`${project.title} - ${currentImageIndex + 1}`}
               className="image-modal__image"
             />
-            
+
             {project.images.length > 1 && (
               <>
-                <button className="image-modal__nav image-modal__nav--prev" onClick={prevImage}>‹</button>
-                <button className="image-modal__nav image-modal__nav--next" onClick={nextImage}>›</button>
-                <div className="image-modal__counter">
+                <button className="image-modal__nav image-modal__nav--prev" onClick={prevImage} aria-label="Image précédente">‹</button>
+                <button className="image-modal__nav image-modal__nav--next" onClick={nextImage} aria-label="Image suivante">›</button>
+                <div className="image-modal__counter" aria-live="polite">
                   {currentImageIndex + 1} / {project.images.length}
                 </div>
               </>
@@ -424,11 +432,6 @@ const FilmDetail = () => {
 
 // Composant YouTube Player - iframe simple avec qualité HD
 const YouTubePlayer = ({ videoId, title }) => {
-  // Paramètres pour forcer la qualité HD :
-  // - vq=hd1080 : suggère 1080p (peut être ignoré par YouTube mais c'est le mieux qu'on puisse faire)
-  // - rel=0 : pas de vidéos suggérées d'autres chaînes
-  // - modestbranding=1 : logo YouTube réduit
-  // - playsinline=1 : lecture inline sur mobile
   const embedUrl = `https://www.youtube.com/embed/${videoId}?rel=0&modestbranding=1&playsinline=1&vq=hd1080`;
 
   return (

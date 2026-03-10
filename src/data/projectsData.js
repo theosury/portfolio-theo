@@ -34,7 +34,7 @@ const sortProjectsByDate = (projects) => {
 export const projectsData = {
   // ========== IDs DES PROJETS HERO ==========
   // Pour ajouter un projet en hero, ajoute simplement son ID ici
-  heroProjectIds: ['vedette', 'vagues', 'asterix'],
+  heroProjectIds: ['vedette', 'vagues', 'asterix', 'casse-cest-casse'],
 
   // ========== PROJETS HERO (générés automatiquement depuis films) ==========
   get heroProjects() {
@@ -164,6 +164,7 @@ export const projectsData = {
         role: 'Électricien',
         artiste: 'Wallace Cleaver',
         realisateur: 'Romain Habousha',
+        production: '29 Studio',
         producteur: 'Jim Schachmes',
         directriceProd: 'Tosca Poilliot',
         regisseurGeneral: 'Bastien Rousseau',
@@ -179,6 +180,7 @@ export const projectsData = {
         maquillage: 'Claire Villard',
         vfx: 'Jonas Brisé',
         sfxArtifices: 'Mehdi Hamza',
+        description: 'Clip tourné au Studio Kremlin à Ivry-sur-Seine.\n\nRéal : Romain Habousha\nChef-opérateur : Aïlé Mandé\nChef électricien : Maxime Chastres',
         thumbnail: '/images/casse-cest-casse-thumb.jpg',
         images: [],
         youtubeId: 'GeE6Sa8rlDI',

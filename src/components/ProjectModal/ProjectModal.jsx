@@ -293,6 +293,9 @@ const ProjectModal = ({ project, onClose }) => {
 
             {/* Informations */}
             <div className="modal__info">
+              {project.artiste && (
+                <p className="modal__artiste">{project.artiste}</p>
+              )}
               <h2 className="modal__title">{project.title}</h2>
 
               <div className="modal__meta">

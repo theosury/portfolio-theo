@@ -373,6 +373,15 @@
   padding: 2.5rem;
 }
 
+.modal__artiste {
+  font-size: 0.85rem;
+  font-weight: 400;
+  text-transform: uppercase;
+  letter-spacing: 0.12em;
+  color: white;
+  margin: 0 0 0.3rem;
+}
+
 .modal__title {
   font-size: 2.5rem;
   font-weight: 700;
@@ -410,6 +419,7 @@
   line-height: 1.7;
   color: rgba(255, 255, 255, 0.9);
   margin-bottom: 1.5rem;
+  white-space: pre-line;
 }
 
 .modal__specs,

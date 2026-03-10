@@ -100,6 +100,9 @@ const HeroProjects = () => {
                 onClick={() => handleProjectClick(project)}
               >
                 <div className="hero-project__info-icon">ℹ</div>
+                {project.artiste && (
+                  <p className="hero-project__artiste">{project.artiste}</p>
+                )}
                 <h3 className="hero-project__title">{project.title}</h3>
                 <div className="hero-project__meta">
                   <span className="hero-project__year">{project.year}</span>

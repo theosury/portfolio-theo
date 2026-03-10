@@ -146,6 +146,15 @@
   transform: scale(1.1);
 }
 
+.hero-project__artiste {
+  font-size: 0.8rem;
+  font-weight: 400;
+  text-transform: uppercase;
+  letter-spacing: 0.12em;
+  color: white;
+  margin: 0 0 0.3rem;
+}
+
 .hero-project__title {
   font-size: clamp(2rem, 4vw, 3rem);
   font-weight: var(--font-weight-bold);
@@ -177,6 +186,7 @@
   line-height: 1.7;
   max-width: 700px;
   margin: 0 auto;
+  white-space: pre-line;
 }
 
 @media (min-width: 1024px) {

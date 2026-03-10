@@ -14,6 +14,9 @@ const ProjectCard = ({ project, onClick }) => {
         <div className="project-card__overlay"></div>
         
         <div className="project-card__content">
+          {project.artiste && (
+            <p className="project-card__artiste">{project.artiste}</p>
+          )}
           <h3 className="project-card__title">{project.title}</h3>
           
           <div className="project-card__meta">

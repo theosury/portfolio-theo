@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Politique de confidentialité — Fastoche!</title>
+  <style>
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+      max-width: 720px;
+      margin: 0 auto;
+      padding: 32px 24px;
+      color: #1a1410;
+      background: #f5f0e8;
+      line-height: 1.55;
+    }
+    h1 { font-size: 28px; margin-bottom: 4px; }
+    h2 { font-size: 18px; margin-top: 32px; margin-bottom: 8px; color: #c8451a; }
+    p { margin: 8px 0; }
+    ul { padding-left: 20px; }
+    li { margin: 4px 0; }
+    .meta { color: #7a7068; font-size: 13px; margin-bottom: 24px; }
+    code { background: #eee8da; padding: 1px 6px; border-radius: 4px; font-size: 13px; }
+    a { color: #c8451a; }
+  </style>
+</head>
+<body>
+  <h1>Politique de confidentialité</h1>
+  <p class="meta">Application Fastoche! — Dernière mise à jour : 10 mai 2026</p>
+
+  <p>
+    Fastoche! est une application de quiz culturels développée par Théo Sury en tant qu'éditeur indépendant.
+    Cette page décrit ce que nous collectons, pourquoi, et ce que nous ne faisons pas avec.
+  </p>
+
+  <h2>Ce que nous ne faisons pas</h2>
+  <ul>
+    <li>Nous ne demandons pas votre nom, email, numéro de téléphone, ni aucune information personnelle.</li>
+    <li>Nous n'utilisons aucun SDK publicitaire ni tracker tiers (Google Analytics, Facebook SDK, etc.).</li>
+    <li>Nous ne vendons aucune donnée à un tiers.</li>
+    <li>Nous n'accédons pas à vos contacts, votre micro, votre caméra, votre localisation.</li>
+  </ul>
+
+  <h2>Ce qui reste sur votre appareil</h2>
+  <p>
+    L'essentiel des données générées par l'application est stocké uniquement sur votre appareil, via le stockage local d'iOS (<code>AsyncStorage</code>).
+    Aucune copie n'est envoyée sur un serveur. Cela inclut :
+  </p>
+  <ul>
+    <li>vos scores et historique de parties (mode Solo) ;</li>
+    <li>vos préférences (thème sombre, sons, filtres de catégories, etc.) ;</li>
+    <li>les noms d'équipes que vous saisissez en mode Multi ;</li>
+    <li>la liste des questions déjà vues, pour éviter les doublons ;</li>
+    <li>les achats in-app que vous avez réalisés.</li>
+  </ul>
+  <p>
+    Toutes ces données disparaissent si vous désinstallez l'application ou si vous utilisez la fonction
+    « Réinitialiser l'application » dans les Réglages.
+  </p>
+
+  <h2>Ce qui est envoyé sur nos serveurs</h2>
+  <p>
+    Deux fonctionnalités optionnelles transmettent des informations vers nos serveurs (hébergés chez Netlify) :
+  </p>
+  <ul>
+    <li>
+      <strong>Signalement d'une question</strong> : quand vous signalez une question erronée ou mal formulée,
+      nous recevons l'énoncé de la question, votre raison de signalement, et un identifiant d'installation
+      anonyme (<code>installId</code>) généré aléatoirement à la première ouverture de l'app.
+    </li>
+    <li>
+      <strong>Suggestion</strong> : quand vous nous envoyez une suggestion via le menu dédié, nous recevons
+      votre message texte et le même identifiant <code>installId</code> anonyme.
+    </li>
+  </ul>
+  <p>
+    L'<code>installId</code> est un UUID v4 aléatoire (par exemple <code>d917ba83-...</code>). Il ne contient
+    aucune information personnelle, n'est lié à aucun compte, et ne nous permet pas de vous identifier.
+    Son seul rôle est de regrouper les signalements provenant d'un même appareil pour éviter les doublons.
+  </p>
+
+  <h2>Achats intégrés</h2>
+  <p>
+    Les achats de packs sont gérés par l'App Store d'Apple. Nous ne stockons aucune information de paiement
+    (carte bancaire, identifiant Apple, adresse). Apple nous transmet uniquement la confirmation que tel pack
+    a été acheté.
+  </p>
+  <p>
+    Pour gérer ces achats côté technique, nous utilisons le service tiers
+    <a href="https://www.revenuecat.com/privacy/" target="_blank" rel="noopener">RevenueCat</a>,
+    qui reçoit la confirmation d'achat Apple et un identifiant anonyme afin de débloquer le pack correspondant
+    sur votre appareil. RevenueCat n'a accès à aucune autre donnée et ne nous permet pas de vous identifier.
+  </p>
+
+  <h2>Vos droits (RGPD)</h2>
+  <p>
+    En vertu du Règlement général sur la protection des données, vous avez le droit de demander la
+    suppression des signalements et suggestions associés à votre <code>installId</code>. Pour cela, écrivez
+    à <a href="mailto:contact@theosury.fr">contact@theosury.fr</a> en précisant votre <code>installId</code>
+    (visible dans Réglages → Support si vous le souhaitez).
+  </p>
+  <p>
+    Vous pouvez également arrêter toute transmission en n'utilisant pas les fonctions Signaler et Suggestion.
+  </p>
+
+  <h2>Modifications</h2>
+  <p>
+    Cette politique peut être mise à jour pour refléter de nouvelles fonctionnalités. La date de dernière
+    mise à jour est indiquée en haut de cette page. Les modifications significatives seront annoncées dans
+    les notes de mise à jour de l'application.
+  </p>
+
+  <h2>Contact</h2>
+  <p>
+    Pour toute question relative à cette politique : <a href="mailto:contact@theosury.fr">contact@theosury.fr</a>.
+  </p>
+</body>
+</html>

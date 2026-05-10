@@ -1,0 +1,195 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Fastoche! — Quiz culturels</title>
+  <meta name="description" content="Fastoche! est une application de quiz culturels pour iOS. Plus de 21 000 questions, 6 catégories, 3 modes de jeu : Solo, Multijoueur, Apéro.">
+  <meta property="og:title" content="Fastoche! — Quiz culturels">
+  <meta property="og:description" content="Plus de 21 000 questions, 6 catégories, 3 modes de jeu.">
+  <meta property="og:image" content="https://theosury.fr/fastoche/icon.png">
+  <link rel="icon" type="image/png" href="/fastoche/icon.png">
+  <link rel="apple-touch-icon" href="/fastoche/icon.png">
+  <style>
+    * { box-sizing: border-box; }
+    html, body { margin: 0; padding: 0; }
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+      color: #1a1410;
+      background: #f5f0e8;
+      line-height: 1.55;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+    }
+    main {
+      max-width: 720px;
+      margin: 0 auto;
+      padding: 64px 24px 32px;
+      flex: 1;
+      width: 100%;
+    }
+    header.hero {
+      text-align: center;
+      margin-bottom: 48px;
+    }
+    .icon {
+      width: 128px;
+      height: 128px;
+      border-radius: 28px;
+      box-shadow: 0 8px 24px rgba(26, 20, 16, 0.12);
+      margin-bottom: 20px;
+    }
+    h1 {
+      font-size: 40px;
+      margin: 0 0 6px;
+      letter-spacing: -0.5px;
+    }
+    .tagline {
+      color: #7a7068;
+      font-size: 17px;
+      margin: 0;
+    }
+    h2 {
+      font-size: 18px;
+      margin-top: 40px;
+      margin-bottom: 12px;
+      color: #c8451a;
+    }
+    p { margin: 8px 0 12px; }
+    ul { padding-left: 20px; }
+    li { margin: 6px 0; }
+    .megas {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 8px 24px;
+      list-style: none;
+      padding: 0;
+      margin: 8px 0;
+    }
+    .megas li {
+      padding: 6px 0;
+    }
+    .megas li::before {
+      content: "•";
+      color: #c8451a;
+      margin-right: 8px;
+    }
+    .modes {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 12px;
+      margin: 12px 0;
+    }
+    .mode {
+      background: #ffffff;
+      border-radius: 12px;
+      padding: 14px 18px;
+      border: 1px solid #e8dfd0;
+    }
+    .mode strong {
+      color: #c8451a;
+      display: block;
+      margin-bottom: 2px;
+    }
+    .mode span {
+      color: #5a4f48;
+      font-size: 14px;
+    }
+    .status {
+      background: #fff5e8;
+      border: 1px solid #f0d9b5;
+      border-radius: 12px;
+      padding: 16px 20px;
+      margin: 24px 0;
+      font-size: 15px;
+    }
+    .status strong { color: #c8451a; }
+    a { color: #c8451a; }
+    footer {
+      max-width: 720px;
+      margin: 0 auto;
+      padding: 24px;
+      width: 100%;
+      border-top: 1px solid #e8dfd0;
+      color: #7a7068;
+      font-size: 14px;
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px 16px;
+      justify-content: space-between;
+    }
+    footer .links a {
+      color: #5a4f48;
+      text-decoration: none;
+      margin-right: 16px;
+    }
+    footer .links a:hover { color: #c8451a; text-decoration: underline; }
+  </style>
+</head>
+<body>
+  <main>
+    <header class="hero">
+      <img src="/fastoche/icon.png" alt="Logo Fastoche!" class="icon">
+      <h1>Fastoche!</h1>
+      <p class="tagline">Quiz culturels — iOS</p>
+    </header>
+
+    <p>
+      <strong>Fastoche!</strong> est une application de quiz culturels en français,
+      pensée pour le solo comme pour les soirées entre potes. Plus de 21 000 questions
+      réparties sur 240+ thèmes spécifiques, regroupés en 6 grandes catégories.
+    </p>
+
+    <h2>Catégories</h2>
+    <ul class="megas">
+      <li>Histoire</li>
+      <li>Sciences &amp; Nature</li>
+      <li>Géographie</li>
+      <li>Arts &amp; Lettres</li>
+      <li>Divertissement</li>
+      <li>Sport &amp; Loisirs</li>
+    </ul>
+
+    <h2>Modes de jeu</h2>
+    <div class="modes">
+      <div class="mode">
+        <strong>Solo</strong>
+        <span>Défis successifs avec scoring, combos, manches bonus. Bats ton meilleur score.</span>
+      </div>
+      <div class="mode">
+        <strong>Multijoueur</strong>
+        <span>Tour par tour ou simultané, l'iPhone se passe entre les joueurs.</span>
+      </div>
+      <div class="mode">
+        <strong>Apéro</strong>
+        <span>Format détente sans pression, idéal pour les soirées et les apéros entre potes.</span>
+      </div>
+    </div>
+
+    <div class="status">
+      <strong>Beta en cours.</strong> L'app est actuellement en TestFlight,
+      sortie publique sur l'App Store prévue très prochainement.
+    </div>
+
+    <h2>Contact &amp; support</h2>
+    <p>
+      Pour toute question, retour ou suggestion :
+      <a href="mailto:contact@theosury.fr">contact@theosury.fr</a>.
+    </p>
+    <p>
+      Application développée par <a href="https://theosury.fr">Théo Sury</a>,
+      éditeur indépendant.
+    </p>
+  </main>
+
+  <footer>
+    <div class="links">
+      <a href="/fastoche/privacy">Confidentialité</a>
+      <a href="mailto:contact@theosury.fr">Contact</a>
+      <a href="https://theosury.fr">theosury.fr</a>
+    </div>
+    <div>© 2026 Théo Sury</div>
+  </footer>
+</body>
+</html>

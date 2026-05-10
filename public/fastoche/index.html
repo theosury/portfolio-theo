@@ -91,12 +91,16 @@
     .poster-tag {
       font-family: 'Syne', sans-serif;
       font-weight: 800;
-      font-size: clamp(56px, 11vw, 144px);
-      line-height: 0.92;
-      letter-spacing: -3px;
+      font-size: clamp(48px, 8.5vw, 104px);
+      line-height: 0.95;
+      letter-spacing: -2.5px;
       color: var(--ink);
       margin: 0;
       text-transform: uppercase;
+    }
+    .poster-tag .line {
+      display: block;
+      white-space: nowrap;
     }
     .poster-tag .accent {
       color: var(--orange);
@@ -168,25 +172,24 @@
       text-transform: uppercase;
     }
 
-    /* Phone mockup bottom-right, partiellement overflow */
+    /* Phone mockup bottom-right */
     .stage {
       position: relative;
       max-width: 1200px;
-      margin: 80px auto 0;
-      min-height: 480px;
+      margin: 64px auto 0;
       padding: 0 40px;
+      display: flex;
+      justify-content: flex-end;
     }
     .phone {
-      position: absolute;
-      right: -40px;
-      bottom: -40px;
-      width: 320px;
+      width: 300px;
       aspect-ratio: 9 / 19.5;
       background: #1a1410;
       border-radius: 44px;
       padding: 11px;
       box-shadow: 0 30px 60px -15px rgba(26, 20, 16, 0.4), 0 0 0 4px var(--bg-deep);
       transform: rotate(4deg);
+      flex-shrink: 0;
     }
     .phone-screen {
       width: 100%;
@@ -292,9 +295,9 @@
 
   <section class="poster">
     <h1 class="poster-tag">
-      Le quiz<br>
-      <span class="accent">culture G</span><br>
-      entre amis<span class="period">.</span>
+      <span class="line">Le quiz</span>
+      <span class="line accent">culture&nbsp;G</span>
+      <span class="line">entre amis<span class="period">.</span></span>
     </h1>
 
     <p class="kicker">(ou en solo, sans pression.)</p>

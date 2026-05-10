@@ -141,6 +141,32 @@
     }
     .meta .num { color: var(--orange); }
 
+    .cta-beta {
+      display: inline-flex;
+      align-items: center;
+      padding: 14px 24px;
+      border-radius: 14px;
+      background: var(--orange);
+      color: #fff;
+      font-family: 'Syne', sans-serif;
+      font-weight: 800;
+      font-size: 14px;
+      letter-spacing: 0.5px;
+      text-transform: uppercase;
+      box-shadow: 0 5px 0 var(--orange-shadow);
+      text-decoration: none;
+      align-self: flex-start;
+      transition: transform 0.08s, box-shadow 0.08s;
+    }
+    .cta-beta:active {
+      transform: translateY(3px);
+      box-shadow: 0 1px 0 var(--orange-shadow);
+    }
+    .cta-beta .arrow {
+      margin-left: 10px;
+      font-family: 'Syne Mono', monospace;
+    }
+
     /* Footer — infos importantes */
     footer {
       flex-shrink: 0;
@@ -208,6 +234,10 @@
       <span class="num">20 000+</span> questions, <span class="num">240+</span> thèmes,
       <span class="num">3</span> modes de jeu. iOS uniquement.
     </p>
+
+    <a class="cta-beta" href="https://testflight.apple.com/join/Kk6mYqsd" target="_blank" rel="noopener">
+      Tester la beta TestFlight <span class="arrow">→</span>
+    </a>
   </main>
 
   <footer>

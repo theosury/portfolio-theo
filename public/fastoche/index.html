@@ -4,343 +4,243 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Fastoche! — Quiz culturels</title>
-  <meta name="description" content="21 376 questions, 243 thèmes, 6 catégories. L'app de quiz qu'on fait passer entre potes.">
+  <meta name="description" content="Application iOS de quiz culturels. 20 000+ questions, 240+ thèmes, 6 catégories.">
+  <meta name="color-scheme" content="light">
   <meta property="og:title" content="Fastoche!">
-  <meta property="og:description" content="21 376 questions, 243 thèmes, 6 catégories. L'app de quiz qu'on fait passer entre potes.">
+  <meta property="og:description" content="Application iOS de quiz culturels. 20 000+ questions, 240+ thèmes, 6 catégories.">
   <meta property="og:image" content="https://theosury.fr/fastoche/icon.png">
   <link rel="icon" type="image/png" href="/fastoche/icon.png">
   <link rel="apple-touch-icon" href="/fastoche/icon.png">
 
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Syne:wght@500;700;800&family=Syne+Mono&family=DM+Sans:wght@400;500&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Syne:wght@600;700&family=Syne+Mono&family=DM+Sans:wght@400;500&display=swap" rel="stylesheet">
 
   <style>
     * { box-sizing: border-box; }
     html, body { margin: 0; padding: 0; }
     :root {
+      color-scheme: light;
       --bg: #e8cdbc;
       --ink: #1a1410;
       --muted: #7a7068;
       --accent: #c8451a;
-      --orange: #e8501a;
-      --turquoise: #22b8cf;
-      --sage: #6b9e4a;
-      --shadow: #5a4f48;
+      --rule: #d4b8a4;
     }
     body {
       font-family: 'DM Sans', -apple-system, BlinkMacSystemFont, sans-serif;
       color: var(--ink);
       background: var(--bg);
-      line-height: 1.55;
-      min-height: 100vh;
-      display: flex;
-      flex-direction: column;
+      line-height: 1.6;
       font-size: 17px;
+      -webkit-font-smoothing: antialiased;
     }
     main {
-      max-width: 760px;
+      max-width: 580px;
       margin: 0 auto;
-      padding: 48px 24px 40px;
-      flex: 1;
-      width: 100%;
+      padding: 80px 24px 24px;
     }
 
-    /* Hero */
+    /* Hero — petit, posé */
     .hero {
-      text-align: center;
-      margin-bottom: 56px;
+      display: flex;
+      align-items: center;
+      gap: 18px;
+      margin-bottom: 36px;
     }
     .icon {
-      width: 144px;
-      height: 144px;
-      border-radius: 32px;
-      margin-bottom: 24px;
+      width: 64px;
+      height: 64px;
+      border-radius: 14px;
+      flex-shrink: 0;
     }
-    .wordmark {
+    .word {
       font-family: 'Syne', sans-serif;
-      font-weight: 800;
-      font-size: clamp(56px, 12vw, 96px);
-      letter-spacing: -1.5px;
-      color: var(--orange);
-      margin: 0;
-      line-height: 0.9;
-      text-transform: lowercase;
-    }
-    .wordmark .punc { color: var(--ink); }
-    .tagline {
-      font-family: 'Syne Mono', monospace;
-      color: var(--ink);
-      font-size: 16px;
-      margin: 18px 0 0;
-      letter-spacing: 0.5px;
-    }
-
-    /* Stats strip */
-    .stats {
-      display: grid;
-      grid-template-columns: repeat(3, 1fr);
-      gap: 12px;
-      margin: 0 0 56px;
-      border-top: 2px solid var(--ink);
-      border-bottom: 2px solid var(--ink);
-      padding: 20px 0;
-    }
-    .stat { text-align: center; }
-    .stat-num {
-      font-family: 'Syne', sans-serif;
-      font-weight: 800;
-      font-size: 32px;
-      color: var(--orange);
-      line-height: 1;
+      font-weight: 700;
+      font-size: 36px;
       letter-spacing: -1px;
+      color: var(--ink);
+      line-height: 1;
+      margin: 0 0 4px;
     }
-    .stat-label {
+    .word .punc { color: var(--accent); }
+    .kicker {
       font-family: 'Syne Mono', monospace;
       font-size: 12px;
-      color: var(--ink);
+      color: var(--muted);
+      letter-spacing: 1.5px;
       text-transform: uppercase;
-      letter-spacing: 1px;
-      margin-top: 4px;
+      margin: 0;
     }
 
-    /* Section heads */
-    h2 {
-      font-family: 'Syne', sans-serif;
-      font-weight: 800;
-      font-size: 28px;
-      letter-spacing: -0.5px;
-      color: var(--ink);
-      margin: 56px 0 20px;
-      text-transform: lowercase;
+    /* Texte courant */
+    p {
+      margin: 0 0 18px;
     }
-    h2::before {
-      content: "";
-      display: inline-block;
-      width: 14px;
-      height: 14px;
-      background: var(--orange);
-      margin-right: 12px;
-      transform: translateY(-2px);
-      border-radius: 3px;
-    }
-
-    /* Pitch */
-    .pitch {
+    p.lead {
       font-size: 19px;
-      line-height: 1.5;
-      max-width: 600px;
+      line-height: 1.55;
+      margin-bottom: 24px;
     }
-    .pitch strong { color: var(--orange); font-weight: 700; }
+    a {
+      color: var(--accent);
+      text-decoration: underline;
+      text-decoration-thickness: 1px;
+      text-underline-offset: 3px;
+    }
+    a:hover { text-decoration-thickness: 2px; }
 
-    /* Modes */
+    /* Sections — séparation par filet horizontal, pas de h2 décoré */
+    section {
+      border-top: 1px solid var(--rule);
+      padding-top: 28px;
+      margin-top: 32px;
+    }
+    section h2 {
+      font-family: 'Syne Mono', monospace;
+      font-weight: normal;
+      font-size: 12px;
+      letter-spacing: 1.5px;
+      color: var(--muted);
+      text-transform: uppercase;
+      margin: 0 0 18px;
+    }
+
+    /* Modes en liste typographique, pas de cards */
     .modes {
-      display: grid;
-      grid-template-columns: repeat(3, 1fr);
-      gap: 14px;
-    }
-    .mode {
-      padding: 22px 20px 24px;
-      border-radius: 16px;
-      color: #fff;
-      position: relative;
-    }
-    .mode.solo { background: var(--turquoise); }
-    .mode.multi { background: var(--orange); }
-    .mode.apero { background: var(--sage); }
-    .mode-name {
-      font-family: 'Syne', sans-serif;
-      font-weight: 800;
-      font-size: 22px;
-      text-transform: lowercase;
-      letter-spacing: -0.5px;
-      margin: 0 0 8px;
-    }
-    .mode-desc {
-      font-size: 14px;
-      line-height: 1.4;
-      opacity: 0.92;
-    }
-
-    /* Catégories chips */
-    .megas {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 10px;
       list-style: none;
       padding: 0;
       margin: 0;
     }
-    .mega {
+    .modes li {
+      display: grid;
+      grid-template-columns: 90px 1fr;
+      gap: 16px;
+      padding: 14px 0;
+      align-items: baseline;
+    }
+    .modes li + li { border-top: 1px solid var(--rule); }
+    .modes .name {
       font-family: 'Syne', sans-serif;
       font-weight: 700;
-      font-size: 15px;
-      padding: 8px 16px;
-      border-radius: 999px;
-      letter-spacing: -0.2px;
+      font-size: 18px;
+      color: var(--ink);
+      letter-spacing: -0.3px;
     }
-    .m1 { background: #ffcccc; color: #b8232c; }
-    .m2 { background: #c0ecdc; color: #1d6a4f; }
-    .m3 { background: #c4dcf4; color: #1a5d8c; }
-    .m4 { background: #d4c0ec; color: #5a2a8c; }
-    .m5 { background: #fcd8b0; color: #8c4a18; }
-    .m6 { background: #f4e0a8; color: #6b4f10; }
-
-    /* Status */
-    .status {
-      background: var(--ink);
-      color: var(--bg);
-      border-radius: 16px;
-      padding: 22px 24px;
-      margin: 56px 0 32px;
-      font-family: 'Syne Mono', monospace;
+    .modes .desc {
+      color: var(--ink);
       font-size: 15px;
       line-height: 1.5;
     }
-    .status .label {
-      color: var(--orange);
+
+    /* Catégories : inline en Syne Mono, séparées par /  */
+    .megas {
+      font-family: 'Syne Mono', monospace;
+      font-size: 14px;
+      line-height: 1.9;
+      color: var(--ink);
+    }
+    .megas span { white-space: nowrap; }
+    .megas .sep { color: var(--accent); margin: 0 6px; }
+
+    /* Stats inline dans le pitch */
+    .num {
+      font-family: 'Syne', sans-serif;
       font-weight: 700;
-      text-transform: uppercase;
-      letter-spacing: 1.5px;
-      font-size: 12px;
-      display: block;
-      margin-bottom: 6px;
+      color: var(--accent);
     }
 
-    /* Contact */
-    .contact a {
-      color: var(--orange);
-      font-weight: 600;
-      text-decoration: none;
-      border-bottom: 2px solid var(--orange);
+    /* Note beta */
+    .note {
+      font-size: 14px;
+      color: var(--muted);
+      line-height: 1.55;
     }
-    .contact a:hover { background: var(--orange); color: var(--bg); }
 
     /* Footer */
     footer {
-      max-width: 760px;
-      margin: 0 auto;
-      padding: 28px 24px 40px;
-      width: 100%;
-      border-top: 2px solid var(--ink);
+      max-width: 580px;
+      margin: 64px auto 0;
+      padding: 24px;
+      border-top: 1px solid var(--rule);
       font-family: 'Syne Mono', monospace;
-      font-size: 12px;
-      color: var(--ink);
+      font-size: 11px;
+      color: var(--muted);
       text-transform: uppercase;
-      letter-spacing: 1px;
+      letter-spacing: 1.2px;
       display: flex;
-      flex-wrap: wrap;
-      gap: 12px 20px;
       justify-content: space-between;
-      align-items: center;
+      gap: 12px;
+      flex-wrap: wrap;
     }
-    footer .links a {
-      color: var(--ink);
-      text-decoration: none;
-      margin-right: 18px;
-    }
-    footer .links a:hover { color: var(--orange); }
-
-    @media (max-width: 600px) {
-      .modes { grid-template-columns: 1fr; }
-      .stats { grid-template-columns: 1fr; gap: 16px; }
-      .stat { display: flex; align-items: baseline; justify-content: center; gap: 12px; }
-      .stat-label { margin-top: 0; }
-      h2 { font-size: 24px; }
-      main { padding-top: 32px; }
-    }
-
-    @media (prefers-color-scheme: dark) {
-      :root {
-        --bg: #1a1410;
-        --ink: #f0e0d0;
-        --muted: #a09080;
-        --shadow: #2a2018;
-      }
-      body { background: var(--bg); color: var(--ink); }
-      .wordmark .punc { color: var(--ink); }
-      .stat-label, .tagline { color: var(--ink); }
-      h2 { color: var(--ink); }
-      .status { background: #2a2018; }
-      footer { color: var(--ink); border-color: var(--ink); }
-      footer .links a { color: var(--ink); }
-    }
+    footer a { color: var(--muted); text-decoration: none; }
+    footer a:hover { color: var(--accent); }
   </style>
 </head>
 <body>
   <main>
-    <div class="hero">
+    <header class="hero">
       <img src="/fastoche/icon.png" alt="" class="icon">
-      <h1 class="wordmark">fastoche<span class="punc">!</span></h1>
-      <p class="tagline">QUIZ CULTURELS / iOS</p>
-    </div>
+      <div>
+        <h1 class="word">fastoche<span class="punc">!</span></h1>
+        <p class="kicker">Quiz culturels iOS</p>
+      </div>
+    </header>
 
-    <div class="stats">
-      <div class="stat">
-        <div class="stat-num">21 376</div>
-        <div class="stat-label">questions</div>
-      </div>
-      <div class="stat">
-        <div class="stat-num">243</div>
-        <div class="stat-label">thèmes</div>
-      </div>
-      <div class="stat">
-        <div class="stat-num">6</div>
-        <div class="stat-label">catégories</div>
-      </div>
-    </div>
-
-    <p class="pitch">
-      L'app de quiz qu'on fait passer entre potes. <strong>Pas de fausses réponses
-      faciles, pas de remplissage</strong>, pas de pubs débiles. Juste 21 376 questions
-      écrites une par une, triées dans 243 thèmes du plus grand public au plus pointu.
+    <p class="lead">
+      Une app de quiz culturels en français qui se passe entre potes ou se joue en solo,
+      avec <span class="num">20 000+</span> questions réparties sur
+      <span class="num">240+</span> thèmes du plus grand public au plus pointu.
     </p>
 
-    <h2>3 modes</h2>
-    <div class="modes">
-      <div class="mode solo">
-        <div class="mode-name">solo</div>
-        <div class="mode-desc">Défis successifs, scoring arcade, combos. Bats ton meilleur score.</div>
-      </div>
-      <div class="mode multi">
-        <div class="mode-name">multi</div>
-        <div class="mode-desc">Tour par tour ou simultané, l'iPhone se passe entre les joueurs.</div>
-      </div>
-      <div class="mode apero">
-        <div class="mode-name">apéro</div>
-        <div class="mode-desc">Format détente, pas de scoring serré. Idéal pour les soirées.</div>
-      </div>
-    </div>
-
-    <h2>6 catégories</h2>
-    <ul class="megas">
-      <li class="mega m1">Histoire</li>
-      <li class="mega m2">Sciences &amp; Nature</li>
-      <li class="mega m3">Géographie</li>
-      <li class="mega m4">Arts &amp; Lettres</li>
-      <li class="mega m5">Divertissement</li>
-      <li class="mega m6">Sport &amp; Loisirs</li>
-    </ul>
-
-    <div class="status">
-      <span class="label">Beta TestFlight</span>
-      L'app sort très prochainement sur l'App Store. En attendant, signaler une
-      question erronée se fait directement depuis le drapeau dans l'app.
-    </div>
-
-    <h2>Contact</h2>
-    <p class="contact">
-      Une question, un retour, un thème à proposer.
-      <a href="mailto:contact@theosury.fr">contact@theosury.fr</a>
+    <p>
+      Pas de remplissage, pas de pubs débiles. Court à comprendre, long à finir.
     </p>
+
+    <section>
+      <h2>Modes</h2>
+      <ul class="modes">
+        <li>
+          <div class="name">Solo</div>
+          <div class="desc">Défis successifs, scoring arcade, combos. Tu bats ton meilleur score.</div>
+        </li>
+        <li>
+          <div class="name">Multi</div>
+          <div class="desc">Tour par tour ou simultané, le téléphone se passe entre les joueurs.</div>
+        </li>
+        <li>
+          <div class="name">Apéro</div>
+          <div class="desc">Format détente, pas de scoring serré. Pour les soirées entre potes.</div>
+        </li>
+      </ul>
+    </section>
+
+    <section>
+      <h2>Catégories</h2>
+      <p class="megas">
+        <span>Histoire</span><span class="sep">/</span><span>Sciences &amp; Nature</span><span class="sep">/</span><span>Géographie</span><span class="sep">/</span><span>Arts &amp; Lettres</span><span class="sep">/</span><span>Divertissement</span><span class="sep">/</span><span>Sport &amp; Loisirs</span>
+      </p>
+    </section>
+
+    <section>
+      <h2>Statut</h2>
+      <p class="note">
+        Beta TestFlight en cours, sortie publique sur l'App Store très prochainement.
+      </p>
+    </section>
+
+    <section>
+      <h2>Contact</h2>
+      <p>
+        Une question, un retour, un thème à proposer.<br>
+        <a href="mailto:contact@theosury.fr">contact@theosury.fr</a>
+      </p>
+    </section>
   </main>
 
   <footer>
-    <div class="links">
-      <a href="/fastoche/privacy">Confidentialité</a>
-      <a href="https://theosury.fr">theosury.fr</a>
-    </div>
-    <div>© 2026 Théo Sury</div>
+    <a href="/fastoche/privacy">Confidentialité</a>
+    <span>© 2026</span>
   </footer>
 </body>
 </html>

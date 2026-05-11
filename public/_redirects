@@ -1,2 +1,4 @@
-/fastoche/privacy    /fastoche/privacy.html    200
+/fastoche    https://fastochequiz.fr    301!
+/fastoche/*    https://fastochequiz.fr/:splat    301!
+/privacy    https://fastochequiz.fr/privacy    301!
 /*    /index.html   200

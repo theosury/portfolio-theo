@@ -55,7 +55,20 @@
   margin-bottom: var(--spacing-md);
 }
 
+/* Vidéo verticale (making-of tournés au format reel) : cadre 9:16 centré,
+   borné en hauteur pour ne pas dépasser l'écran. */
+.film-detail__video--vertical {
+  position: relative;
+  width: auto;
+  max-width: min(420px, 100%);
+  aspect-ratio: 9 / 16;
+  max-height: 78vh;
+  padding-top: 0;
+  margin: 0 auto;
+}
+
 .film-detail__video iframe,
+.film-detail__video video,
 .film-detail__video > div {
   position: absolute;
   top: 0;

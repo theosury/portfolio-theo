@@ -4,7 +4,7 @@ import './ContactPage.css';
 
 const ContactPage = () => {
   useEffect(() => {
-    document.title = 'Contact — Théo Sury';
+    document.title = 'Contact | Théo Sury';
   }, []);
 
   return (

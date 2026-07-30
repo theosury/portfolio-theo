@@ -119,8 +119,14 @@ const ProjectModal = ({ project, onClose }) => {
   }, [onClose]);
 
   const hasImages = project.images && project.images.length > 0;
-  const hasVideo = project.youtubeId || project.vimeoId || project.arteId;
-  const hasMultipleVideos = project.youtubeIds && project.youtubeIds.length > 0;
+  const hasVideo = project.youtubeId || project.vimeoId || project.arteId || project.videoFile;
+
+  // Plusieurs vidéos : YouTube et/ou Vimeo, réunies dans la même grille
+  const multipleVideos = [
+    ...(project.youtubeIds || []).map((video) => ({ ...video, platform: 'youtube' })),
+    ...(project.vimeoIds || []).map((video) => ({ ...video, platform: 'vimeo' })),
+  ];
+  const hasMultipleVideos = multipleVideos.length > 0;
 
   const nextImage = () => {
     if (hasImages) {
@@ -143,6 +149,23 @@ const ProjectModal = ({ project, onClose }) => {
 
   // Rendu du player vidéo selon la plateforme
   const renderVideoPlayer = () => {
+    // Vidéo hébergée sur le site (fichier dans /public/videos)
+    if (project.videoFile) {
+      return (
+        <div className="modal__video">
+          <video
+            src={project.videoFile}
+            poster={project.thumbnail}
+            title={project.title}
+            controls
+            autoPlay
+            playsInline
+            preload="none"
+          ></video>
+        </div>
+      );
+    }
+
     if (project.youtubeId) {
       return (
         <div className="modal__video">
@@ -188,22 +211,26 @@ const ProjectModal = ({ project, onClose }) => {
     return null;
   };
 
-  // Rendu de plusieurs vidéos YouTube
+  // Rendu de plusieurs vidéos (YouTube et/ou Vimeo)
   const renderMultipleVideos = () => {
-    if (!project.youtubeIds || project.youtubeIds.length === 0) return null;
+    if (!hasMultipleVideos) return null;
 
-    const shouldMute = project.youtubeIds.length > 1 ? 1 : 0;
+    const shouldMute = multipleVideos.length > 1 ? 1 : 0;
 
     return (
-      <div className="modal__videos-grid" data-video-count={project.youtubeIds.length}>
-        {project.youtubeIds.map((videoData, index) => (
+      <div className="modal__videos-grid" data-video-count={multipleVideos.length}>
+        {multipleVideos.map((videoData, index) => (
           <div key={index} className="modal__video-item">
             {videoData.title && (
               <h4 className="modal__video-title">{videoData.title}</h4>
             )}
             <div className="modal__video">
               <iframe
-                src={`https://www.youtube.com/embed/${videoData.id}?autoplay=1&mute=${shouldMute}`}
+                src={
+                  videoData.platform === 'vimeo'
+                    ? `https://player.vimeo.com/video/${videoData.id}?autoplay=1&muted=${shouldMute}${videoData.hash ? `&h=${videoData.hash}` : ''}`
+                    : `https://www.youtube.com/embed/${videoData.id}?autoplay=1&mute=${shouldMute}`
+                }
                 title={videoData.title || `${project.title} - Vidéo ${index + 1}`}
                 frameBorder="0"
                 allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"

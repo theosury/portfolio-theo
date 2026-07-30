@@ -65,8 +65,14 @@ function Header() {
           >
             Photos
           </Link>
-          <Link 
-            to="/contact" 
+          <Link
+            to="/experiences"
+            className={location.pathname === '/experiences' ? 'active' : ''}
+          >
+            Expériences
+          </Link>
+          <Link
+            to="/contact"
             className={location.pathname === '/contact' ? 'active' : ''}
           >
             Contact

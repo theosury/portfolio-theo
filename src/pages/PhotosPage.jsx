@@ -4,7 +4,7 @@ import './PhotosPage.css';
 
 const PhotosPage = () => {
   useEffect(() => {
-    document.title = 'Photos — Théo Sury';
+    document.title = 'Photos | Théo Sury';
   }, []);
 
   return (

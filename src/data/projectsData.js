@@ -6,13 +6,19 @@
 const parseDate = (project) => {
   if (project.month) {
     // Format attendu : "Mars 2025" ou "Février-Mars 2024"
-    const match = project.month.match(/(\w+)\s*-?\s*(\w+)?\s*(\d{4})/);
+    // \p{L} plutôt que \w : ce dernier ignore les lettres accentuées,
+    // et « Décembre » n'était capturé que comme « cembre ».
+    const match = project.month.match(/(\p{L}+)\s*-?\s*(\p{L}+)?\s*(\d{4})/u);
     if (match) {
+      // Clés sans accent : la saisie est normalisée juste en dessous,
+      // pour que « Décembre » et « decembre » donnent le même résultat.
       const monthsMap = {
-        'janvier': 1, 'février': 2, 'mars': 3, 'avril': 4, 'mai': 5, 'juin': 6,
+        'janvier': 1, 'fevrier': 2, 'mars': 3, 'avril': 4, 'mai': 5, 'juin': 6,
         'juillet': 7, 'aout': 8, 'septembre': 9, 'octobre': 10, 'novembre': 11, 'decembre': 12
       };
-      const monthName = match[2] ? match[2].toLowerCase() : match[1].toLowerCase();
+      const sansAccent = (mot) =>
+        mot.toLowerCase().normalize('NFD').replace(/[̀-ͯ]/g, '');
+      const monthName = sansAccent(match[2] || match[1]);
       const month = monthsMap[monthName] || 1;
       const year = parseInt(match[3]);
       return new Date(year, month - 1);
@@ -31,6 +37,69 @@ const sortProjectsByDate = (projects) => {
   });
 };
 
+// ========== ORDRE MANUEL ==========
+// Ordre exact de la grille, ligne par ligne (3 cartes par ligne sur desktop).
+// Un film absent de cette liste vient après, classé par date : penser à
+// ajouter ici les nouveaux projets pour maîtriser leur position.
+// Laisser le tableau vide pour revenir au tri par date sur l'ensemble.
+export const ordreManuel = [
+  // Ligne 1
+  'ziak-feng-shui',      // gros nom : toujours en première case
+  'super-vespapa',
+  'casse-cest-casse',
+  // Ligne 2
+  'asterix',
+  'jugement-dernier',
+  'azincourt',
+  // Ligne 3
+  'vagues',              // Ce que laissent les vagues
+  'vedette',
+  'insipide',
+  // Ligne 4
+  'verite-studio',
+  'casse-noisette',
+  'revolte',
+  // Ligne 5
+  'mode-kids',
+  'armanaque',
+  'loverdance',
+  // Ligne 6
+  'bureau-du-karma',
+  'pardon',
+  'quand-son-souffle',
+];
+
+// ========== SECOND PLAN ==========
+// Les IDs listés ici sortent de la grille principale et sont regroupés
+// derrière le lien « Voir les autres projets », en bas de la page Films.
+// Indépendant du champ « status » : un film peut être en post-production
+// et rester en grille principale (ou l'inverse).
+export const projetsSecondaires = [
+  'tecnomat',
+  'nothing-personal',
+  'moutarderie-fallot-vr',
+  'cache-toi-cest-mon-pere',
+  'male-addict',
+  'trauma-resonance',
+  'lettre-a-lille',
+  'i-have-enough',
+  'la-table-regie',
+  'undetoi',
+  'gate66',
+  'darwin-experience',
+  'gadfly',              // stagiaire
+  'une-couronne',        // auxiliaire de régie, ESEC 2022
+];
+
+// Applique l'ordre manuel puis le tri par date sur le reste
+const appliquerOrdre = (projects) => {
+  const epingles = ordreManuel
+    .map((id) => projects.find((p) => p.id === id))
+    .filter(Boolean);
+  const reste = projects.filter((p) => !ordreManuel.includes(p.id));
+  return [...epingles, ...sortProjectsByDate(reste)];
+};
+
 export const projectsData = {
   // ========== IDs DES PROJETS HERO ==========
   // Pour ajouter un projet en hero, ajoute simplement son ID ici
@@ -44,6 +113,437 @@ export const projectsData = {
   // ========== TOUS LES PROJETS (triés automatiquement par catégorie) ==========
   get films() {
     const allFilms = [
+      {
+        id: 'tecnomat',
+        title: 'Tecnomat, vivez vos meilleurs chantiers',
+        year: '2026',
+        month: 'Juillet 2026',
+        role: 'Électricien',
+        realisateur: 'Léo Sattin',
+        production: 'Poolside Theory × Socialclub',
+        prodExec: 'Gabrielle Hennessy',
+        premierAssReal: 'Estelle Duhem',
+        chefOp: 'Lenny Lu',
+        assistantCam: 'Patrick Nishimwbe & Félix Debeus',
+        dit: 'Jan Maes',
+        chefElectro: 'Milo Cosemans',
+        electros: 'Théo Sury & Eliza Mezquita-Lucena',
+        chefMachino: 'Mathijs Van Burgt',
+        machino: 'Laurence De Cort',
+        son: 'Fabien Lutz',
+        costume: 'Leila Rossard',
+        maquillage: 'Manuela Bourgade',
+        regisseur: 'Salomé Collin',
+        assistRegie: 'Virgile Vermeulen',
+        thumbnail: '/images/tecnomat-thumb.webp',
+        status: 'En post-production',
+        images: [],
+        description: 'Publicité pour l\'enseigne de matériaux Tecnomat, tournée en studio en Belgique. Deux décors montés sur le plateau : une salle de bain et une chambre d\'enfant.',
+        specs: {
+          format: 'Publicité',
+          jours: '2 jours',
+          lieu: 'Studio EVO, Froyennes (Belgique)',
+          tournage: 'Juillet 2026',
+          particularite: 'Décors studio, dolly, mur mobile'
+        },
+        cast: [
+          'Benoît Strulus (L\'Homme)',
+          'Jan Debski (Pro Tecnomat 1)',
+          'Annette Duhamel (La Mère)',
+          'Audrey David (La Femme)',
+          'Nicolas Mouen (Pro Tecnomat 2)'
+        ]
+      },
+      {
+        id: 'ziak-feng-shui',
+        title: 'Feng Shui',
+        year: '2026',
+        month: 'Juin 2026',
+        role: 'Électricien',
+        artiste: 'Ziak',
+        thumbnail: '/images/ziak-feng-shui-thumb.jpg',
+        images: [],
+        youtubeId: 'elI5iDHsSGI',
+        description: 'Clip tourné au Studio Kremlin pour le morceau Feng Shui (prod. Focus Beatz & JY). Dispositif studio construit autour d\'un travelling circulaire, avec une lumière entièrement pilotée au pupitre.',
+        specs: {
+          format: 'Clip',
+          lieu: 'Studio Kremlin, Ivry-sur-Seine',
+          particularite: 'Travelling circulaire, lumière au pupitre'
+        }
+      },
+      {
+        id: 'nothing-personal',
+        title: 'Nothing Personal',
+        year: '2026',
+        month: 'Juin 2026',
+        role: 'Électricien',
+        realisateur: 'Jean De Raissac',
+        premierAssReal: 'Flora Mollier',
+        secondAssReal: 'Max Menut',
+        script: 'Hugo Pederencino',
+        chefOp: 'Emma Deporte',
+        assistantCam: 'Noémie Werquin, Morgan Noël & Lyne Goma-goma',
+        chefElectro: 'Virgile Vermeulen',
+        electros: 'Théo Sury, Louise Mariesant, Lou Cassot & Alice Urso',
+        machino: 'Clément Simonnot',
+        son: 'Sasha Stalnikiewicz',
+        maquillage: 'Justine Jouveneaux',
+        accessoiriste: 'Romain Colard',
+        deco: 'May-Linh Dujardin',
+        photo: 'Elliott Biget',
+        regisseur: 'Elina Narbonne',
+        assistRegie: 'Aliénor Tellier, Yann Machet & Oscar Biget',
+        thumbnail: '/images/placeholder-thumb.jpg',
+        status: 'En post-production',
+        images: [],
+        description: 'Court-métrage étudiant tourné dans le Nord, en partie dans un centre équestre abandonné.',
+        specs: {
+          format: 'Court-métrage fiction',
+          jours: '6 jours',
+          lieu: 'Bondues (Nord)',
+          tournage: 'Juin 2026'
+        },
+        cast: [
+          'Hakim Hachouche (Micka)',
+          'Edgar Dias (Antoine)'
+        ]
+      },
+      {
+        id: 'moutarderie-fallot-vr',
+        title: 'Moutarderie Fallot : Expérience VR',
+        year: '2026',
+        month: 'Mai-Juin 2026',
+        role: 'Électricien',
+        realisatrice: 'Corinne Planchais',
+        production: 'Drôle de Trame',
+        producteur: 'Claire Lebouteiller',
+        premierAssReal: 'Carole Reinhard',
+        chefOp: 'Nicolas Legal',
+        chefElectro: 'Renaud Bertrand',
+        electros: 'Théo Sury',
+        son: 'Julien Chaumat',
+        directionArtistique: 'Dominique Vidal',
+        deco: 'Louna Legal',
+        accessoiriste: 'René Charles Despré (construction)',
+        costume: 'Dominique Vidal, assistée d\'Axelle Roux',
+        maquillage: 'Géraldine Geretier',
+        vfx: 'Martial Brard & Charlotte Didier (3D), Julien Brard (post-production 3D)',
+        thumbnail: '/images/moutarderie-fallot-thumb.webp',
+        status: 'En post-production',
+        images: [],
+        description: 'Docu-fiction en réalité virtuelle commandée par la Moutarderie Fallot, qui retrace la fabrication traditionnelle de la moutarde. Tourné intégralement sur fond vert en studio, en caméra 360, sous la supervision VR de Michael Kolchesky. Décors reconstitués en 3D : atelier de fabrication, grenier et atelier de conditionnement.',
+        specs: {
+          format: 'Docu-fiction VR 360',
+          jours: '4 jours',
+          lieu: 'Studio Jours Tranquilles, Clichy',
+          tournage: 'Mai-Juin 2026',
+          particularite: 'Fond vert intégral, caméra 360, décors 3D'
+        },
+        cast: [
+          'Pascal Vannson (Edmond Fallot)',
+          'Hugues Duchêne (Émile Faivre)',
+          'Jean-Christophe Quenon (Le rhabilleur de meule)',
+          'Delphine Raoult (Julie)',
+          'Stéphanie Labbé (La moutardière)',
+          'Jean-Jacques Boutin (Le moutardier)',
+          'Axelle Roux (Denise)',
+          'Sylvia Conti (Ouvrière conditionnement)'
+        ]
+      },
+      {
+        id: 'cache-toi-cest-mon-pere',
+        title: 'Cache-toi, c\'est mon père !',
+        year: '2026',
+        month: 'Mai 2026',
+        role: 'Chef électricien',
+        realisateur: 'Lucien Duléry',
+        producteur: 'Lucien Duléry',
+        premierAssReal: 'Gibril Kherroubi',
+        secondAssReal: 'Nicolas Quintin',
+        script: 'Emma Herrero-Boué',
+        chefOp: 'Max Guerin',
+        assistantCam: 'Paco Bernier',
+        chefElectro: 'Théo Sury',
+        electros: 'Laura Jacquet, Sacha Bonte & Clovis Belliel',
+        son: 'Adrian Xavier',
+        deco: 'Anaïs Bordessoules',
+        maquillage: 'Audrey Brugnerotto & Perline Gibouin',
+        regisseur: 'Quentin Dissard',
+        thumbnail: '/images/placeholder-thumb.jpg',
+        status: 'En post-production',
+        images: [],
+        description: 'Court-métrage tourné à Vincennes et à Paris, en décors naturels : un appartement, une rue et un restaurant.',
+        specs: {
+          format: 'Court-métrage fiction',
+          jours: '4 jours',
+          lieu: 'Vincennes & Paris',
+          tournage: 'Mai 2026'
+        },
+        cast: [
+          'Jeanne Richard (Léa)',
+          'Lucien Duléry (Théo)',
+          'Antoine Duléry (Christophe, le père)',
+          'Pascale Pouzadoux (Sandra)',
+          'Ian Herscovici (Le serveur)',
+          'Alexandre Maître (Le maître d\'hôtel)'
+        ]
+      },
+      {
+        id: 'bureau-du-karma',
+        title: 'Bureau du Karma',
+        year: '2026',
+        month: 'Mai 2026',
+        role: 'Chef électricien',
+        realisateur: 'Julien Millet',
+        production: 'Drôle de Prod',
+        producteur: 'Ava Canault',
+        premierAssReal: 'Angèle Vitani',
+        script: 'Astea Dachez',
+        chefOp: 'Quentin Ribeyrol',
+        assistantCam: 'Denez Pithois',
+        secondAssistantCam: 'Roxane Delcampe',
+        chefElectro: 'Théo Sury',
+        electros: 'Léo Aguiton',
+        son: 'Enzo Brinckmann',
+        soundDesign: 'Enzo Brinckmann',
+        musique: 'Enzo Brinckmann',
+        deco: 'Valentine Simonin',
+        maquillage: 'Auriane Charroing',
+        monteur: 'Julien Millet',
+        etalonneur: 'Quentin Ribeyrol',
+        graphisme: 'Julien Millet',
+        thumbnail: '/images/bureau-du-karma-thumb.jpg',
+        images: [],
+        videoFile: '/videos/bureau-du-karma.mp4',
+        description: 'Court-métrage d\'une minute réalisé pour le festival 1 minute 1 court, où il a été diffusé sous le numéro 35. Dans un bureau administratif d\'un autre âge, on tamponne les sentences karmiques.',
+        specs: {
+          format: 'Court-métrage (festival 1 minute 1 court)',
+          duree: '1min00',
+          jours: '1 jour'
+        },
+        cast: [
+          'Alexandre Guilbaud (Le Chef)',
+          'Boris Bégard (Charles)',
+          'Florian Velasco (L\'Influenceur)',
+          'Agathe Mourier (L\'Influenceuse)',
+          'Hakim Hachouche (Cascade)',
+          'Louise Daquin (Cascade)'
+        ]
+      },
+      {
+        id: 'trauma-resonance',
+        title: 'Trauma Résonance',
+        year: '2026',
+        month: 'Avril 2026',
+        role: 'Électricien',
+        realisateur: 'Kenji Isidor',
+        producteur: 'Kenji Isidor',
+        prodExec: 'Axelle Derudder',
+        premierAssReal: 'Sébastien Arroux',
+        secondAssReal: 'Elodie Noir',
+        script: 'Mélissa Micic',
+        chefOp: 'Léo Merchadou',
+        assistantCam: 'Julia Fetouaki',
+        chefElectro: 'Léo Aguiton',
+        electros: 'Guilhem Leroux & Théo Sury',
+        son: 'Sacha Benoit',
+        costume: 'Sören Cozette',
+        maquillage: 'Anaé Delmas & Margaux Prigent',
+        deco: 'Morgane Bourdeau, Ramla Cherni, Léon Chauvet, Emma Navarrete & Hélène Powell-Smith',
+        photo: 'Ninon Daos & Aryane Nassirian Shehni',
+        regisseur: 'Jonathan Francillette',
+        assistRegie: 'Emilien Rouillard & Thomas Raoult',
+        thumbnail: '/images/placeholder-thumb.jpg',
+        status: 'En post-production',
+        images: [],
+        description: 'Court-métrage tourné à Paris, en partie dans un décor d\'hôpital reconstitué.',
+        specs: {
+          format: 'Court-métrage fiction',
+          jours: '5 jours',
+          lieu: 'Paris',
+          tournage: 'Avril 2026'
+        },
+        cast: [
+          'Paola Benigni (Angela)',
+          'Axelle Derudder (Barbara)',
+          'Rachel Carlhian (Cassandra)'
+        ]
+      },
+      {
+        id: 'mode-kids',
+        title: 'Mode Kids',
+        year: '2025',
+        month: 'Novembre 2025',
+        role: 'Chef électricien',
+        realisatrice: 'Ania Mokrani',
+        production: 'AV Prod',
+        producteur: 'Capucine Joveneaux (cheffe de projet)',
+        directionArtistique: 'Martin Ducrot',
+        chefOp: 'Alexis Cibille',
+        chefElectro: 'Théo Sury',
+        son: 'Mattheus Paganini',
+        perchman: 'Mattheus Paganini',
+        thumbnail: '/images/mode-kids-thumb.jpg',
+        images: [],
+        vimeoIds: [
+          // Intégration désactivée côté AV Prod (le player renvoie 401).
+          // À réactiver dans les réglages Vimeo de la vidéo pour qu'elle s'affiche.
+          {
+            id: '1165686017',
+            title: 'Mode Kids : quand les enfants prennent le plateau'
+          },
+          {
+            id: '1155080309',
+            hash: 'f95abed7e0',
+            title: 'Mode Mum & Kid'
+          }
+        ],
+        description: 'Deux films publicitaires tournés en studio pour valoriser des collections de mode enfant. Le premier place les enfants dans les rôles de l\'équipe technique (réalisateur, cadreur, styliste) et fait du tournage lui-même le décor. Le second met en scène la relation parent-enfant sur fonds colorés.',
+        specs: {
+          format: 'Publicité (2 films)',
+          duree: '48s et 31s',
+          jours: '1 jour',
+          lieu: 'Studio Le 14 Avenue, Marquette-lez-Lille',
+          tournage: 'Novembre 2025'
+        }
+      },
+      {
+        id: 'super-vespapa',
+        title: 'Super Vespapa',
+        year: '2026',
+        month: 'Juin 2026',
+        role: 'Chef-opérateur / Co-scénariste',
+        realisatrice: 'Lou Cassot',
+        scenariste: 'Lou Cassot & Théo Sury, sur une idée originale de Lou Cassot',
+        production: 'MM Production',
+        producteur: 'Lou Cassot, Théo Sury & Marie Caus (production déléguée)',
+        dirProd: 'Odessa Lemaire & Marie Caus',
+        premierAssRealPrepa: 'Hélène Pottier',
+        premierAssReal: 'Gibril Kherroubi',
+        secondAssReal: 'Cassandra Dubois & Marie Caus',
+        script: 'Salomé Renard',
+        chefOp: 'Théo Sury',
+        assistantCam: 'Maxime Lahaye',
+        secondAssistantCam: 'Maria Trohel',
+        chefElectro: 'Guilhem Leroux',
+        electros: 'Clément Simonnot & Virgile Vermeulen',
+        chefMachino: 'Tom Daniel',
+        son: 'Faustin Lesage',
+        cheffeDecoratrice: 'Alice Drocourt',
+        accessoiriste: 'Alice Drocourt',
+        costume: 'Holly Lemaitre',
+        maquillage: 'Maxence De Vendt',
+        regisseur: 'Anne-Laure Lepers',
+        assistRegie: 'Lilou Sanchez-Boussekey & Marie Lecocq',
+        monteur: 'Kendra Tarby',
+        graphisme: 'Paul Blanchet (motion design)',
+        photo: 'Arthur Cassot',
+        thumbnail: '/images/super-vespapa-thumb.webp',
+        status: 'En post-production',
+        images: [],
+        description: 'Guy n\'a plus parlé à grand-monde depuis un an. Sa fille Lise est venue passer une semaine chez lui. La balade en Vespa qu\'il lui a promise, il n\'y arrive pas cet après-midi-là. Au dîner, la dispute éclate, et Lise comprend qu\'elle l\'a peut-être perdu. Cette nuit-là, seul dans sa cuisine, il repose son verre dans l\'évier. Au matin, le scooter est dans l\'allée. Super Vespapa est l\'histoire d\'un père qui lutte contre lui-même, pour sa fille.',
+        specs: {
+          format: 'Court-métrage fiction',
+          jours: '5 jours',
+          lieu: 'Écourt-Saint-Quentin (Pas-de-Calais)',
+          tournage: 'Juin 2026'
+        },
+        cast: [
+          'Thomas Dubois (Guy)',
+          'Clémentine Chatard (Lise)',
+          'Michel Maseiro (Le garagiste)'
+        ]
+      },
+      {
+        id: 'i-have-enough',
+        title: 'I Have Enough',
+        year: '2026',
+        month: 'Mars 2026',
+        role: 'Chef électricien',
+        production: 'Stuzka',
+        chefElectro: 'Théo Sury',
+        thumbnail: '/images/i-have-enough-thumb.jpg',
+        status: 'En post-production',
+        images: [],
+        description: 'Clip musical produit par l\'association Stuzka.',
+        specs: {
+          format: 'Clip'
+        }
+      },
+      {
+        id: 'lettre-a-lille',
+        title: 'Lettre à Lille',
+        year: '2026',
+        month: 'Mars 2026',
+        role: 'Cadreur / Assistant caméra',
+        realisatrice: 'Fanny Caillibot',
+        production: 'Galaxie Presse pour France 3 Région',
+        producteur: 'Eric Quintin',
+        prodExec: 'Karine Sevrain',
+        assistProd: 'Ludivine Vongsavath Urtin & Jessy Mathiou',
+        chefOp: 'Nicolas Legal',
+        cadreur: 'Théo Sury',
+        assistantCam: 'Théo Sury',
+        thumbnail: '/images/placeholder-thumb.jpg',
+        status: 'En post-production',
+        images: [],
+        description: 'Documentaire tourné à Lille et dans la métropole : chez une habitante, le long de la Deûle, au marché de Wazemmes, dans une friperie et au Casino Barrière lors d\'un dîner-spectacle.',
+        specs: {
+          format: 'Documentaire',
+          jours: '3 jours',
+          lieu: 'Lille et métropole',
+          tournage: 'Mars 2026',
+          particularite: 'HD 1080 25p, S-Log3, son direct sur caméra'
+        }
+      },
+      {
+        id: 'darwin-experience',
+        title: 'Darwin Experience',
+        year: '2025',
+        month: 'Janvier 2025',
+        role: 'Photographe & Making-of',
+        realisateur: 'Martin Schrepel',
+        chefOp: 'Grégoire Léon-Dufour',
+        production: 'PRISM, avec le soutien du CNC',
+        monteur: 'Théo Sury',
+        photo: 'Théo Sury',
+        thumbnail: '/images/darwin-thumb.jpg',
+        images: [],
+        videoFiles: [
+          { file: '/videos/darwin-making-automatic-doors.mp4', title: 'Making of : Automatic Doors', vertical: true },
+          { file: '/videos/darwin-making-home.mp4', title: 'Making of : Home', vertical: true },
+          { file: '/videos/darwin-making-i-killed-you.mp4', title: 'Making of : I Killed You', vertical: true },
+          { file: '/videos/darwin-making-just-want-to-dance.mp4', title: 'Making of : Just Want To Dance', vertical: true },
+        ],
+        youtubeIds: [
+          { id: '89fB1I9N_1o', title: 'Le clip : Automatic Doors' },
+          { id: 'aKJyRwJYJXI', title: 'Le clip : Home' },
+          { id: 'SQz6HeVUkfA', title: 'Le clip : I Killed You' },
+          { id: 'U5DOOxT_HKU', title: 'Le clip : Just Want To Dance' },
+        ],
+        description: 'Captation et montage du making-of de l\'EP « Home » du groupe Darwin Experience, tourné en trois jours au Havre. Les quatre clips de l\'EP, réalisés par Martin Schrepel et photographiés par Grégoire Léon-Dufour, sont réunis ci-dessous.',
+        specs: {
+          format: 'Making-of / Clips musicaux',
+          jours: '3 jours',
+          lieu: 'Le Havre',
+          tournage: 'Janvier 2025'
+        }
+      },
+      {
+        id: 'la-table-regie',
+        title: 'La Table Régie',
+        year: '2026',
+        month: 'Avril 2026',
+        role: 'Électricien (prélight)',
+        thumbnail: '/images/placeholder-thumb.jpg',
+        status: 'En post-production',
+        images: [],
+        description: 'Renfort électro d\'une journée sur le prélight du tournage.',
+        specs: {
+          format: 'Court-métrage fiction',
+          jours: '1 jour (prélight)'
+        }
+      },
       {
         id: 'vedette',
         title: 'Vedette !',
@@ -399,7 +899,6 @@ export const projectsData = {
         maquillage: 'Arya Bardin',
         photo: 'Astrid Joos-Deligne',
         thumbnail: '/images/verite-studio-thumb.jpg',
-        status: 'En post-production',
         images: [],
         specs: {
           lieu: 'LCR Les Tailleurs, Villeneuve-d\'Ascq',
@@ -875,55 +1374,45 @@ export const projectsData = {
       },
     ];
 
-    // Trier tous les films (les composants filtreront ensuite)
-    return sortProjectsByDate(allFilms);
+    // Écarter les films marqués « masque: true », puis appliquer l'ordre
+    return appliquerOrdre(allFilms.filter((film) => !film.masque));
   },
 
   // ========== AUTRES EXPÉRIENCES ==========
   autres: [
     {
-      id: 'darwin-experience',
-      title: 'Darwin Experience',
-      year: '2025',
-      role: 'Photographe & Making-of',
-      realisateur: 'Martin Schrepel',
-      chefOp: 'Grégoire Léon-Dufour',
-      production: 'Making-of EP "Home"',
-      thumbnail: '/images/darwinthumb.jpg',
-      description: 'Captation et montage du making-of de l\'EP "Home" du groupe Darwin Experience. Clips : Automatic Doors, Home, I Killed You, I Just Want to Dance.',
-      specs: {
-        format: 'Making-of / Clips musicaux',
-        production: 'PRISM, CNC',
-        lieu: 'Le Havre',
-        jours: '3 jours (janvier 2025)'
-      }
+      id: 'veronne-production',
+      title: 'Veronne Production',
+      year: '2026',
+      role: 'Road',
+      duree: 'Depuis juin 2026',
+      description: 'Montage, exploitation et démontage sur des concerts et des festivals, dont le Main Square Festival 2026.'
+    },
+    {
+      id: 'alive-production',
+      title: 'Alive Production',
+      year: '2026',
+      role: 'Road',
+      duree: '2026',
+      description: 'Prestation événementielle.'
     },
     {
       id: 'panavision',
       title: 'Panavision ALGA',
       year: '2024',
-      role: 'Stagiaire',
-      production: '3 mois - Magasin & Filtres',
-      thumbnail: '/images/panavisionthumb.jpg',
-      description: 'Stage maintenance caméra et configuration. Vérification et maintenance d\'accessoires caméra et filtres, rangement du stock, préparation de commandes, configuration caméra.'
+      role: 'Stagiaire caméra',
+      production: 'Panavision ALGA',
+      duree: '3 mois',
+      description: 'Stage de trois mois au magasin et au service filtres. Vérification et maintenance des accessoires caméra et des filtres, gestion du stock, préparation des commandes et configuration caméra.'
     },
     {
       id: 'dixit-afdas',
-      title: 'DIXIT — AFDAS',
+      title: 'DIXIT',
       year: '2025',
       role: 'Assistant technique (cadre, lumière, régie)',
-      production: 'Formation direction d\'acteur',
-      thumbnail: '/images/dixitthumb.jpg',
-      description: 'Captation de formations en direction d\'acteur (janvier & juin 2025).'
-    },
-    {
-      id: 'noctem',
-      title: 'Noctem Events',
-      year: '2023-2024',
-      role: 'Photographe',
-      production: 'Événementiel',
-      thumbnail: '/images/noctemthumb.jpg',
-      description: 'Photographie événementielle en conditions de faible lumière.'
+      production: 'AFDAS',
+      duree: 'Janvier & juin 2025',
+      description: 'Captation de sessions de formation à la direction d\'acteur, sur deux périodes.'
     },
     {
       id: 'dna',
@@ -932,12 +1421,18 @@ export const projectsData = {
       role: '3e assistant caméra',
       realisateurs: 'Alexis Charrier & Thomas Lipmann',
       directeursPhoto: 'William Hulin & Hervé Lodé',
-      production: 'Fédération Entertainment - TELSETE',
-      thumbnail: '/images/dnathumb.jpg',
-      description: 'Stage de 3e assistant caméra sur la série quotidienne de TF1. Deux sessions d\'une semaine chacune.',
-      specs: {
-        duree: '2 sessions de 1 semaine'
-      }
+      production: 'TELSETE pour TF1',
+      duree: '1 mois, 2 sessions',
+      description: 'Assistanat caméra sur la série quotidienne de TF1, en équipe avec les directeurs photo William Hulin et Hervé Lodé.'
+    },
+    {
+      id: 'noctem',
+      title: 'Noctem Events',
+      year: '2023-2024',
+      role: 'Photographe',
+      production: 'Noctem Events',
+      duree: '2 événements',
+      description: 'Photographie de soirées, en conditions de très faible lumière.'
     }
   ]
 };

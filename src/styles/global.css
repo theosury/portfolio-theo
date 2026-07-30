@@ -8,6 +8,19 @@
   box-sizing: border-box;
 }
 
+/* Statut « Non disponible en ligne » : bleu au lieu du rouge.
+   Sélecteurs doublés pour passer devant les règles de chaque composant. */
+.project-card__status[data-status="Non disponible en ligne"],
+.films-list__status[data-status="Non disponible en ligne"] {
+  color: var(--color-info);
+}
+
+.film-detail__status-badge[data-status="Non disponible en ligne"] {
+  background: rgba(168, 85, 247, 0.15);
+  border-color: rgba(168, 85, 247, 0.5);
+  color: var(--color-info);
+}
+
 :root {
   /* Couleurs */
   --color-bg: #000000;
@@ -15,6 +28,8 @@
   --color-text-secondary: #ffffff;
   --color-accent: #ff3b3b;
   --color-hover: #ff6b6b;
+  /* Statut informatif (film terminé mais non diffusé) */
+  --color-info: #a855f7;
   
   /* Typographie */
   --font-main: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;

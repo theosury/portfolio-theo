@@ -24,6 +24,105 @@
   color: var(--color-text);
 }
 
+/* Révélation des projets en cours, après la grille */
+.films-encours {
+  padding-bottom: 5rem;
+}
+
+.films-encours__toggle {
+  display: block;
+  margin: 0 auto 3rem;
+  padding: 0.5rem 0;
+  background: none;
+  border: 0;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.25);
+  color: var(--color-text);
+  opacity: 0.55;
+  font-family: var(--font-main);
+  font-size: 0.72rem;
+  font-weight: var(--font-weight-normal);
+  text-transform: uppercase;
+  letter-spacing: 0.2em;
+  cursor: pointer;
+  transition: opacity var(--transition-fast), border-color var(--transition-fast);
+}
+
+.films-encours__toggle:hover {
+  opacity: 1;
+  border-color: var(--color-accent);
+}
+
+/* Liste des projets de second plan */
+.films-list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  border-top: 1px solid rgba(255, 255, 255, 0.12);
+}
+
+.films-list__row {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) 11rem 8.5rem minmax(0, 11rem) 9.5rem;
+  align-items: baseline;
+  gap: 1.25rem;
+  width: 100%;
+  padding: 1.1rem 0.25rem;
+  background: none;
+  border: 0;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.12);
+  color: var(--color-text);
+  font-family: var(--font-main);
+  text-align: left;
+  cursor: pointer;
+  transition: background var(--transition-fast), padding var(--transition-fast);
+}
+
+.films-list__row:hover {
+  background: rgba(255, 255, 255, 0.04);
+  padding-left: 0.9rem;
+}
+
+.films-list__title {
+  font-size: 0.98rem;
+  font-weight: var(--font-weight-medium);
+}
+
+.films-list__row:hover .films-list__title {
+  color: var(--color-hover);
+}
+
+.films-list__type,
+.films-list__date,
+.films-list__role,
+.films-list__status {
+  font-size: 0.72rem;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  opacity: 0.5;
+}
+
+.films-list__type {
+  opacity: 0.7;
+}
+
+.films-list__status {
+  color: var(--color-accent);
+  opacity: 0.85;
+  text-align: right;
+}
+
+@media (max-width: 768px) {
+  .films-list__row {
+    grid-template-columns: 1fr;
+    gap: 0.35rem;
+    padding: 1rem 0.25rem;
+  }
+
+  .films-list__status {
+    text-align: left;
+  }
+}
+
 .films-grid {
   display: grid;
   grid-template-columns: repeat(3, 1fr);

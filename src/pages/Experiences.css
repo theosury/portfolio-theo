@@ -1,0 +1,102 @@
+.experiences-page {
+  background-color: var(--color-bg);
+  min-height: 100vh;
+  padding-top: var(--header-height);
+}
+
+.experiences-container {
+  max-width: 1600px;
+  margin: 0 auto;
+  padding: 0 2rem;
+}
+
+.page-intro {
+  max-width: 40rem;
+  margin: 1.25rem auto 0;
+  font-size: 0.92rem;
+  line-height: 1.6;
+  opacity: 0.55;
+}
+
+.experiences-list {
+  list-style: none;
+  max-width: 52rem;
+  margin: 0 auto;
+  padding: 0 0 5rem;
+}
+
+.experiences-item {
+  padding: 2rem 0;
+  border-top: 1px solid rgba(255, 255, 255, 0.12);
+}
+
+.experiences-item:last-child {
+  border-bottom: 1px solid rgba(255, 255, 255, 0.12);
+}
+
+.experiences-head {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 0.75rem;
+}
+
+.experiences-title {
+  font-size: 1.35rem;
+  font-weight: var(--font-weight-medium);
+  letter-spacing: 0.01em;
+}
+
+.experiences-date {
+  font-size: 0.7rem;
+  text-transform: uppercase;
+  letter-spacing: 0.14em;
+  opacity: 0.45;
+  white-space: nowrap;
+}
+
+.experiences-meta {
+  margin-top: 0.5rem;
+  font-size: 0.74rem;
+  text-transform: uppercase;
+  letter-spacing: 0.12em;
+}
+
+.experiences-role {
+  color: var(--color-accent);
+}
+
+.experiences-sep {
+  margin: 0 0.5rem;
+  opacity: 0.35;
+}
+
+.experiences-prod {
+  opacity: 0.6;
+}
+
+.experiences-desc {
+  margin-top: 0.9rem;
+  max-width: 44rem;
+  font-size: 0.95rem;
+  line-height: 1.65;
+  opacity: 0.8;
+}
+
+.experiences-credits {
+  margin-top: 0.6rem;
+  font-size: 0.82rem;
+  line-height: 1.6;
+  opacity: 0.45;
+}
+
+@media (max-width: 768px) {
+  .experiences-item {
+    padding: 1.6rem 0;
+  }
+
+  .experiences-title {
+    font-size: 1.15rem;
+  }
+}

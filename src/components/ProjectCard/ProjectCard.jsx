@@ -25,10 +25,10 @@ const ProjectCard = ({ project, onClick }) => {
             <span className="project-card__separator">•</span>
             <span className="project-card__role">{project.role}</span>
             
-            {project.status === 'En post-production' && (
+            {project.status && (
               <>
                 <span className="project-card__separator">•</span>
-                <span className="project-card__status">{project.status}</span>
+                <span className="project-card__status" data-status={project.status}>{project.status}</span>
               </>
             )}
           </div>

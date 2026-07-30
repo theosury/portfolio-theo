@@ -5,7 +5,7 @@ import './Home.css';
 
 const Home = () => {
   useEffect(() => {
-    document.title = 'Théo Sury — Chef-opérateur & Électricien (Lille/Paris)';
+    document.title = 'Théo Sury | Chef-opérateur & Électricien (Lille/Paris)';
   }, []);
 
   return (

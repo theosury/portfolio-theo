@@ -968,6 +968,10 @@ export const projectsData = {
         production: 'VHS Prod',
         thumbnail: '/images/azincourt-thumb.jpg',
         status: 'En post-production',
+        plateau: {
+          titre: 'Sur le plateau',
+          photos: Array.from({ length: 3 }, (_, i) => `/images/azincourt-plateau/azincourt-plateau-${i + 1}.jpg`),
+        },
         images: [],
         specs: {
           format: 'Court-métrage médiéval',
@@ -1008,6 +1012,10 @@ export const projectsData = {
         monteurSon: 'Matthis Geffroy',
         thumbnail: '/images/jugement-dernier-thumb.jpg',
         status: 'En post-production',
+        plateau: {
+          titre: 'Sur le plateau',
+          photos: Array.from({ length: 3 }, (_, i) => `/images/jugement-dernier-plateau/jugement-dernier-plateau-${i + 1}.jpg`),
+        },
         images: [],
         specs: {
           format: 'Clip',

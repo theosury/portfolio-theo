@@ -50,9 +50,9 @@ export const ordreManuel = [
   'vagues',              // Ce que laissent les vagues (cadre)
   'ziak-feng-shui',      // électro : faisceaux, lumière au pupitre
   'casse-cest-casse',    // électro : cheval sous la pluie, colombe dans la fumée
-  'quand-son-souffle',   // contre-jours, forêt, soleil couchant
   'the-right-choice',    // chef électro, plus petit projet : tunnel, pyrotechnie
   'insipide',            // réalisation
+  'quand-son-souffle',   // contre-jours, forêt, soleil couchant
   'tecnomat',            // pub TV
   'armanaque',
   'bureau-du-karma',
@@ -1450,16 +1450,9 @@ export const projectsData = {
       year: '2026',
       role: 'Road',
       duree: 'Depuis juin 2026',
-      description: 'Montage, exploitation et démontage sur des concerts et des festivals : Main Square Festival 2026, PLK au Stade de France et Taratata au Zénith de Paris.',
+      description: 'Montage, exploitation et démontage sur des concerts et des festivals.',
+      couverture: 2,
       photos: Array.from({ length: 6 }, (_, i) => `/images/experiences/veronne-production/${i + 1}`)
-    },
-    {
-      id: 'alive-production',
-      title: 'Alive Production',
-      year: '2026',
-      role: 'Road',
-      duree: '2026',
-      description: 'Prestation événementielle.'
     },
     {
       id: 'panavision',
@@ -1469,18 +1462,19 @@ export const projectsData = {
       role: 'Stagiaire caméra',
       production: 'Panavision ALGA',
       duree: '3 mois',
-      description: 'Stage de trois mois au magasin et au service filtres. Vérification et maintenance des accessoires caméra et des filtres, gestion du stock, préparation des commandes et configuration caméra.',
+      description: 'Stage au magasin et au service filtres : préparation, maintenance et configuration caméra.',
+      couverture: 1,
       photos: Array.from({ length: 5 }, (_, i) => `/images/experiences/panavision/${i + 1}`)
     },
     {
       id: 'dixit-afdas',
-      logo: '/images/logos/afdas.svg',
       title: 'DIXIT',
       year: '2025',
       role: 'Assistant technique (cadre, lumière, régie)',
       production: 'AFDAS',
       duree: 'Janvier & juin 2025',
-      description: 'Captation de sessions de formation à la direction d\'acteur, sur deux périodes.',
+      description: 'Captation de sessions de formation à la direction d\'acteur.',
+      couverture: 1,
       photos: Array.from({ length: 4 }, (_, i) => `/images/experiences/dixit-afdas/${i + 1}`)
     },
     {
@@ -1493,26 +1487,26 @@ export const projectsData = {
       directeursPhoto: 'William Hulin & Hervé Lodé',
       production: 'TELSETE pour TF1',
       duree: '1 mois, 2 sessions',
-      description: 'Assistanat caméra sur la série quotidienne de TF1, en équipe avec les directeurs photo William Hulin et Hervé Lodé.',
+      description: 'Assistanat caméra sur la série quotidienne de TF1.',
+      couverture: 3,
       photos: Array.from({ length: 4 }, (_, i) => `/images/experiences/dna/${i + 1}`)
     },
     {
       id: 'darwin-experience',
-      logo: '/images/logos/cnc.svg',
       title: 'Darwin Experience',
       year: '2025',
       role: 'Photographe & making-of',
       production: 'PRISM, avec le soutien du CNC',
       duree: 'Janvier 2025, 3 jours au Havre',
-      description: 'Captation et montage du making-of de l\'EP « Home » du groupe Darwin Experience, sur le tournage de ses quatre clips.',
+      description: 'Making-of du tournage des quatre clips de l\'EP « Home ».',
       realisateurs: 'Martin Schrepel',
       directeursPhoto: 'Grégoire Léon-Dufour',
       // Mes making-of (format vertical) ; les clips eux-mêmes en lien, au clic
       makingOf: [
-        { file: '/videos/darwin-making-automatic-doors.mp4', title: 'Automatic Doors', clip: '89fB1I9N_1o' },
-        { file: '/videos/darwin-making-home.mp4', title: 'Home', clip: 'aKJyRwJYJXI' },
-        { file: '/videos/darwin-making-i-killed-you.mp4', title: 'I Killed You', clip: 'SQz6HeVUkfA' },
-        { file: '/videos/darwin-making-just-want-to-dance.mp4', title: 'Just Want To Dance', clip: 'U5DOOxT_HKU' },
+        { boucle: '/videos/darwin-boucle-automatic-doors', file: '/videos/darwin-making-automatic-doors.mp4', title: 'Automatic Doors', clip: '89fB1I9N_1o' },
+        { boucle: '/videos/darwin-boucle-home', file: '/videos/darwin-making-home.mp4', title: 'Home', clip: 'aKJyRwJYJXI' },
+        { boucle: '/videos/darwin-boucle-i-killed-you', file: '/videos/darwin-making-i-killed-you.mp4', title: 'I Killed You', clip: 'SQz6HeVUkfA' },
+        { boucle: '/videos/darwin-boucle-just-want-to-dance', file: '/videos/darwin-making-just-want-to-dance.mp4', title: 'Just Want To Dance', clip: 'U5DOOxT_HKU' },
       ],
     },
     {
@@ -1523,6 +1517,7 @@ export const projectsData = {
       production: 'Noctem Events',
       duree: '2 événements',
       description: 'Photographie de soirées, en conditions de très faible lumière.',
+      couverture: 1,
       // Quelques photos de soirée (vignette + original en plein écran)
       photos: Array.from({ length: 12 }, (_, i) => `/images/noctem/noctem-${i + 1}`)
     }

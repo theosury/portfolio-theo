@@ -1,37 +1,27 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { projectsData, projetsSecondaires } from '../data/projectsData';
-import ProjectCard from '../components/ProjectCard/ProjectCard';
+import Defile from '../components/Defile/Defile';
 import './Films.css';
 
 const estSecondaire = (film) => projetsSecondaires.includes(film.id);
 
-const Films = () => {
+
+const Films = ({ dansAccueil = false }) => {
   const navigate = useNavigate();
-  const [montrerEnCours, setMontrerEnCours] = useState(false);
 
   useEffect(() => {
-    document.title = 'Films | Théo Sury';
-  }, []);
+    if (!dansAccueil) document.title = 'Films | Théo Sury';
+  }, [dansAccueil]);
 
   const handleProjectClick = (project) => {
+    // La croix de la fiche ramènera ici, à cet endroit de la page
+    try { sessionStorage.setItem('retourAccueil', String(window.scrollY)); } catch { /* stockage indisponible */ }
     navigate(`/films/${project.id}`);
   };
 
   const filmsPrincipaux = projectsData.films.filter((film) => !estSecondaire(film));
   const filmsSecondaires = projectsData.films.filter(estSecondaire);
-
-  const renderGrille = (films) => (
-    <div className="films-grid">
-      {films.map((film) => (
-        <ProjectCard
-          key={film.id}
-          project={film}
-          onClick={() => handleProjectClick(film)}
-        />
-      ))}
-    </div>
-  );
 
   // Les projets de second plan sont listés, pas exposés en cartes
   const renderListe = (films) => (
@@ -58,28 +48,34 @@ const Films = () => {
 
   return (
     <div className="films-page">
+      <header className="page-header-unified">
+        <h1 className="page-title-unified">Films</h1>
+      </header>
+      {/* Films terminés, dans l'ordre choisi (les plus forts d'abord), puis ceux en cours */}
+      <Defile films={filmsPrincipaux.filter((f) => !f.status)} onOuvrir={handleProjectClick} />
+
+      {filmsPrincipaux.some((f) => f.status) && (
+        <>
+          <header className="page-header-unified films-sous-titre">
+            <h2 className="page-title-unified">En cours</h2>
+            <p className="page-intro">En post-production.</p>
+          </header>
+          <Defile films={filmsPrincipaux.filter((f) => f.status)} onOuvrir={handleProjectClick} />
+        </>
+      )}
+
       <div className="films-container">
-        <header className="page-header-unified">
-          <h2 className="page-title-unified">Films</h2>
-        </header>
 
-        {renderGrille(filmsPrincipaux)}
 
+        {/* Tous les autres tournages, toujours visibles : ils montrent le volume de travail */}
         {filmsSecondaires.length > 0 && (
-          <div className="films-encours">
-            <button
-              type="button"
-              className="films-encours__toggle"
-              onClick={() => setMontrerEnCours((v) => !v)}
-              aria-expanded={montrerEnCours}
-            >
-              {montrerEnCours
-                ? 'Masquer les autres projets'
-                : `Voir les ${filmsSecondaires.length} autres projets`}
-            </button>
-
-            {montrerEnCours && renderListe(filmsSecondaires)}
-          </div>
+          <section className="films-autres">
+            <header className="page-header-unified films-sous-titre">
+              <h2 className="page-title-unified">Autres tournages</h2>
+              <p className="page-intro">{filmsSecondaires.length} projets, du court-métrage à la publicité.</p>
+            </header>
+            {renderListe(filmsSecondaires)}
+          </section>
         )}
       </div>
     </div>

@@ -1,37 +1,13 @@
 import React, { useState, useEffect } from 'react';
+import { photos as listePhotos } from '../../data/photosData';
 import './Photos.css';
 
+const nomBase = (f) => f.replace(/\.[^.]+$/, '');
+
 function Photos() {
-  const [photos, setPhotos] = useState([]);
+  const photos = listePhotos.map((p) => `/images/photos/${p.fichier}`);
   const [lightboxOpen, setLightboxOpen] = useState(false);
   const [currentIndex, setCurrentIndex] = useState(0);
-
-  // Fonction pour mélanger un tableau (algorithme Fisher-Yates)
-  const shuffleArray = (array) => {
-    const shuffled = [...array];
-    for (let i = shuffled.length - 1; i > 0; i--) {
-      const j = Math.floor(Math.random() * (i + 1));
-      [shuffled[i], shuffled[j]] = [shuffled[j], shuffled[i]];
-    }
-    return shuffled;
-  };
-
-  useEffect(() => {
-    // Charge automatiquement toutes les images du dossier /images/photos/
-    const imageModules = import.meta.glob('/public/images/photos/*.{jpg,jpeg,png,webp,JPG,JPEG,PNG,WEBP}', {
-      eager: true,
-      as: 'url'
-    });
-
-    const imageUrls = Object.keys(imageModules).map(path => {
-      // Convertit le chemin /public/images/photos/photo.jpg en /images/photos/photo.jpg
-      return path.replace('/public', '');
-    });
-
-    // Mélange les photos de façon aléatoire
-    const shuffledPhotos = shuffleArray(imageUrls);
-    setPhotos(shuffledPhotos);
-  }, []);
 
   // Gestion du scroll du body via useEffect
   useEffect(() => {
@@ -80,21 +56,32 @@ function Photos() {
     <section id="photographie" className="photos-section">
       <div className="container">
         <header className="page-header-unified">
-          <h2 className="page-title-unified">Photos</h2>
+          <h1 className="page-title-unified">Photos</h1>
         </header>
 
+        <p className="page-intro">
+          Des photographies plus anciennes, argentiques et numériques, prises avant et en marge des tournages.
+        </p>
+
+        {/* Mosaïque : chaque photo garde son format */}
         <div className="photos-grid" role="list">
-          {photos.map((photo, index) => (
-            <div
-              key={index}
+          {listePhotos.map((photo, index) => (
+            <button
+              key={photo.fichier}
+              type="button"
               className="photo-item"
               role="listitem"
-              tabIndex={0}
+              style={{ aspectRatio: `${photo.largeur} / ${photo.hauteur}` }}
               onClick={() => openLightbox(index)}
-              onKeyDown={(e) => { if (e.key === 'Enter') openLightbox(index); }}
+              aria-label={`Agrandir la photographie ${index + 1}`}
             >
-              <img src={photo} alt={`Photographie ${index + 1}`} loading="lazy" />
-            </div>
+              <img
+                src={`/images/photos/vignettes/${nomBase(photo.fichier)}.jpg`}
+                alt={`Photographie ${index + 1}`}
+                loading="lazy"
+                onLoad={(e) => e.currentTarget.classList.add('chargee')}
+              />
+            </button>
           ))}
         </div>
 

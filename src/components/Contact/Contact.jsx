@@ -1,5 +1,6 @@
 import React from 'react';
 import { aboutData } from '../../data/projectsData';
+import { IconeInstagram, IconeLinkedin } from '../Icones';
 import './Contact.css';
 
 const Contact = () => {
@@ -7,7 +8,7 @@ const Contact = () => {
     <section className="contact-section" id="contact">
       <div className="contact-container">
         <header className="page-header-unified">
-          <h2 className="page-title-unified">Contact</h2>
+          <h1 className="page-title-unified">Contact</h1>
         </header>
 
         <div className="contact__content">
@@ -15,63 +16,48 @@ const Contact = () => {
             Intéressé par une collaboration ? N'hésitez pas à me contacter.
           </p>
 
-          <div className="contact__methods">
+          {/* Le mail et le téléphone en grand, les réseaux en dessous */}
+          <div className="contact__principal">
             {aboutData.contact.email && (
-              <a 
-                href={`mailto:${aboutData.contact.email}`}
-                className="contact__method"
-              >
-                <span className="contact__method-label">Email</span>
-                <span className="contact__method-value">{aboutData.contact.email}</span>
+              <a href={`mailto:${aboutData.contact.email}`} className="contact__grand">
+                {aboutData.contact.email}
               </a>
             )}
-
             {aboutData.contact.phone && (
-              <a 
-                href={`tel:${aboutData.contact.phone}`}
-                className="contact__method"
-              >
-                <span className="contact__method-label">Téléphone</span>
-                <span className="contact__method-value">{aboutData.contact.phone}</span>
+              <a href={`tel:${aboutData.contact.phone.replace(/\s/g, '')}`} className="contact__grand contact__grand--tel">
+                {aboutData.contact.phone}
               </a>
             )}
+          </div>
 
+          <div className="contact__reseaux">
             {aboutData.contact.instagram && (
-              <a 
+              <a
                 href={`https://instagram.com/${aboutData.contact.instagram.replace('@', '')}`}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="contact__method"
+                className="contact__reseau"
               >
-                <span className="contact__method-label">Instagram</span>
-                <span className="contact__method-value">{aboutData.contact.instagram}</span>
+                <IconeInstagram taille={22} />
+                <span>Instagram</span>
               </a>
             )}
-
             {aboutData.contact.vimeo && (
-              <a 
-                href={`https://vimeo.com/${aboutData.contact.vimeo}`}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="contact__method"
-              >
-                <span className="contact__method-label">Vimeo</span>
-                <span className="contact__method-value">{aboutData.contact.vimeo}</span>
+              <a href={`https://vimeo.com/${aboutData.contact.vimeo}`} target="_blank" rel="noopener noreferrer" className="lien-souligne">
+                Vimeo
               </a>
             )}
-
             {aboutData.contact.linkedin && (
-              <a 
+              <a
                 href={`https://linkedin.com/in/${aboutData.contact.linkedin.replace('@', '')}`}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="contact__method"
+                className="contact__reseau"
               >
-                <span className="contact__method-label">Linkedin</span>
-                <span className="contact__method-value">{aboutData.contact.linkedin}</span>
+                <IconeLinkedin taille={22} />
+                <span>LinkedIn</span>
               </a>
             )}
-
           </div>
 
           <p className="contact__pratique">{aboutData.pratique.join(' · ')}</p>

@@ -7,50 +7,64 @@
   background: #000000;
 }
 
-.photos-section .page-header-unified {
-  text-align: center;
-  padding: 3rem 0;
-}
 
-.photos-section .page-title-unified {
-  font-family: var(--font-main);
-  font-size: 2.2rem;
-  font-weight: 400;
-  text-transform: uppercase;
-  letter-spacing: 0.25em;
-  color: var(--color-text);
-}
 
 /* ===================================
    GRILLE DE PHOTOS
    =================================== */
 
 .photos-grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
-  gap: 1.5rem;
-  width: 100%;
+  columns: 3 320px;
+  column-gap: 1rem;
+  max-width: 1500px;
+  margin: 2.5rem auto 0;
+  padding: 0 clamp(1rem, 3vw, 2.5rem) 5rem;
 }
 
 .photo-item {
-  position: relative;
-  aspect-ratio: 1;
+  display: block;
+  width: 100%;
+  margin: 0 0 1rem;
+  padding: 0;
+  border: 0;
   overflow: hidden;
-  cursor: pointer;
-  background: #111;
-  border-radius: 12px;
+  background: #0d0d0d;
+  break-inside: avoid;
+  cursor: zoom-in;
 }
 
 .photo-item img {
+  display: block;
   width: 100%;
   height: 100%;
   object-fit: cover;
-  transition: transform 0.3s ease, opacity 0.3s ease;
+  opacity: 0;
+  transform: scale(1.02);
+  transition: opacity 0.8s ease, transform 1.2s cubic-bezier(0.2, 0.7, 0.2, 1);
 }
 
-.photo-item:hover img {
-  transform: scale(1.05);
-  opacity: 0.85;
+.photo-item img.chargee {
+  opacity: 0.92;
+  transform: none;
+}
+
+.photo-item:hover img.chargee {
+  opacity: 1;
+  transform: scale(1.03);
+}
+
+.photos-section .page-intro {
+  text-align: center;
+}
+
+@media (max-width: 700px) {
+  .photos-grid {
+    columns: 2;
+    column-gap: 0.5rem;
+  }
+  .photo-item {
+    margin-bottom: 0.5rem;
+  }
 }
 
 /* Message si pas de photos */
@@ -65,7 +79,7 @@
   background: #1a1a1a;
   padding: 0.2rem 0.6rem;
   border-radius: 4px;
-  color: #ff3b3b;
+  color: var(--color-accent);
   font-family: 'Courier New', monospace;
 }
 
@@ -83,7 +97,7 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  z-index: 9999;
+  z-index: 10001;
   padding: 2rem;
   cursor: zoom-out;
 }
@@ -108,7 +122,7 @@
   color: #fff;
   font-size: 2.5rem;
   cursor: pointer;
-  z-index: 10000;
+  z-index: 10002;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -135,7 +149,7 @@
   color: #fff;
   font-size: 3rem;
   cursor: pointer;
-  z-index: 10000;
+  z-index: 10002;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -168,7 +182,7 @@
   padding: 0.5rem 1.5rem;
   border-radius: 2rem;
   font-size: 0.9rem;
-  z-index: 10000;
+  z-index: 10002;
   backdrop-filter: blur(10px);
 }
 

@@ -10,21 +10,7 @@
   padding: 0 2rem;
 }
 
-.page-header-unified {
-  text-align: center;
-  padding: 3rem 0;
-}
-
-.page-title-unified {
-  font-family: var(--font-main);
-  font-size: 2.2rem;
-  font-weight: 400;
-  text-transform: uppercase;
-  letter-spacing: 0.25em;
-  color: var(--color-text);
-}
-
-/* Révélation des projets en cours, après la grille */
+/* Révélation des autres projets, après le défilé */
 .films-encours {
   padding-bottom: 5rem;
 }
@@ -53,6 +39,12 @@
 }
 
 /* Liste des projets de second plan */
+.films-autres {
+  max-width: 1500px;
+  margin: 0 auto;
+  padding: 0 0 6rem;
+}
+
 .films-list {
   list-style: none;
   margin: 0;
@@ -83,8 +75,10 @@
 }
 
 .films-list__title {
-  font-size: 0.98rem;
-  font-weight: var(--font-weight-medium);
+  font-family: var(--font-display);
+  font-size: 1.45rem;
+  font-weight: 400;
+  line-height: 1.15;
 }
 
 .films-list__row:hover .films-list__title {
@@ -136,4 +130,12 @@
 
 @media (max-width: 768px) {
   .films-grid { grid-template-columns: 1fr; }
+}
+/* Titre de la section « En cours » */
+.films-sous-titre {
+  padding-top: 1rem;
+}
+
+.films-sous-titre .page-title-unified {
+  font-size: clamp(1.8rem, 3.5vw, 2.6rem);
 }

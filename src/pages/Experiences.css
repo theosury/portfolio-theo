@@ -10,50 +10,53 @@
   padding: 0 2rem;
 }
 
-.page-intro {
-  max-width: 40rem;
-  margin: 1.25rem auto 0;
-  font-size: 0.92rem;
-  line-height: 1.6;
-  opacity: 0.55;
-}
 
 .experiences-list {
   list-style: none;
-  max-width: 52rem;
+  max-width: 60rem;
   margin: 0 auto;
   padding: 0 0 5rem;
 }
 
 .experiences-item {
-  padding: 2rem 0;
-  border-top: 1px solid rgba(255, 255, 255, 0.12);
+  display: grid;
+  grid-template-columns: 9rem 1fr;
+  gap: 2rem;
+  padding: 2.5rem 0;
+  border-top: 1px solid rgba(255, 255, 255, 0.1);
 }
 
 .experiences-item:last-child {
-  border-bottom: 1px solid rgba(255, 255, 255, 0.12);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
 }
 
-.experiences-head {
+.experiences-quand {
   display: flex;
-  flex-wrap: wrap;
-  align-items: baseline;
-  justify-content: space-between;
-  gap: 0.75rem;
+  flex-direction: column;
+  gap: 0.4rem;
+}
+
+.experiences-annee {
+  font-family: var(--font-display);
+  font-size: 2.4rem;
+  line-height: 1;
+  opacity: 0.9;
 }
 
 .experiences-title {
-  font-size: 1.35rem;
-  font-weight: var(--font-weight-medium);
-  letter-spacing: 0.01em;
+  font-family: var(--font-display);
+  font-size: clamp(1.8rem, 3vw, 2.4rem);
+  font-weight: 400;
+  line-height: 1.05;
+  letter-spacing: 0;
 }
 
 .experiences-date {
-  font-size: 0.7rem;
+  font-size: 0.68rem;
   text-transform: uppercase;
-  letter-spacing: 0.14em;
+  letter-spacing: 0.16em;
+  line-height: 1.5;
   opacity: 0.45;
-  white-space: nowrap;
 }
 
 .experiences-meta {
@@ -91,12 +94,176 @@
   opacity: 0.45;
 }
 
+.experiences-making {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 0.75rem;
+  margin-top: 1.4rem;
+}
+
+.experiences-making figure {
+  margin: 0;
+}
+
+/* En plein écran, la vidéo entière (sans recadrage) sur fond noir */
+.experiences-making video:fullscreen {
+  object-fit: contain;
+  border-radius: 0;
+  background: #000;
+}
+
+.experiences-making video:-webkit-full-screen {
+  object-fit: contain;
+  border-radius: 0;
+  background: #000;
+}
+
+.experiences-making video {
+  display: block;
+  width: 100%;
+  aspect-ratio: 9 / 16;
+  object-fit: cover;
+  border-radius: 4px;
+  background: #0d0d0d;
+}
+
+.experiences-making figcaption {
+  display: flex;
+  flex-direction: column;
+  gap: 0.15rem;
+  margin-top: 0.5rem;
+  font-size: 0.78rem;
+}
+
+.experiences-making figcaption a {
+  color: var(--color-text);
+  font-size: 0.68rem;
+  text-transform: uppercase;
+  letter-spacing: 0.15em;
+  text-decoration: none;
+  opacity: 0.55;
+}
+
+.experiences-making figcaption a:hover {
+  opacity: 1;
+}
+
+/* Photos d'une expérience */
+.experiences-photos {
+  display: grid;
+  grid-template-columns: repeat(var(--colonnes, 3), minmax(0, 1fr));
+  gap: 0.5rem;
+  margin-top: 1.4rem;
+}
+
+.experiences-photos button {
+  padding: 0;
+  border: 0;
+  background: #0d0d0d;
+  overflow: hidden;
+  border-radius: 4px;
+  cursor: zoom-in;
+}
+
+.experiences-photos img {
+  display: block;
+  width: 100%;
+  aspect-ratio: 3 / 2;
+  object-fit: cover;
+  transition: transform 0.8s cubic-bezier(0.2, 0.7, 0.2, 1);
+}
+
+.experiences-photos button:hover img {
+  transform: scale(1.04);
+}
+
+/* Visionneuse plein écran */
+.experiences-visionneuse {
+  position: fixed;
+  inset: 0;
+  z-index: 10001;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 2rem;
+  background: rgba(0, 0, 0, 0.95);
+  cursor: zoom-out;
+}
+
+.experiences-visionneuse img {
+  max-width: 100%;
+  max-height: 100%;
+  object-fit: contain;
+  cursor: default;
+}
+
+.experiences-visionneuse__nav,
+.experiences-visionneuse__fermer {
+  position: fixed;
+  border: 0;
+  background: none;
+  color: #fff;
+  font-size: 2.6rem;
+  line-height: 1;
+  cursor: pointer;
+  opacity: 0.7;
+}
+
+.experiences-visionneuse__nav:hover,
+.experiences-visionneuse__fermer:hover {
+  opacity: 1;
+}
+
+.experiences-visionneuse__nav { top: 50%; transform: translateY(-50%); padding: 1rem; }
+.experiences-visionneuse__nav.prec { left: 1rem; }
+.experiences-visionneuse__nav.suiv { right: 1rem; }
+.experiences-visionneuse__fermer { top: 1.2rem; right: 1.5rem; }
+
 @media (max-width: 768px) {
-  .experiences-item {
-    padding: 1.6rem 0;
+  .experiences-making,
+  .experiences-photos {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
   }
 
-  .experiences-title {
-    font-size: 1.15rem;
+  .experiences-item {
+    grid-template-columns: 1fr;
+    gap: 0.8rem;
+    padding: 2rem 0;
   }
+
+  .experiences-quand {
+    flex-direction: row;
+    align-items: baseline;
+    gap: 0.75rem;
+  }
+
+  .experiences-annee {
+    font-size: 1.6rem;
+  }
+}
+
+.experiences-entete {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1.5rem;
+}
+
+.experiences-logo {
+  height: 22px;
+  width: auto;
+  max-width: 120px;
+  object-fit: contain;
+  opacity: 0.6;
+}
+
+/* Première photo en grand quand le nombre de photos ne remplit pas la grille */
+.experiences-photos--grande button:first-child {
+  grid-column: span 2;
+  grid-row: span 2;
+}
+
+.experiences-photos--grande button:first-child img {
+  height: 100%;
+  aspect-ratio: auto;
 }

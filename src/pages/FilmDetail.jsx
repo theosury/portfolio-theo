@@ -1,7 +1,22 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
-import { projectsData } from '../data/projectsData';
+import { projectsData, projetsSecondaires } from '../data/projectsData';
 import './FilmDetail.css';
+
+// Même ordre que sur l'accueil : films terminés, en cours, puis autres tournages
+const estSecondaire = (film) => projetsSecondaires.includes(film.id);
+const ORDRE_FILMS = [
+  ...projectsData.films.filter((f) => !estSecondaire(f) && !f.status),
+  ...projectsData.films.filter((f) => !estSecondaire(f) && f.status),
+  ...projectsData.films.filter(estSecondaire),
+];
+
+// Retour à l'accueil, là où l'on était avant d'ouvrir la fiche (sinon : section Films)
+const retourAccueil = (navigate) => {
+  let y = null;
+  try { y = sessionStorage.getItem('retourAccueil'); } catch { /* stockage indisponible */ }
+  navigate('/', { state: y !== null ? { retourY: Number(y) } : { section: 'films' } });
+};
 
 const FilmDetail = () => {
   const { slug } = useParams();
@@ -23,26 +38,47 @@ const FilmDetail = () => {
   // Si projet introuvable, rediriger vers /films
   useEffect(() => {
     if (!project) {
-      navigate('/films');
+      navigate('/', { state: { section: 'films' } });
     }
   }, [project, navigate]);
 
-  // Fermer avec la touche Escape
+  // Nouvelle fiche : on repart du premier visuel
+  useEffect(() => {
+    setCurrentImageIndex(0);
+    setCurrentVideoIndex(0);
+    setShowImageModal(false);
+  }, [slug]);
+
+  const position = ORDRE_FILMS.findIndex((f) => f.id === slug);
+  const precedent = position >= 0 ? ORDRE_FILMS[(position - 1 + ORDRE_FILMS.length) % ORDRE_FILMS.length] : null;
+  const suivant = position >= 0 ? ORDRE_FILMS[(position + 1) % ORDRE_FILMS.length] : null;
+
+  // Fermer avec Échap ; flèches gauche/droite pour passer d'un projet à l'autre
   useEffect(() => {
     const handleEscape = (e) => {
+      const modaleOuverte = document.querySelector('.image-modal-overlay');
+      if (!modaleOuverte && !e.metaKey && !e.altKey && !e.ctrlKey && /^(INPUT|TEXTAREA)$/.test(e.target.tagName) === false) {
+        if (e.key === 'ArrowLeft' && precedent) navigate(`/films/${precedent.id}`);
+        if (e.key === 'ArrowRight' && suivant) navigate(`/films/${suivant.id}`);
+      }
       if (e.key === 'Escape') {
         if (showImageModal) {
           setShowImageModal(false);
         } else {
-          navigate('/films');
+          retourAccueil(navigate);
         }
       }
     };
     window.addEventListener('keydown', handleEscape);
     return () => window.removeEventListener('keydown', handleEscape);
-  }, [navigate, showImageModal]);
+  }, [navigate, showImageModal, precedent, suivant]);
 
   if (!project) return null;
+
+  // Les extraits en boucle, en grille. Celui qui sert d'aperçu au lecteur
+  // YouTube n'est pas répété ; Feng Shui a déjà sa propre grille d'extraits.
+  const boucleEnTete = !hasMultipleVideosFor(project) && !project.videoFile && project.youtubeId;
+  const boucles = project.extraits ? [] : (project.boucles || []).slice(boucleEnTete ? 1 : 0);
 
   const hasImages = project.images && project.images.length > 0;
   // La vignette générique ne vaut pas un visuel : inutile d'ouvrir la fiche
@@ -111,7 +147,7 @@ const FilmDetail = () => {
     }
 
     if (project.youtubeId) {
-      return <YouTubePlayer videoId={project.youtubeId} title={project.title} />;
+      return <YouTubePlayer videoId={project.youtubeId} title={project.title} boucle={project.boucles?.[0] || project.boucle} />;
     }
     
     if (project.vimeoId) {
@@ -226,9 +262,9 @@ const FilmDetail = () => {
     <>
       <div className="film-detail">
         <div className="film-detail__container">
-          <button className="film-detail__close" onClick={() => navigate('/films')} aria-label="Retour aux films">×</button>
+          <button className="film-detail__close" onClick={() => retourAccueil(navigate)} aria-label="Fermer la fiche">×</button>
           
-          <div className="film-detail__content">
+          <div className="film-detail__content" key={project.id}>
             {/* Vidéo(s) ou Images */}
             {hasMultipleVideos ? (
               <>
@@ -319,127 +355,51 @@ const FilmDetail = () => {
                 <p className="film-detail__synopsis">{project.synopsis}</p>
               )}
 
+              {boucles.length > 0 && (
+                <div className="film-detail__extraits">
+                  <h3>Extraits</h3>
+                  <ExtraitsGrille
+                    extraits={{ videos: boucles }}
+                    ratio={project.boucleRatio}
+                  />
+                </div>
+              )}
+
+              {/* Extraits vidéo (grille, ex. post Instagram de la prod) */}
+              {project.extraits && (
+                <div className="film-detail__extraits">
+                  <h3>{project.extraits.titre}</h3>
+                  <ExtraitsGrille key={project.id} extraits={project.extraits} />
+                </div>
+              )}
+
+              {/* Photos de plateau (grille, ouverture en grand au clic) */}
+              {project.plateau && (
+                <div className="film-detail__extraits">
+                  <h3>{project.plateau.titre}</h3>
+                  <PhotosPlateau key={project.id} plateau={project.plateau} titre={project.title} />
+                </div>
+              )}
+
               {/* Specs techniques */}
               {project.specs && Object.keys(project.specs).length > 0 && (
                 <div className="film-detail__specs">
                   <h3>Informations techniques</h3>
                   <ul>
                     {Object.entries(project.specs).map(([key, value]) => (
-                      value && <li key={key}><strong>{key}:</strong> {value}</li>
+                      value && (
+                        <li key={key}>
+                          <strong>{LIBELLES_SPECS[key] || key}</strong>
+                          <span>{value}</span>
+                        </li>
+                      )
                     ))}
                   </ul>
                 </div>
               )}
 
-              {/* Équipe */}
-              {(() => {
-              const teamFields = [
-                'artiste', 'realisateur', 'realisateurs', 'realisatrice', 'realisatrices', 'scenariste', 'dirProd', 'producteur', 'chargeeProd',
-                'premierAssRealPrepa', 'premierAssReal', 'secondAssReal', 'troisiemeAssistantReal', 'script', 'scripte', 'choregraphe',
-                'chefOp', 'cheffeOp', 'coChefOp', 'cadreur', 'cadreurB', 'assistantCam', 'secondAssistantCam', 'troisiemeAssistantCam',
-                'dit', 'steadicam', 'photo', 'chefElectro', 'chefElectroRenfort', 'electros', 'chefMachino', 'cheffeMachino',
-                'machino', 'machinos', 'assistantMachino', 'renforts', 'son', 'assistantSon', 'assistantsSon', 'perchman', 'mixage', 'soundDesign', 'musique', 'monteurSon',
-                'monteur', 'montageSon', 'etalonneur', 'vfx', 'graphisme', 'generique',
-                'directionArtistique', 'directriceArtistique', 'assDirectriceArtistique', 'cheffeDecoratrice', 'assistanteDecoratrice',
-                'deco', 'renfortDeco', 'accessoiriste', 'costume', 'costumiere', 'chefHMC', 'maquillage',
-                'coiffure', 'regisseur', 'regisseurs', 'regisseurGeneral', 'assistRegie', 'prodExec',
-                'assistProd', 'stagiaires', 'conseillereMontage', 'mastering', 'casting', 'cadreuse', 'concept',
-                'coordinatriceIntimite', 'responsableSecurite'
-              ];
-                const hasTeamInfo = teamFields.some(field => project[field]);
-                return hasTeamInfo;
-              })() && (
-                <div className="film-detail__team">
-                  <h3>Équipe</h3>
-                  <ul>
-                    {Object.entries({
-                      artiste: "Artiste",
-                      realisateur: "Réalisation",
-                      realisateurs: "Réalisation",
-                      realisatrice: "Réalisation",
-                      realisatrices: "Réalisation",
-                      scenariste: "Scénario",
-                      dirProd: "Direction de production",
-                      producteur: "Producteur",
-                      chargeeProd: "Chargée de production",
-                      premierAssRealPrepa: "1er assistant réalisation (préparation)",
-                      premierAssReal: "1er assistant réalisation",
-                      secondAssReal: "2ème assistant réalisation",
-                      troisiemeAssistantReal: "3ème assistant réalisation",
-                      script: "Script",
-                      scripte: "Scripte",
-                      choregraphe: "Chorégraphe",
-                      chefOp: "Chef opérateur",
-                      cheffeOp: "Cheffe opératrice",
-                      coChefOp: "Co-chef opérateur",
-                      cadreur: "Cadreur",
-                      cadreurB: "Cadreur caméra B",
-                      assistantCam: "1er assistant caméra",
-                      secondAssistantCam: "2ème assistant caméra",
-                      troisiemeAssistantCam: "3ème assistant caméra",
-                      dit: "DIT",
-                      steadicam: "Steadicam",
-                      photo: "Photographe plateau",
-                      chefElectro: "Chef électricien",
-                      chefElectroRenfort: "Chef électricien renfort",
-                      electros: "Électriciens",
-                      chefMachino: "Chef machiniste",
-                      cheffeMachino: "Cheffe machiniste",
-                      machino: "Machiniste",
-                      machinos: "Machinistes",
-                      assistantMachino: "Assistant machiniste",
-                      renforts: "Renforts",
-                      son: "Prise de son",
-                      assistantSon: "Assistant son",
-                      assistantsSon: "Assistants son",
-                      perchman: "Perchman",
-                      mixage: "Mixage",
-                      soundDesign: "Sound design",
-                      musique: "Musique originale",
-                      monteurSon: "Monteur son",
-                      monteur: "Montage image",
-                      montageSon: "Montage son",
-                      etalonneur: "Étalonnage",
-                      vfx: "VFX",
-                      graphisme: "Graphisme",
-                      generique: "Générique",
-                      directionArtistique: "Direction artistique",
-                      directriceArtistique: "Directrice artistique",
-                      assDirectriceArtistique: "Assistante direction artistique",
-                      cheffeDecoratrice: "Cheffe décoratrice",
-                      assistanteDecoratrice: "Assistante décoration",
-                      deco: "Décoration",
-                      renfortDeco: "Renfort décoration",
-                      accessoiriste: "Accessoiriste",
-                      costume: "Costume",
-                      costumiere: "Costumière",
-                      chefHMC: "Chef HMC",
-                      maquillage: "Maquillage",
-                      coiffure: "Coiffure",
-                      regisseur: "Régisseur général",
-                      regisseurs: "Régie",
-                      regisseurGeneral: "Régie générale",
-                      assistRegie: "Assistant régie",
-                      prodExec: "Production exécutive",
-                      assistProd: "Assistant production",
-                      stagiaires: "Stagiaires",
-                      conseillereMontage: "Conseillère montage",
-                      mastering: "Mastering",
-                      casting: "Casting",
-                      cadreuse: "Cadreuse",
-                      concept: "Concept",
-                      coordinatriceIntimite: "Coordinatrice d'intimité",
-                      responsableSecurite: "Responsable sécurité"
-                    }).map(([key, label]) =>
-                      project[key] ? (
-                        <li key={key}>
-                          <strong>{label} :</strong> {project[key]}
-                        </li>
-                      ) : null
-                    )}
-                  </ul>
-                </div>
-              )}
+              {/* Équipe : les postes clés, le reste replié */}
+              <Equipe project={project} />
 
               {/* Cast */}
               {project.cast && project.cast.length > 0 && (
@@ -448,8 +408,16 @@ const FilmDetail = () => {
                   <p>{project.cast.join(', ')}</p>
                 </div>
               )}
+
             </div>
           </div>
+
+          {precedent && suivant && (
+            <nav className="film-detail__voyage" aria-label="Autres projets">
+              <CarteVoyage film={precedent} sens="precedent" onClick={() => navigate(`/films/${precedent.id}`)} />
+              <CarteVoyage film={suivant} sens="suivant" onClick={() => navigate(`/films/${suivant.id}`)} />
+            </nav>
+          )}
         </div>
       </div>
 
@@ -481,20 +449,59 @@ const FilmDetail = () => {
   );
 };
 
-// Composant YouTube Player - iframe simple avec qualité HD
-const YouTubePlayer = ({ videoId, title }) => {
-  const embedUrl = `https://www.youtube.com/embed/${videoId}?rel=0&modestbranding=1&playsinline=1&vq=hd1080`;
+const hasMultipleVideosFor = (p) =>
+  Boolean(p.videoFiles?.length || p.youtubeIds?.length || p.vimeoIds?.length);
+
+// Lien vers le projet voisin : son premier extrait (ou sa vignette) et son titre
+const CarteVoyage = ({ film, sens, onClick }) => {
+  const boucle = film.boucles?.[0] || film.boucle;
+  const image = boucle ? `${boucle}.jpg` : (film.thumbnail && !film.thumbnail.includes('placeholder') ? film.thumbnail : null);
+  return (
+    <button type="button" className={`film-detail__voyage-carte film-detail__voyage-carte--${sens}`} onClick={onClick}>
+      {image && <span className="film-detail__voyage-image" style={{ backgroundImage: `url(${image})` }} aria-hidden="true" />}
+      <span className="film-detail__voyage-texte">
+        <span className="film-detail__voyage-sens">{sens === 'precedent' ? '← Projet précédent' : 'Projet suivant →'}</span>
+        <span className="film-detail__voyage-titre">{film.artiste ? `${film.artiste} : ${film.title}` : film.title}</span>
+      </span>
+    </button>
+  );
+};
+
+// Lecteur YouTube en deux temps : tant qu'on n'a pas cliqué, on montre l'extrait
+// du film en boucle (ou la miniature) sans l'habillage YouTube ; au clic, le
+// vrai lecteur se lance.
+const YouTubePlayer = ({ videoId, title, boucle }) => {
+  const [lance, setLance] = useState(false);
+  const embedUrl = `https://www.youtube.com/embed/${videoId}?rel=0&modestbranding=1&playsinline=1&vq=hd1080${lance ? '&autoplay=1' : ''}`;
+
+  if (lance) {
+    return (
+      <div className="film-detail__video">
+        <iframe
+          src={embedUrl}
+          title={title}
+          frameBorder="0"
+          allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+          allowFullScreen
+        ></iframe>
+      </div>
+    );
+  }
 
   return (
-    <div className="film-detail__video">
-      <iframe
-        src={embedUrl}
-        title={title}
-        frameBorder="0"
-        allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
-        allowFullScreen
-      ></iframe>
-    </div>
+    <button type="button" className="film-detail__video film-detail__video--attente" onClick={() => setLance(true)}>
+      {boucle ? (
+        <video poster={`${boucle}.jpg`} autoPlay muted loop playsInline>
+          <source src={`${boucle}.mp4`} type="video/mp4" />
+        </video>
+      ) : (
+        <img src={`https://img.youtube.com/vi/${videoId}/maxresdefault.jpg`} alt="" />
+      )}
+      <span className="film-detail__lecture">
+        <span className="film-detail__lecture-icone" aria-hidden="true">▶</span>
+        Regarder le film
+      </span>
+    </button>
   );
 };
 
@@ -513,6 +520,253 @@ const VimeoPlayer = ({ videoId, hash, title }) => {
         allow="autoplay; fullscreen; picture-in-picture"
         allowFullScreen
       ></iframe>
+    </div>
+  );
+};
+
+// Grille de photos de plateau. Au clic, la photo s'ouvre en plein écran
+// (mêmes styles que la modale des images du film) ; flèches et Échap au clavier.
+const PhotosPlateau = ({ plateau, titre }) => {
+  const { photos, credit, legende, lien } = plateau;
+  const [ouverte, setOuverte] = useState(null);
+  const aller = (i) => setOuverte((i + photos.length) % photos.length);
+
+  useEffect(() => {
+    if (ouverte === null) return;
+    const onKey = (e) => {
+      if (e.key === 'Escape') { e.stopPropagation(); setOuverte(null); }
+      if (e.key === 'ArrowRight') aller(ouverte + 1);
+      if (e.key === 'ArrowLeft') aller(ouverte - 1);
+    };
+    window.addEventListener('keydown', onKey, true);
+    return () => window.removeEventListener('keydown', onKey, true);
+  }, [ouverte]);
+
+  return (
+    <>
+      <div className="film-detail__plateau-grid">
+        {photos.map((src, i) => (
+          <button key={src} onClick={() => setOuverte(i)} aria-label={`Agrandir la photo ${i + 1}`}>
+            <img src={src} alt={`${titre} - sur le plateau ${i + 1}`} loading="lazy" />
+          </button>
+        ))}
+      </div>
+      {legende && <p className="film-detail__extraits-credit">{legende}</p>}
+      {(credit || lien) && (
+        <p className="film-detail__extraits-credit">
+          {credit && <>Photos : {credit}</>}
+          {credit && lien && ' · '}
+          {lien && (
+            <a href={lien} target="_blank" rel="noopener noreferrer">Voir le post Instagram →</a>
+          )}
+        </p>
+      )}
+
+      {ouverte !== null && (
+        <div className="image-modal-overlay" role="dialog" aria-label="Photo en plein écran" onClick={() => setOuverte(null)}>
+          <div className="image-modal" onClick={(e) => e.stopPropagation()}>
+            <button className="image-modal__close" onClick={() => setOuverte(null)} aria-label="Fermer">×</button>
+            <img src={photos[ouverte]} alt={`${titre} - sur le plateau ${ouverte + 1}`} className="image-modal__image" />
+            <button className="image-modal__nav image-modal__nav--prev" onClick={() => aller(ouverte - 1)} aria-label="Photo précédente">‹</button>
+            <button className="image-modal__nav image-modal__nav--next" onClick={() => aller(ouverte + 1)} aria-label="Photo suivante">›</button>
+            <div className="image-modal__counter" aria-live="polite">{ouverte + 1} / {photos.length}</div>
+          </div>
+        </div>
+      )}
+    </>
+  );
+};
+
+// Grille de courtes vidéos muettes en boucle (la première en grand). Chaque
+// vidéo ne se charge et ne joue que lorsqu'elle est visible à l'écran.
+const ExtraitVideo = ({ src }) => {
+  const ref = useRef(null);
+
+  useEffect(() => {
+    const video = ref.current;
+    if (!video) return;
+    const observer = new IntersectionObserver(([entry]) => {
+      if (entry.isIntersecting) video.play().catch(() => {});
+      else video.pause();
+    }, { threshold: 0.25 });
+    observer.observe(video);
+    return () => observer.disconnect();
+  }, []);
+
+  return (
+    <video ref={ref} poster={`${src}.jpg`} preload="none" muted loop playsInline>
+      <source src={`${src}.mp4`} type="video/mp4" />
+    </video>
+  );
+};
+
+const ExtraitsGrille = ({ extraits, ratio }) => {
+  const { videos, credit, creditLien, lien } = extraits;
+  // La première en grand ; si le reste est impair, la dernière aussi (pas de trou)
+  const classes = ['film-detail__extraits-grid', videos.length % 2 === 0 ? 'film-detail__extraits-grid--fin-large' : ''].join(' ');
+  return (
+    <>
+      <div className={classes} style={ratio ? { '--ratio-extrait': ratio } : undefined}>
+        {videos.map((src) => (
+          <ExtraitVideo key={src} src={src} />
+        ))}
+      </div>
+      {(credit || lien) && (
+        <p className="film-detail__extraits-credit">
+          {credit && (
+            <>
+              Images :{' '}
+              <a href={creditLien} target="_blank" rel="noopener noreferrer">{credit}</a>
+              {lien && ' · '}
+            </>
+          )}
+          {lien && (
+            <a href={lien} target="_blank" rel="noopener noreferrer">{extraits.lienTexte || 'Voir le post Instagram'} →</a>
+          )}
+        </p>
+      )}
+    </>
+  );
+};
+
+// Libellés des informations techniques
+const LIBELLES_SPECS = {
+  format: 'Format',
+  duree: 'Durée',
+  jours: 'Jours de tournage',
+  tournage: 'Tournage',
+  annee: 'Année',
+  pays: 'Pays',
+  location: 'Location',
+  coproduction: 'Coproduction',
+  cadrage: 'Cadrage',
+  budget: 'Budget',
+  lieu: 'Lieu',
+  camera: 'Caméra',
+  objectifs: 'Objectifs',
+  optiques: 'Optiques',
+  particularite: 'Particularité',
+  diffusion: 'Diffusion',
+  lumiere: 'Lumière',
+};
+
+// Libellés des postes, dans l'ordre d'affichage
+const LIBELLES_EQUIPE = {
+    artiste: "Artiste",
+    realisateur: "Réalisation",
+    realisateurs: "Réalisation",
+    realisatrice: "Réalisation",
+    realisatrices: "Réalisation",
+    scenariste: "Scénario",
+    dirProd: "Direction de production",
+    producteur: "Producteur",
+    chargeeProd: "Chargée de production",
+    coordProd: "Coordination de production",
+    premierAssRealPrepa: "1er assistant réalisation (préparation)",
+    premierAssReal: "1er assistant réalisation",
+    secondAssReal: "2ème assistant réalisation",
+    troisiemeAssistantReal: "3ème assistant réalisation",
+    script: "Script",
+    scripte: "Scripte",
+    choregraphe: "Chorégraphe",
+    chefOp: "Chef opérateur",
+    cheffeOp: "Cheffe opératrice",
+    coChefOp: "Co-chef opérateur",
+    cadreur: "Cadreur",
+    cadreurB: "Cadreur caméra B",
+    assistantCam: "1er assistant caméra",
+    secondAssistantCam: "2ème assistant caméra",
+    troisiemeAssistantCam: "3ème assistant caméra",
+    dit: "DIT",
+    steadicam: "Steadicam",
+    photo: "Photographe plateau",
+    pupitreur: "Pupitreur",
+    chefElectro: "Chef électricien",
+    cheffeElectro: "Cheffe électricienne",
+    chefElectroRenfort: "Chef électricien renfort",
+    electros: "Électriciens",
+    chefMachino: "Chef machiniste",
+    cheffeMachino: "Cheffe machiniste",
+    machino: "Machiniste",
+    machinos: "Machinistes",
+    assistantMachino: "Assistant machiniste",
+    renforts: "Renforts",
+    son: "Prise de son",
+    assistantSon: "Assistant son",
+    assistantsSon: "Assistants son",
+    perchman: "Perchman",
+    mixage: "Mixage",
+    soundDesign: "Sound design",
+    musique: "Musique originale",
+    monteurSon: "Monteur son",
+    monteur: "Montage image",
+    montageSon: "Montage son",
+    etalonneur: "Étalonnage",
+    vfx: "VFX",
+    graphisme: "Graphisme",
+    generique: "Générique",
+    directionArtistique: "Direction artistique",
+    directriceArtistique: "Directrice artistique",
+    assDirectriceArtistique: "Assistante direction artistique",
+    cheffeDecoratrice: "Cheffe décoratrice",
+    assistanteDecoratrice: "Assistante décoration",
+    deco: "Décoration",
+    renfortDeco: "Renfort décoration",
+    accessoiriste: "Accessoiriste",
+    costume: "Costume",
+    costumiere: "Costumière",
+    stylisme: "Stylisme",
+    assistantStylisme: "Assistant stylisme",
+    chefHMC: "Chef HMC",
+    maquillage: "Maquillage",
+    coiffure: "Coiffure",
+    regisseur: "Régisseur général",
+    regisseurs: "Régie",
+    regisseurGeneral: "Régie générale",
+    assistRegie: "Assistant régie",
+    prodExec: "Production exécutive",
+    assistProd: "Assistant production",
+    stagiaires: "Stagiaires",
+    conseillereMontage: "Conseillère montage",
+    mastering: "Mastering",
+    casting: "Casting",
+    cadreuse: "Cadreuse",
+    concept: "Concept",
+    coordinatriceIntimite: "Coordinatrice d'intimité",
+    responsableSecurite: "Responsable sécurité"
+  };
+
+// Postes montrés d'emblée ; le reste de l'équipe est replié
+const POSTES_CLES = [
+  'artiste', 'realisateur', 'realisateurs', 'realisatrice', 'realisatrices',
+  'chefOp', 'cheffeOp', 'coChefOp', 'chefElectro', 'cheffeElectro', 'chefMachino', 'cheffeMachino',
+];
+
+const Equipe = ({ project }) => {
+  const [ouverte, setOuverte] = useState(false);
+  const postes = Object.entries(LIBELLES_EQUIPE).filter(([key]) => project[key]);
+  if (postes.length === 0) return null;
+
+  const cles = postes.filter(([key]) => POSTES_CLES.includes(key));
+  const visibles = ouverte || postes.length <= 8 || cles.length === 0 ? postes : cles;
+  const caches = postes.length - visibles.length;
+
+  return (
+    <div className="film-detail__team">
+      <h3>Équipe</h3>
+      <ul>
+        {visibles.map(([key, label]) => (
+          <li key={key}>
+            <strong>{label}</strong>
+            <span>{project[key]}</span>
+          </li>
+        ))}
+      </ul>
+      {caches > 0 && (
+        <button type="button" className="film-detail__plus" onClick={() => setOuverte(true)}>
+          Toute l'équipe (+{caches})
+        </button>
+      )}
     </div>
   );
 };

@@ -43,30 +43,28 @@ const sortProjectsByDate = (projects) => {
 // ajouter ici les nouveaux projets pour maîtriser leur position.
 // Laisser le tableau vide pour revenir au tri par date sur l'ensemble.
 export const ordreManuel = [
-  // Ligne 1
-  'ziak-feng-shui',      // gros nom : toujours en première case
+  // Ordre « portfolio » : les images les plus fortes et les plus moody d'abord,
+  // image ou lumière (les films à beaux effets de lumière comptent même en électro)
+  'vedette',             // chef-op, studio noir et blanc
+  'asterix',             // réalisation : crépuscule, intime
+  'vagues',              // Ce que laissent les vagues (cadre)
+  'ziak-feng-shui',      // électro : faisceaux, lumière au pupitre
+  'casse-cest-casse',    // électro : cheval sous la pluie, colombe dans la fumée
+  'quand-son-souffle',   // contre-jours, forêt, soleil couchant
+  'the-right-choice',    // chef électro, plus petit projet : tunnel, pyrotechnie
+  'insipide',            // réalisation
+  'revolte',             // chef électro : temple
+  'casse-noisette',      // chef-op
+  'pardon',              // couleurs saturées, la mère
+  'tecnomat',            // pub TV
+  'armanaque',
+  'bureau-du-karma',
+  'loverdance',
+  'mode-kids',
+  // En post-production (section « En cours »)
   'super-vespapa',
-  'casse-cest-casse',
-  // Ligne 2
-  'asterix',
   'jugement-dernier',
   'azincourt',
-  // Ligne 3
-  'vagues',              // Ce que laissent les vagues
-  'vedette',
-  'insipide',
-  // Ligne 4
-  'verite-studio',
-  'casse-noisette',
-  'revolte',
-  // Ligne 5
-  'mode-kids',
-  'armanaque',
-  'loverdance',
-  // Ligne 6
-  'bureau-du-karma',
-  'pardon',
-  'quand-son-souffle',
 ];
 
 // ========== SECOND PLAN ==========
@@ -75,18 +73,16 @@ export const ordreManuel = [
 // Indépendant du champ « status » : un film peut être en post-production
 // et rester en grille principale (ou l'inverse).
 export const projetsSecondaires = [
-  'tecnomat',
+  'verite-studio',        // film pas accessible en ligne
   'nothing-personal',
   'moutarderie-fallot-vr',
   'cache-toi-cest-mon-pere',
   'male-addict',
   'trauma-resonance',
   'lettre-a-lille',
-  'i-have-enough',
   'la-table-regie',
   'undetoi',
   'gate66',
-  'darwin-experience',
   'gadfly',              // stagiaire
   'une-couronne',        // auxiliaire de régie, ESEC 2022
 ];
@@ -103,7 +99,7 @@ const appliquerOrdre = (projects) => {
 export const projectsData = {
   // ========== IDs DES PROJETS HERO ==========
   // Pour ajouter un projet en hero, ajoute simplement son ID ici
-  heroProjectIds: ['vedette', 'vagues', 'asterix', 'casse-cest-casse'],
+  heroProjectIds: ['vedette', 'asterix', 'vagues', 'ziak-feng-shui'],
 
   // ========== PROJETS HERO (générés automatiquement depuis films) ==========
   get heroProjects() {
@@ -115,6 +111,8 @@ export const projectsData = {
     const allFilms = [
       {
         id: 'tecnomat',
+        boucles: [1, 3, 2].map((n) => `/videos/boucles/tecnomat-${n}`), // extraits muets enchaînés dans la grille
+        boucleRatio: '1920 / 1080',
         title: 'Tecnomat, vivez vos meilleurs chantiers',
         year: '2026',
         month: 'Juillet 2026',
@@ -136,9 +134,13 @@ export const projectsData = {
         regisseur: 'Salomé Collin',
         assistRegie: 'Virgile Vermeulen',
         thumbnail: '/images/tecnomat-thumb.webp',
-        status: 'En post-production',
         images: [],
-        description: 'Publicité pour l\'enseigne de matériaux Tecnomat, tournée en studio en Belgique. Deux décors montés sur le plateau : une salle de bain et une chambre d\'enfant.',
+        // Les deux films TV diffusés (20 s chacun)
+        youtubeIds: [
+          { id: 'jcBrf4wYUFU', title: 'La salle de bains d\'Hervé' },
+          { id: 'VTrNGDpIBoo', title: 'L\'aménagement des combles par Alex' },
+        ],
+        description: 'Deux films TV pour l\'enseigne de matériaux Tecnomat, diffusés en septembre 2026 et tournés en studio en Belgique. Deux décors montés sur le plateau : une salle de bain et des combles aménagés en chambre d\'enfant.',
         specs: {
           format: 'Publicité',
           jours: '2 jours',
@@ -156,14 +158,42 @@ export const projectsData = {
       },
       {
         id: 'ziak-feng-shui',
+        boucles: [1, 2, 3].map((n) => `/videos/boucles/ziak-feng-shui-${n}`), // extraits muets enchaînés dans la grille
+        boucleRatio: '1200 / 662', // format des extraits (bandes noires retirées)
         title: 'Feng Shui',
         year: '2026',
         month: 'Juin 2026',
         role: 'Électricien',
         artiste: 'Ziak',
+        // Équipe : liste technique du 26 avril 2026
+        realisateur: 'Jonathan Steuer',
+        premierAssReal: 'Jules Dormoy',
+        choregraphe: 'Charles Heinrich',
+        producteur: 'Jim Schachmes',
+        dirProd: 'Tosca Poilliot',
+        coordProd: 'Lola Olivero',
+        cheffeOp: 'Malgo Rabczuk',
+        assistantCam: 'Florent Planet',
+        secondAssistantCam: 'Sacha Muleris',
+        pupitreur: 'Jean Maxence Chagnon',
+        stylisme: 'Charles Beugniot',
+        assistantStylisme: 'Marie Ferrer',
+        cheffeElectro: 'Lola Protar',
+        electros: 'Charlotte Davy, Léo Aguiton, Lois Blanchard, Clara Bodino, Clémentine Jahan, Théo Sury',
+        chefMachino: 'Guillaume Grandin',
+        machinos: 'Morgan Dandre, Lilian Clement',
+        regisseur: 'Theo Giliberto',
         thumbnail: '/images/ziak-feng-shui-thumb.jpg',
         images: [],
         youtubeId: 'elI5iDHsSGI',
+        production: 'Facteur Humain × 29 Studio',
+        // Extraits du clip (version YouTube 1080p, sous-titres recadrés)
+        extraits: {
+          titre: 'Extraits',
+          lien: 'https://www.instagram.com/p/DbYjL_gAD0B/',
+          lienTexte: 'Les expérimentations de Facteur Humain sur Instagram',
+          videos: [2, 1, 3, 4, 5].map((n) => `/videos/ziak/ziak-${n}`),
+        },
         description: 'Clip tourné au Studio Kremlin pour le morceau Feng Shui (prod. Focus Beatz & JY). Dispositif studio construit autour d\'un travelling circulaire, avec une lumière entièrement pilotée au pupitre.',
         specs: {
           format: 'Clip',
@@ -290,6 +320,8 @@ export const projectsData = {
       },
       {
         id: 'bureau-du-karma',
+        boucles: [1, 4].map((n) => `/videos/boucles/bureau-du-karma-${n}`),
+        boucleRatio: '1200 / 676', // format des extraits (bandes noires retirées)
         title: 'Bureau du Karma',
         year: '2026',
         month: 'Mai 2026',
@@ -371,6 +403,8 @@ export const projectsData = {
       },
       {
         id: 'mode-kids',
+        boucles: [1, 2].map((n) => `/videos/boucles/mode-kids-${n}`), // extraits muets enchaînés dans la grille
+        boucleRatio: '1200 / 676', // format des extraits (bandes noires retirées)
         title: 'Mode Kids',
         year: '2025',
         month: 'Novembre 2025',
@@ -409,6 +443,8 @@ export const projectsData = {
       },
       {
         id: 'super-vespapa',
+        diaporama: [1, 4, 5, 10].map((n) => `/images/super-vespapa-plateau/vespapa-plateau-${n}.jpg`), // fondu dans le défilé (backstage, pas d'images du film)
+        diaporamaRatio: '3 / 2', // format des photos : la carte s'y adapte, rien n'est recadré
         title: 'Super Vespapa',
         year: '2026',
         month: 'Juin 2026',
@@ -416,6 +452,13 @@ export const projectsData = {
         realisatrice: 'Lou Cassot',
         scenariste: 'Lou Cassot & Théo Sury, sur une idée originale de Lou Cassot',
         production: 'MM Production',
+        // Photos de plateau (tournage du 17 au 21 juin 2026)
+        plateau: {
+          titre: 'Sur le plateau',
+          lien: 'https://www.instagram.com/p/DdsJOMvDG0q/',
+          credit: 'Arthur Cassot',
+          photos: Array.from({ length: 10 }, (_, i) => `/images/super-vespapa-plateau/vespapa-plateau-${i + 1}.jpg`),
+        },
         producteur: 'Lou Cassot, Théo Sury & Marie Caus (production déléguée)',
         dirProd: 'Odessa Lemaire & Marie Caus',
         premierAssRealPrepa: 'Hélène Pottier',
@@ -455,17 +498,27 @@ export const projectsData = {
         ]
       },
       {
-        id: 'i-have-enough',
-        title: 'I Have Enough',
+        id: 'the-right-choice',
+        boucles: [1, 4, 2, 5].map((n) => `/videos/boucles/the-right-choice-${n}`), // extraits muets enchaînés dans la grille
+        boucleRatio: '1920 / 1080',
+        title: 'The Right Choice',
+        artiste: 'meysi',
         year: '2026',
         month: 'Mars 2026',
         role: 'Chef électricien',
+        youtubeId: 'FxcGjst68kY',
+        realisateurs: 'Lole Girard, Arthur Monville & meysi',
         production: 'Stuzka',
+        chefOp: 'Evans Lecocq',
+        assistantCam: 'Maria Trohel',
         chefElectro: 'Théo Sury',
+        electros: 'Lune Pille & Virgile Vermeulen',
+        monteur: 'n9ne',
+        etalonneur: 'cnjsii',
+        stylisme: 'Eliette Pessemier',
         thumbnail: '/images/i-have-enough-thumb.jpg',
-        status: 'En post-production',
         images: [],
-        description: 'Clip musical produit par l\'association Stuzka.',
+        description: 'Clip de meysi, produit par l\'association Stuzka (tourné sous le titre de travail « I Have Enough »). Tunnel, hangar et piste d\'aviation dans la brume : fumigènes et pyrotechnie.',
         specs: {
           format: 'Clip'
         }
@@ -497,55 +550,24 @@ export const projectsData = {
         }
       },
       {
-        id: 'darwin-experience',
-        title: 'Darwin Experience',
-        year: '2025',
-        month: 'Janvier 2025',
-        role: 'Photographe & Making-of',
-        realisateur: 'Martin Schrepel',
-        chefOp: 'Grégoire Léon-Dufour',
-        production: 'PRISM, avec le soutien du CNC',
-        monteur: 'Théo Sury',
-        photo: 'Théo Sury',
-        thumbnail: '/images/darwin-thumb.jpg',
-        images: [],
-        videoFiles: [
-          { file: '/videos/darwin-making-automatic-doors.mp4', title: 'Making of : Automatic Doors', vertical: true },
-          { file: '/videos/darwin-making-home.mp4', title: 'Making of : Home', vertical: true },
-          { file: '/videos/darwin-making-i-killed-you.mp4', title: 'Making of : I Killed You', vertical: true },
-          { file: '/videos/darwin-making-just-want-to-dance.mp4', title: 'Making of : Just Want To Dance', vertical: true },
-        ],
-        youtubeIds: [
-          { id: '89fB1I9N_1o', title: 'Le clip : Automatic Doors' },
-          { id: 'aKJyRwJYJXI', title: 'Le clip : Home' },
-          { id: 'SQz6HeVUkfA', title: 'Le clip : I Killed You' },
-          { id: 'U5DOOxT_HKU', title: 'Le clip : Just Want To Dance' },
-        ],
-        description: 'Captation et montage du making-of de l\'EP « Home » du groupe Darwin Experience, tourné en trois jours au Havre. Les quatre clips de l\'EP, réalisés par Martin Schrepel et photographiés par Grégoire Léon-Dufour, sont réunis ci-dessous.',
-        specs: {
-          format: 'Making-of / Clips musicaux',
-          jours: '3 jours',
-          lieu: 'Le Havre',
-          tournage: 'Janvier 2025'
-        }
-      },
-      {
         id: 'la-table-regie',
         title: 'La Table Régie',
         year: '2026',
-        month: 'Avril 2026',
-        role: 'Électricien (prélight)',
+        month: 'Avril-Octobre 2026',
+        role: 'Chef électricien',
         thumbnail: '/images/placeholder-thumb.jpg',
-        status: 'En post-production',
+        status: 'En tournage', // dernier bloc le 9 octobre 2026
         images: [],
-        description: 'Renfort électro d\'une journée sur le prélight du tournage.',
+        description: 'Court-métrage tourné en cinq blocs. Électricien sur le prélight du premier bloc, puis chef électricien sur les blocs 4 et 5.',
         specs: {
           format: 'Court-métrage fiction',
-          jours: '1 jour (prélight)'
+          jours: '5 blocs (prélight du bloc 1, chef électro sur les blocs 4 et 5)'
         }
       },
       {
         id: 'vedette',
+        boucles: [1, 5, 4, 2, 3].map((n) => `/videos/boucles/vedette-${n}`), // 2 : le travelling dans le décor
+        boucleRatio: '1200 / 600', // format des extraits (bandes noires retirées)
         title: 'Vedette !',
         year: '2024',
         month: 'Février-Mars 2024',
@@ -598,6 +620,8 @@ export const projectsData = {
       },
       {
         id: 'vagues',
+        boucles: [10, 9, 8, 7, 6, 4].map((n) => `/videos/boucles/vagues-${n}`), // extraits muets enchaînés dans la grille
+        boucleRatio: '1200 / 500', // format des extraits (bandes noires retirées)
         title: 'Ce que laissent les vagues',
         year: '2024',
         month: 'Mai 2024',
@@ -658,6 +682,8 @@ export const projectsData = {
       },
       {
         id: 'casse-cest-casse',
+        boucles: [1, 2, 3].map((n) => `/videos/boucles/casse-cest-casse-${n}`), // extraits muets enchaînés dans la grille
+        boucleRatio: '1200 / 676', // format des extraits (bandes noires retirées)
         title: 'Cassé c\'est Cassé',
         year: '2026',
         month: 'Mars 2026',
@@ -692,6 +718,8 @@ export const projectsData = {
       },
       {
         id: 'asterix',
+        boucles: [3, 1, 2].map((n) => `/videos/boucles/asterix-${n}`),
+        boucleRatio: '1200 / 676', // format des extraits (bandes noires retirées)
         title: 'Astérix',
         year: '2026',
         month: 'Janvier 2026',
@@ -825,6 +853,11 @@ export const projectsData = {
         production: 'École 24 × ArtFX',
         thumbnail: '/images/gate66-thumb.jpg',
         status: 'En post-production',
+        // Photos de plateau (backstage, pas d'images du film)
+        plateau: {
+          titre: 'Sur le plateau',
+          photos: Array.from({ length: 7 }, (_, i) => `/images/gate66-plateau/gate66-plateau-${i + 1}.jpg`),
+        },
         images: [],
         specs: {
           format: 'Court-métrage',
@@ -901,6 +934,7 @@ export const projectsData = {
         thumbnail: '/images/verite-studio-thumb.jpg',
         images: [],
         specs: {
+          format: 'Court-métrage fiction',
           lieu: 'LCR Les Tailleurs, Villeneuve-d\'Ascq',
           tournage: 'Juillet 2025',
           camera: 'Alexa 35',
@@ -948,11 +982,11 @@ export const projectsData = {
         id: 'jugement-dernier',
         title: 'Jugement Dernier',
         year: '2025',
-        month: 'Decembre 2025',
+        month: 'Décembre 2025',
         role: 'Chef-opérateur',
         realisateurs: 'Matthis Geffroy & Luca Flodrops',
         artiste: 'Luca Flodrops',
-        production: 'Make My Day',
+        production: 'Make My Day, avec le soutien de Pictanovo',
         producteur: 'Nicolas Ossywa',
         chargeeProd: 'Myrtille Lakel',
         premierAssReal: 'Thibaut Beernaert',
@@ -978,7 +1012,7 @@ export const projectsData = {
         specs: {
           format: 'Clip',
           lieu: 'Château du Bec, Saint-Martin-Du-Bec, Normandie',
-          tournage: 'Decembre 2025',
+          tournage: 'Décembre 2025',
           camera: 'RED Komodo X',
           objectifs: 'Atlas Mercury Anamorphiques',
           particularite: 'Scènes de torture, VFX'
@@ -992,6 +1026,8 @@ export const projectsData = {
       },
       {
         id: 'armanaque',
+        boucles: [1, 4].map((n) => `/videos/boucles/armanaque-${n}`),
+        boucleRatio: '1200 / 632', // format des extraits (bandes noires retirées)
         title: 'Armanaque',
         year: '2024',
         month: 'Juillet 2024',
@@ -1033,6 +1069,8 @@ export const projectsData = {
       },
       {
         id: 'pardon',
+        boucles: [4, 1, 3].map((n) => `/videos/boucles/pardon-${n}`),
+        boucleRatio: '1200 / 1008', // format des extraits (bandes noires retirées)
         title: 'Pardon',
         year: '2024',
         month: 'Décembre 2024',
@@ -1071,6 +1109,8 @@ export const projectsData = {
       },
       {
         id: 'casse-noisette',
+        boucles: [1, 4].map((n) => `/videos/boucles/casse-noisette-${n}`),
+        boucleRatio: '1200 / 676', // format des extraits (bandes noires retirées)
         title: 'Casse-Noisette',
         year: '2024',
         month: 'Juin 2024',
@@ -1108,6 +1148,8 @@ export const projectsData = {
       },
       {
         id: 'quand-son-souffle',
+        boucles: [1, 2, 3, 4, 5].map((n) => `/videos/boucles/quand-son-souffle-${n}`),
+        boucleRatio: '1200 / 676', // format des extraits (bandes noires retirées)
         title: 'Quand son souffle s\'est arrêté',
         year: '2024',
         month: 'Avril 2024',
@@ -1152,6 +1194,8 @@ export const projectsData = {
       },
       {
         id: 'loverdance',
+        boucles: [1, 2].map((n) => `/videos/boucles/loverdance-${n}`),
+        boucleRatio: '1200 / 722', // format des extraits (bandes noires retirées)
         title: 'Loverdance',
         year: '2024',
         month: 'Juillet 2024',
@@ -1202,6 +1246,8 @@ export const projectsData = {
       },
       {
         id: 'insipide',
+        boucles: [1, 8, 4, 7, 3].map((n) => `/videos/boucles/insipide-${n}`), // la couleur d'abord (La Fuite, fin de La Valse, Le Mépris), un plan noir et blanc pour finir
+        boucleRatio: '1200 / 900', // format des extraits (bandes noires retirées)
         title: 'Insipide',
         year: '2022',
         month: 'Novembre 2022',
@@ -1295,6 +1341,8 @@ export const projectsData = {
       },
       {
         id: 'revolte',
+        boucles: [1, 2, 4].map((n) => `/videos/boucles/revolte-${n}`),
+        boucleRatio: '1200 / 598', // format des extraits (bandes noires retirées)
         title: 'Le Révolté',
         year: '2023',
         month: 'Mai 2023',
@@ -1328,6 +1376,8 @@ export const projectsData = {
       },
       {
         id: 'une-couronne',
+        boucles: [1, 2, 3].map((n) => `/videos/boucles/une-couronne-${n}`), // extraits muets (aperçu au survol dans la liste)
+        boucleRatio: '1200 / 600',
         title: 'Une Couronne',
         year: '2022',
         month: 'Juin 2022',
@@ -1386,7 +1436,8 @@ export const projectsData = {
       year: '2026',
       role: 'Road',
       duree: 'Depuis juin 2026',
-      description: 'Montage, exploitation et démontage sur des concerts et des festivals : Main Square Festival 2026, PLK au Stade de France et Taratata au Zénith de Paris.'
+      description: 'Montage, exploitation et démontage sur des concerts et des festivals : Main Square Festival 2026, PLK au Stade de France et Taratata au Zénith de Paris.',
+      photos: Array.from({ length: 6 }, (_, i) => `/images/experiences/veronne-production/${i + 1}`)
     },
     {
       id: 'alive-production',
@@ -1398,24 +1449,29 @@ export const projectsData = {
     },
     {
       id: 'panavision',
+      logo: '/images/logos/panavision.svg',
       title: 'Panavision ALGA',
       year: '2024',
       role: 'Stagiaire caméra',
       production: 'Panavision ALGA',
       duree: '3 mois',
-      description: 'Stage de trois mois au magasin et au service filtres. Vérification et maintenance des accessoires caméra et des filtres, gestion du stock, préparation des commandes et configuration caméra.'
+      description: 'Stage de trois mois au magasin et au service filtres. Vérification et maintenance des accessoires caméra et des filtres, gestion du stock, préparation des commandes et configuration caméra.',
+      photos: Array.from({ length: 5 }, (_, i) => `/images/experiences/panavision/${i + 1}`)
     },
     {
       id: 'dixit-afdas',
+      logo: '/images/logos/afdas.svg',
       title: 'DIXIT',
       year: '2025',
       role: 'Assistant technique (cadre, lumière, régie)',
       production: 'AFDAS',
       duree: 'Janvier & juin 2025',
-      description: 'Captation de sessions de formation à la direction d\'acteur, sur deux périodes.'
+      description: 'Captation de sessions de formation à la direction d\'acteur, sur deux périodes.',
+      photos: Array.from({ length: 4 }, (_, i) => `/images/experiences/dixit-afdas/${i + 1}`)
     },
     {
       id: 'dna',
+      logo: '/images/logos/tf1.svg',
       title: 'Demain Nous Appartient (DNA)',
       year: '2024',
       role: '3e assistant caméra',
@@ -1423,7 +1479,27 @@ export const projectsData = {
       directeursPhoto: 'William Hulin & Hervé Lodé',
       production: 'TELSETE pour TF1',
       duree: '1 mois, 2 sessions',
-      description: 'Assistanat caméra sur la série quotidienne de TF1, en équipe avec les directeurs photo William Hulin et Hervé Lodé.'
+      description: 'Assistanat caméra sur la série quotidienne de TF1, en équipe avec les directeurs photo William Hulin et Hervé Lodé.',
+      photos: Array.from({ length: 4 }, (_, i) => `/images/experiences/dna/${i + 1}`)
+    },
+    {
+      id: 'darwin-experience',
+      logo: '/images/logos/cnc.svg',
+      title: 'Darwin Experience',
+      year: '2025',
+      role: 'Photographe & making-of',
+      production: 'PRISM, avec le soutien du CNC',
+      duree: 'Janvier 2025, 3 jours au Havre',
+      description: 'Captation et montage du making-of de l\'EP « Home » du groupe Darwin Experience, sur le tournage de ses quatre clips.',
+      realisateurs: 'Martin Schrepel',
+      directeursPhoto: 'Grégoire Léon-Dufour',
+      // Mes making-of (format vertical) ; les clips eux-mêmes en lien, au clic
+      makingOf: [
+        { file: '/videos/darwin-making-automatic-doors.mp4', title: 'Automatic Doors', clip: '89fB1I9N_1o' },
+        { file: '/videos/darwin-making-home.mp4', title: 'Home', clip: 'aKJyRwJYJXI' },
+        { file: '/videos/darwin-making-i-killed-you.mp4', title: 'I Killed You', clip: 'SQz6HeVUkfA' },
+        { file: '/videos/darwin-making-just-want-to-dance.mp4', title: 'Just Want To Dance', clip: 'U5DOOxT_HKU' },
+      ],
     },
     {
       id: 'noctem',
@@ -1432,7 +1508,9 @@ export const projectsData = {
       role: 'Photographe',
       production: 'Noctem Events',
       duree: '2 événements',
-      description: 'Photographie de soirées, en conditions de très faible lumière.'
+      description: 'Photographie de soirées, en conditions de très faible lumière.',
+      // Quelques photos de soirée (vignette + original en plein écran)
+      photos: Array.from({ length: 12 }, (_, i) => `/images/noctem/noctem-${i + 1}`)
     }
   ]
 };
@@ -1444,11 +1522,11 @@ export const aboutData = {
   specialization: 'Fiction, clips, publicité & concerts',
   location: 'Lille / Paris',
 
-  bio: `Chef-opérateur et électricien basé à Lille, je travaille en fiction, en publicité, en clip et en captation. J'interviens aussi en road sur des concerts et des festivals, du Main Square au Stade de France.
+  bio: `Basé à Lille, je travaille beaucoup à Paris, en fiction, en publicité, en clip et en captation. Ce qui m'anime avant tout, c'est la lumière.
 
-Je suis passé par la régie, la caméra et la lumière : je connais le plateau de l'intérieur et la place de chacun dans une équipe. C'est cette expérience que je mets au service de chaque projet, du court au long-métrage.
+Aujourd'hui électricien et chef-opérateur, je connais le plateau de l'intérieur : j'ai été régisseur, puis troisième assistant caméra sur une série quotidienne, et je sais la place de chacun dans une équipe. J'interviens aussi sur des concerts et des festivals.
 
-Disponible en renfort électro et road, et à l'écoute de tout projet en tant que chef-opérateur.`,
+Disponible en tant qu'électricien ou chef électricien, et à l'écoute de tout projet en tant que chef-opérateur.`,
 
   skills: [
     'Direction de la photographie',

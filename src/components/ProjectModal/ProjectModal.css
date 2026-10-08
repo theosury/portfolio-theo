@@ -52,8 +52,8 @@
 }
 
 .modal__close:hover {
-  background: rgba(255, 59, 59, 0.9);
-  border-color: #ff3b3b;
+  background: rgba(255, 255, 255, 0.16);
+  border-color: rgba(255, 255, 255, 0.6);
   transform: rotate(90deg);
 }
 
@@ -141,7 +141,7 @@
   color: #ffffff;
   margin-bottom: 0.75rem;
   padding-left: 0.5rem;
-  border-left: 3px solid #ff3b3b;
+  border-left: 3px solid var(--color-accent);
 }
 
 .modal__video-item .modal__video {
@@ -169,7 +169,7 @@
 
 .modal__thumbnail:hover {
   transform: scale(1.05);
-  box-shadow: 0 8px 20px rgba(255, 59, 59, 0.3);
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.4);
 }
 
 .modal__thumbnail img {
@@ -240,8 +240,8 @@
 }
 
 .modal__nav:hover {
-  background: rgba(255, 59, 59, 0.9);
-  border-color: #ff3b3b;
+  background: rgba(255, 255, 255, 0.16);
+  border-color: rgba(255, 255, 255, 0.6);
 }
 
 .modal__nav--prev {
@@ -312,8 +312,8 @@
 }
 
 .image-modal__close:hover {
-  background: rgba(255, 59, 59, 0.9);
-  border-color: #ff3b3b;
+  background: rgba(255, 255, 255, 0.16);
+  border-color: rgba(255, 255, 255, 0.6);
   transform: rotate(90deg);
 }
 
@@ -343,8 +343,8 @@
 }
 
 .image-modal__nav:hover {
-  background: rgba(255, 59, 59, 0.9);
-  border-color: #ff3b3b;
+  background: rgba(255, 255, 255, 0.16);
+  border-color: rgba(255, 255, 255, 0.6);
 }
 
 .image-modal__nav--prev {
@@ -400,7 +400,7 @@
 }
 
 .modal__year {
-  color: #ff3b3b;
+  color: var(--color-accent);
   font-weight: 600;
 }
 
@@ -435,7 +435,7 @@
   font-size: 1.2rem;
   font-weight: 600;
   margin-bottom: 1rem;
-  color: #ff3b3b;
+  color: var(--color-accent);
   text-transform: uppercase;
   letter-spacing: 0.05em;
 }

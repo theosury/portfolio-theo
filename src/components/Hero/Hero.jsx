@@ -1,5 +1,9 @@
 import React, { useState, useEffect, useRef, useCallback } from 'react';
+import { heroFocus } from '../../data/heroFocus';
 import './Hero.css';
+
+// Cadrage propre à chaque image (sinon centré)
+const cadrage = (url) => heroFocus[url.split('/').pop()] || 'center';
 
 function Hero() {
   const [images, setImages] = useState([]);
@@ -76,7 +80,7 @@ function Hero() {
         {prevUrl && loadedImages.has(prevUrl) && (
           <div
             className="hero-slide active"
-            style={{ backgroundImage: `url(${prevUrl})` }}
+            style={{ backgroundImage: `url(${prevUrl})`, backgroundPosition: cadrage(prevUrl) }}
           />
         )}
         {/* Slide courante (par-dessus, fade in) */}
@@ -84,7 +88,7 @@ function Hero() {
           <div
             key={currentIndex}
             className="hero-slide hero-slide--fade-in"
-            style={{ backgroundImage: `url(${currentUrl})` }}
+            style={{ backgroundImage: `url(${currentUrl})`, backgroundPosition: cadrage(currentUrl) }}
           />
         )}
       </div>

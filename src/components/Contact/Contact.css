@@ -11,19 +11,7 @@
   padding: 0 2rem;
 }
 
-.contact-section .page-header-unified {
-  text-align: center;
-  padding: 3rem 0;
-}
 
-.contact-section .page-title-unified {
-  font-family: var(--font-main);
-  font-size: 2.2rem;
-  font-weight: 400;
-  text-transform: uppercase;
-  letter-spacing: 0.25em;
-  color: var(--color-text);
-}
 
 .contact__content {
   max-width: 700px;
@@ -51,57 +39,56 @@
   opacity: 0.5;
 }
 
-.contact__methods {
-  width: 100%;
-  display: grid;
-  grid-template-columns: 1fr;
-  gap: var(--spacing-sm);
-}
-
-.contact__method {
+.contact__principal {
   display: flex;
   flex-direction: column;
   align-items: center;
-  padding: var(--spacing-md);
-  background-color: rgba(255, 255, 255, 0.03);
-  border: 1px solid rgba(255, 255, 255, 0.05);
-  border-radius: 8px;
-  transition: all var(--transition-normal);
-  text-decoration: none;
+  gap: 0.6rem;
 }
 
-.contact__method:hover {
-  background-color: rgba(255, 255, 255, 0.05);
-  border-color: var(--color-accent);
-  transform: translateY(-3px);
-}
-
-.contact__method-label {
-  font-size: 0.85rem;
-  text-transform: uppercase;
-  letter-spacing: 0.1em;
-  color: var(--color-text-secondary);
-  margin-bottom: 0.3rem;
-}
-
-.contact__method-value {
-  font-size: 1.1rem;
-  font-weight: var(--font-weight-medium);
+.contact__grand {
+  font-family: var(--font-display);
+  font-size: clamp(2rem, 5.5vw, 3.6rem);
+  line-height: 1.1;
   color: var(--color-text);
+  text-decoration: none;
+  background-image: linear-gradient(currentColor, currentColor);
+  background-size: 0% 1px;
+  background-position: 0 100%;
+  background-repeat: no-repeat;
+  transition: background-size 0.5s ease;
+  overflow-wrap: anywhere;
+  text-align: center;
 }
 
-@media (min-width: 600px) {
-  .contact__methods {
-    grid-template-columns: repeat(2, 1fr);
-  }
+.contact__grand:hover {
+  background-size: 100% 1px;
 }
 
-@media (max-width: 768px) {
-  .contact__method {
-    padding: var(--spacing-sm);
-  }
+.contact__grand--tel {
+  font-size: clamp(1.5rem, 3.5vw, 2.4rem);
+  opacity: 0.75;
+}
 
-  .contact__method-value {
-    font-size: 1rem;
-  }
+.contact__reseaux {
+  display: flex;
+  gap: 2rem;
+  margin-top: 3rem;
+}
+
+.contact__reseau {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.6rem;
+  color: var(--color-text);
+  font-size: 0.78rem;
+  text-transform: uppercase;
+  letter-spacing: 0.2em;
+  text-decoration: none;
+  opacity: 0.75;
+  transition: opacity var(--transition-fast);
+}
+
+.contact__reseau:hover {
+  opacity: 1;
 }

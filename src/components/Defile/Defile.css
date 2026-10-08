@@ -1,0 +1,143 @@
+/* ===== Grille vivante (accueil et page Films) ===== */
+.defile {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  align-items: start;
+  gap: clamp(2rem, 4vw, 3.5rem) clamp(1rem, 2.5vw, 2rem);
+  max-width: 1500px;
+  margin: 0 auto 5rem;
+  padding: 0 clamp(1rem, 3vw, 2.5rem);
+}
+
+.defile__bande {
+  display: block;
+  width: 100%;
+  padding: 0;
+  border: 0;
+  background: none;
+  color: var(--color-text);
+  text-align: left;
+  cursor: pointer;
+}
+
+/* Image au format du film (4:3 ramené à 1,6:1, recadré vers le haut) */
+.defile__media {
+  position: relative;
+  aspect-ratio: var(--ratio-bande);
+  overflow: hidden;
+  border-radius: 4px;
+  background: #0b0b0b;
+}
+
+.defile__media video,
+.defile__media img {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: 50% 35%;
+  transition: transform 1.2s cubic-bezier(0.2, 0.7, 0.2, 1), opacity 0.5s ease;
+}
+
+.defile__bande:hover .defile__media video,
+.defile__bande:hover .defile__media > img:not(.defile__diapo):not(.defile__zoom),
+.defile__bande:focus-visible .defile__media video {
+  transform: scale(1.04);
+}
+
+/* Fondu enchaîné (photos de plateau) */
+.defile__media .defile__diapo {
+  object-position: center;
+}
+
+.defile__diapo {
+  opacity: 0;
+  transform: scale(1.02);
+  transition: transform 3s ease-out;
+}
+
+.defile__diapo.actif {
+  opacity: 1;
+  transform: scale(1.06);
+}
+
+/* Lent zoom pour les films sans extrait */
+.defile__zoom {
+  animation: defile-zoom 6s ease-in-out infinite alternate;
+}
+
+@keyframes defile-zoom {
+  from { transform: scale(1.02) translate(1.5%, 1%); }
+  to { transform: scale(1.16) translate(-2.5%, -1.5%); }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .defile__zoom { animation: none; }
+}
+
+.defile__texte {
+  display: flex;
+  flex-direction: column;
+  gap: 0.3rem;
+  padding-top: 1rem;
+}
+
+.defile__artiste {
+  font-size: 0.7rem;
+  text-transform: uppercase;
+  letter-spacing: 0.25em;
+  opacity: 0.6;
+}
+
+.defile__nom {
+  font-family: var(--font-display);
+  font-size: clamp(1.7rem, 2.8vw, 2.4rem);
+  font-weight: 400;
+  line-height: 1.05;
+  transition: color 0.3s ease;
+}
+
+.defile__bande:hover .defile__nom {
+  color: var(--color-hover);
+}
+
+.defile__meta {
+  font-size: 0.75rem;
+  text-transform: uppercase;
+  letter-spacing: 0.12em;
+  opacity: 0.6;
+}
+
+.defile__credits {
+  font-size: 0.75rem;
+  letter-spacing: 0.04em;
+  opacity: 0.5;
+}
+
+.defile__statut {
+  margin-left: 0.75rem;
+  font-style: normal;
+  color: var(--color-accent);
+}
+
+.defile__voir {
+  display: none;
+}
+
+@media (max-width: 700px) {
+  .defile {
+    grid-template-columns: 1fr;
+    gap: 2.5rem;
+  }
+}
+
+/* Nombre impair de films : le dernier prend toute la largeur (pas de trou) */
+@media (min-width: 701px) {
+  .defile > .defile__bande:last-child:nth-child(odd) {
+    grid-column: 1 / -1;
+  }
+  .defile > .defile__bande:last-child:nth-child(odd) .defile__media {
+    aspect-ratio: 2.39;
+  }
+}

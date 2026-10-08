@@ -17,7 +17,7 @@ class ErrorBoundary extends React.Component {
           <h2>Une erreur est survenue.</h2>
           <p style={{ marginTop: '1rem', opacity: 0.7 }}>
             Essayez de{' '}
-            <a href="/" style={{ color: '#ff3b3b', textDecoration: 'underline' }}>
+            <a href="/" style={{ color: '#e8dcc6', textDecoration: 'underline' }}>
               revenir à l'accueil
             </a>.
           </p>

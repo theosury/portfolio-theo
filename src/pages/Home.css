@@ -1,51 +1,80 @@
 .home-intro {
-  max-width: 44rem;
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(0, 1.1fr);
+  align-items: center;
+  gap: clamp(2rem, 5vw, 5rem);
+  max-width: 1200px;
   margin: 0 auto;
-  padding: calc(var(--spacing-xl) + 1rem) 2rem 0;
+  padding: var(--spacing-xl) clamp(1rem, 3vw, 2.5rem) 0;
 }
 
-.home-intro p {
-  font-size: 1.05rem;
-  line-height: 1.8;
-  opacity: 0.85;
+.home-intro__portrait {
+  margin: 0;
 }
 
-.home-intro p + p {
-  margin-top: 1.1rem;
+.home-intro__portrait img {
+  border-radius: 4px;
 }
 
-/* L'intro remplace l'espace d'en-tête prévu au-dessus des projets */
-.home-intro + .hero-projects {
-  padding-top: var(--spacing-xl);
+.home-intro__portrait img {
+  display: block;
+  width: 100%;
+  aspect-ratio: 4 / 5;
+  object-fit: cover;
+  object-position: center;
 }
 
-.home-cta {
-  background-color: var(--color-bg);
-  text-align: center;
-  padding: var(--spacing-lg) 0; /* Réduit de xl à lg */
-  min-height: auto; /* Override du min-height de .section */
+.home-intro__portrait figcaption {
+  margin-top: 0.6rem;
+  font-size: 0.72rem;
+  letter-spacing: 0.04em;
+  opacity: 0.45;
 }
 
-.home-cta .btn {
-  font-size: 1.1rem;
-  padding: 1.2rem 3rem;
+.home-intro__accroche {
+  margin-bottom: 1.6rem;
+  font-family: var(--font-display);
+  font-size: clamp(2rem, 3.6vw, 3rem);
+  line-height: 1.05;
+}
+
+.home-intro__texte p:not(.home-intro__accroche) {
+  font-size: 1rem;
+  line-height: 1.75;
+  opacity: 0.78;
+}
+
+.home-intro__texte p + p:not(.home-intro__accroche) {
+  margin-top: 1rem;
+}
+
+.home-intro__lien {
+  margin-top: 2rem;
+}
+
+/* Sections de la page unique : on retire les marges prévues pour des pages séparées */
+.home-section {
+  padding-top: var(--spacing-lg);
+  scroll-margin-top: 70px;
+}
+
+.home-section .films-page,
+.home-section .experiences-page {
+  min-height: 0;
+  padding-top: 0;
+}
+
+.home-section .contact-section {
+  min-height: 0;
 }
 
 @media (max-width: 768px) {
   .home-intro {
+    grid-template-columns: 1fr;
     padding: var(--spacing-lg) 1rem 0;
   }
 
-  .home-intro p {
-    font-size: 1rem;
-  }
-
-  .home-cta {
-    padding: var(--spacing-lg) 0;
-  }
-  
-  .home-cta .btn {
-    font-size: 1rem;
-    padding: 1rem 2rem;
+  .home-intro__portrait img {
+    aspect-ratio: 4 / 3;
   }
 }

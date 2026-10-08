@@ -18,6 +18,6 @@ footer a,
 
 footer a:hover,
 .footer a:hover {
-  color: #ff3b3b;
+  color: var(--color-accent);
 }
 */

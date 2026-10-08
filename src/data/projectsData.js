@@ -53,12 +53,12 @@ export const ordreManuel = [
   'quand-son-souffle',   // contre-jours, forêt, soleil couchant
   'the-right-choice',    // chef électro, plus petit projet : tunnel, pyrotechnie
   'insipide',            // réalisation
-  'revolte',             // chef électro : temple
-  'casse-noisette',      // chef-op
-  'pardon',              // couleurs saturées, la mère
   'tecnomat',            // pub TV
   'armanaque',
   'bureau-du-karma',
+  'revolte',             // chef électro : temple
+  'casse-noisette',      // chef-op
+  'pardon',              // couleurs saturées, la mère
   'loverdance',
   'mode-kids',
   // En post-production (section « En cours »)

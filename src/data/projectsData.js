@@ -555,6 +555,8 @@ export const projectsData = {
         year: '2026',
         month: 'Avril-Octobre 2026',
         role: 'Chef électricien',
+        realisateur: 'Théo Carlier',
+        chefOp: 'Léo Aguiton',
         thumbnail: '/images/placeholder-thumb.jpg',
         status: 'En tournage', // dernier bloc le 9 octobre 2026
         images: [],

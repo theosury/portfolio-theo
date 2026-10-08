@@ -65,6 +65,7 @@ export const ordreManuel = [
   'super-vespapa',
   'jugement-dernier',
   'azincourt',
+  'gate66',
 ];
 
 // ========== SECOND PLAN ==========
@@ -82,7 +83,6 @@ export const projetsSecondaires = [
   'lettre-a-lille',
   'la-table-regie',
   'undetoi',
-  'gate66',
   'gadfly',              // stagiaire
   'une-couronne',        // auxiliaire de régie, ESEC 2022
 ];
@@ -853,6 +853,8 @@ export const projectsData = {
         production: 'École 24 × ArtFX',
         thumbnail: '/images/gate66-thumb.jpg',
         status: 'En post-production',
+        diaporama: [1, 2, 4, 3].map((n) => `/images/gate66-plateau/gate66-plateau-${n}.jpg`), // backstage, pas d'images du film
+        diaporamaRatio: '3 / 2',
         // Photos de plateau (backstage, pas d'images du film)
         plateau: {
           titre: 'Sur le plateau',
@@ -967,6 +969,8 @@ export const projectsData = {
         chefHMC: 'Réjane Calvary',
         production: 'VHS Prod',
         thumbnail: '/images/azincourt-thumb.jpg',
+        diaporama: [1, 3, 2, 4].map((n) => `/images/azincourt-plateau/azincourt-plateau-${n}.jpg`), // backstage, pas d'images du film
+        diaporamaRatio: '3 / 2',
         status: 'En post-production',
         plateau: {
           titre: 'Sur le plateau',
@@ -1011,6 +1015,8 @@ export const projectsData = {
         etalonneur: 'Alan Millet',
         monteurSon: 'Matthis Geffroy',
         thumbnail: '/images/jugement-dernier-thumb.jpg',
+        diaporama: [1, 2, 4, 3].map((n) => `/images/jugement-dernier-plateau/jugement-dernier-plateau-${n}.jpg`), // backstage, pas d'images du film
+        diaporamaRatio: '3 / 2',
         status: 'En post-production',
         plateau: {
           titre: 'Sur le plateau',

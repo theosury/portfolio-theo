@@ -970,7 +970,7 @@ export const projectsData = {
         status: 'En post-production',
         plateau: {
           titre: 'Sur le plateau',
-          photos: Array.from({ length: 3 }, (_, i) => `/images/azincourt-plateau/azincourt-plateau-${i + 1}.jpg`),
+          photos: Array.from({ length: 4 }, (_, i) => `/images/azincourt-plateau/azincourt-plateau-${i + 1}.jpg`),
         },
         images: [],
         specs: {
@@ -1014,7 +1014,7 @@ export const projectsData = {
         status: 'En post-production',
         plateau: {
           titre: 'Sur le plateau',
-          photos: Array.from({ length: 3 }, (_, i) => `/images/jugement-dernier-plateau/jugement-dernier-plateau-${i + 1}.jpg`),
+          photos: Array.from({ length: 6 }, (_, i) => `/images/jugement-dernier-plateau/jugement-dernier-plateau-${i + 1}.jpg`),
         },
         images: [],
         specs: {

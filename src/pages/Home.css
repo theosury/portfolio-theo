@@ -1,3 +1,24 @@
+.home-intro {
+  max-width: 44rem;
+  margin: 0 auto;
+  padding: calc(var(--spacing-xl) + 1rem) 2rem 0;
+}
+
+.home-intro p {
+  font-size: 1.05rem;
+  line-height: 1.8;
+  opacity: 0.85;
+}
+
+.home-intro p + p {
+  margin-top: 1.1rem;
+}
+
+/* L'intro remplace l'espace d'en-tête prévu au-dessus des projets */
+.home-intro + .hero-projects {
+  padding-top: var(--spacing-xl);
+}
+
 .home-cta {
   background-color: var(--color-bg);
   text-align: center;
@@ -11,6 +32,14 @@
 }
 
 @media (max-width: 768px) {
+  .home-intro {
+    padding: var(--spacing-lg) 1rem 0;
+  }
+
+  .home-intro p {
+    font-size: 1rem;
+  }
+
   .home-cta {
     padding: var(--spacing-lg) 0;
   }

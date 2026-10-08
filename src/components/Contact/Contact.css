@@ -28,24 +28,31 @@
 .contact__content {
   max-width: 700px;
   margin: 0 auto;
-  text-align: center;
+  padding-bottom: 5rem;
   display: flex;
   flex-direction: column;
   align-items: center;
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
-  width: calc(100% - 4rem);
 }
 
 .contact__subtitle {
   font-size: 1.1rem;
+  text-align: center;
   color: var(--color-text-secondary);
-  margin-bottom: var(--spacing-lg);
+  margin: 2rem 0 var(--spacing-lg);
+}
+
+.contact__pratique {
+  margin-top: 2.5rem;
+  font-size: 0.72rem;
+  text-align: center;
+  text-transform: uppercase;
+  letter-spacing: 0.12em;
+  line-height: 2;
+  opacity: 0.5;
 }
 
 .contact__methods {
+  width: 100%;
   display: grid;
   grid-template-columns: 1fr;
   gap: var(--spacing-sm);

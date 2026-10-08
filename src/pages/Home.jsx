@@ -1,6 +1,7 @@
 import React, { useEffect } from 'react';
 import Hero from '../components/Hero/Hero';
 import HeroProjects from '../components/HeroProjects/HeroProjects';
+import { aboutData } from '../data/projectsData';
 import './Home.css';
 
 const Home = () => {
@@ -11,6 +12,11 @@ const Home = () => {
   return (
     <div className="home">
       <Hero />
+      <section className="home-intro" id="home-intro">
+        {aboutData.bio.split('\n\n').map((paragraphe, i) => (
+          <p key={i}>{paragraphe}</p>
+        ))}
+      </section>
       <HeroProjects />
     </div>
   );

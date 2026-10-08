@@ -73,6 +73,8 @@ const Contact = () => {
             )}
 
           </div>
+
+          <p className="contact__pratique">{aboutData.pratique.join(' · ')}</p>
         </div>
       </div>
     </section>

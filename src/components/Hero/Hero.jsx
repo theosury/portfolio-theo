@@ -97,7 +97,7 @@ function Hero() {
       <button
         className="hero-cta"
         onClick={() => {
-          const section = document.getElementById('hero-projects');
+          const section = document.getElementById('home-intro') || document.getElementById('hero-projects');
           if (section) {
             const offset = 80;
             const elementPosition = section.getBoundingClientRect().top;

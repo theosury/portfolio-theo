@@ -1382,11 +1382,11 @@ export const projectsData = {
   autres: [
     {
       id: 'veronne-production',
-      title: 'Veronne Production',
+      title: 'Verone Productions',
       year: '2026',
       role: 'Road',
       duree: 'Depuis juin 2026',
-      description: 'Montage, exploitation et démontage sur des concerts et des festivals, dont le Main Square Festival 2026.'
+      description: 'Montage, exploitation et démontage sur des concerts et des festivals : Main Square Festival 2026, PLK au Stade de France et Taratata au Zénith de Paris.'
     },
     {
       id: 'alive-production',
@@ -1440,48 +1440,31 @@ export const projectsData = {
 // ========== DONNÉES "À PROPOS" ==========
 export const aboutData = {
   title: 'Théo Sury',
-  subtitle: 'Chef-opérateur & Technicien lumière',
-  specialization: 'Fiction, clips & formats courts',
+  subtitle: 'Chef-opérateur & Électricien',
+  specialization: 'Fiction, clips, publicité & concerts',
   location: 'Lille / Paris',
-  
-  bio: `Technicien lumière et chef-opérateur, je me spécialise dans la fiction et les clips musicaux.
 
-Mon parcours m'a conduit de la régie au poste de chef-opérateur, en passant par l'assistanat caméra et l'électricité. Cette polyvalence me permet d'appréhender chaque projet avec une vision technique complète.
+  bio: `Chef-opérateur et électricien basé à Lille, je travaille en fiction, en publicité, en clip et en captation. J'interviens aussi en road sur des concerts et des festivals, du Main Square au Stade de France.
 
-J'interviens actuellement sur des courts et moyens-métrages, des clips musicaux et des formats courts, avec un intérêt particulier pour la direction artistique lumière.`,
-  
+Je suis passé par la régie, la caméra et la lumière : je connais le plateau de l'intérieur et la place de chacun dans une équipe. C'est cette expérience que je mets au service de chaque projet, du court au long-métrage.
+
+Disponible en renfort électro et road, et à l'écoute de tout projet en tant que chef-opérateur.`,
+
   skills: [
     'Direction de la photographie',
-    'Chef électricien',
-    'Technicien lumière',
-    'Assistant caméra',
-    'Régie lumière',
-    'Étalonnage'
+    'Électricité plateau & chef électro',
+    'Assistanat caméra',
+    'Road : montage, exploitation, démontage',
+    'Étalonnage',
+    'Photographie'
   ],
-  
-  parcours: [
-    {
-      year: '2025',
-      title: 'Chef-opérateur freelance',
-      description: 'Fiction et clips musicaux'
-    },
-    {
-      year: '2024',
-      title: 'Chef électricien',
-      description: 'Courts-métrages et productions'
-    },
-    {
-      year: '2024',
-      title: 'Stage Panavision ALGA',
-      description: 'Maintenance caméra et filtres'
-    },
-    {
-      year: '2024',
-      title: '3e assistant caméra - DNA',
-      description: 'Fédération Entertainment'
-    }
+
+  // Infos utiles à un employeur qui cherche un renfort
+  pratique: [
+    'Basé à Lille, mobile sur Paris et les Hauts-de-France',
+    'Permis B, véhiculé'
   ],
-  
+
   contact: {
     email: 'theosury@gmail.com',
     phone: '07 50 84 62 01',

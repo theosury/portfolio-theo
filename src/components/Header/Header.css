@@ -10,21 +10,26 @@
   z-index: 1000;
   padding: 1.5rem 0;
   
-  /* Transparent au départ - effet glassmorphism léger */
-  background: linear-gradient(to bottom, rgba(0, 0, 0, 0.55), rgba(0, 0, 0, 0));
-  
-  /* Bordure subtile */
-  border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
   
   transition: background 0.3s ease, padding 0.3s ease, border-color 0.3s ease;
 }
 
-/* Header au scroll (plus opaque et compact) */
+/* Verre dépoli dès le haut de page, sur un calque à part : un
+   backdrop-filter sur .header piégerait le menu mobile (position: fixed) */
+.header::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  background: rgba(10, 10, 10, 0.45);
+  -webkit-backdrop-filter: blur(18px) saturate(160%);
+  backdrop-filter: blur(18px) saturate(160%);
+}
+
+/* Header au scroll (plus compact) */
 .header.scrolled {
   padding: 1rem 0;
-  /* Fond presque opaque sans flou : le flou recalculé au-dessus des
-     vidéos en lecture faisait ramer le défilement */
-  background: rgba(5, 5, 5, 0.94);
   border-bottom: 1px solid rgba(255, 255, 255, 0.15);
 }
 

@@ -4,10 +4,15 @@ import './Photos.css';
 
 const nomBase = (f) => f.replace(/\.[^.]+$/, '');
 
+// Section secondaire : une sélection, le reste à la demande
+const APERCU = 8;
+
 function Photos() {
   const photos = listePhotos.map((p) => `/images/photos/${p.fichier}`);
   const [lightboxOpen, setLightboxOpen] = useState(false);
   const [currentIndex, setCurrentIndex] = useState(0);
+  const [toutes, setToutes] = useState(false);
+  const visibles = toutes ? listePhotos : listePhotos.slice(0, APERCU);
 
   // Gestion du scroll du body via useEffect
   useEffect(() => {
@@ -55,8 +60,8 @@ function Photos() {
   return (
     <section id="photographie" className="photos-section">
       <div className="container">
-        <header className="page-header-unified">
-          <h1 className="page-title-unified">Photos</h1>
+        <header className="page-header-unified photos-header">
+          <h2 className="photos-titre">Photos</h2>
         </header>
 
         <p className="page-intro">
@@ -65,7 +70,7 @@ function Photos() {
 
         {/* Mosaïque : chaque photo garde son format */}
         <div className="photos-grid" role="list">
-          {listePhotos.map((photo, index) => (
+          {visibles.map((photo, index) => (
             <button
               key={photo.fichier}
               type="button"
@@ -84,6 +89,14 @@ function Photos() {
             </button>
           ))}
         </div>
+
+        {listePhotos.length > APERCU && (
+          <div className="photos-plus">
+            <button type="button" className="lien-souligne" onClick={() => setToutes(!toutes)}>
+              {toutes ? 'Moins de photos' : `Toutes les photos (${listePhotos.length})`}
+            </button>
+          </div>
+        )}
 
         {photos.length === 0 && (
           <p className="no-photos">Aucune photo trouvée. Ajoute des images dans le dossier <code>/public/images/photos/</code></p>

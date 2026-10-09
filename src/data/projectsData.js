@@ -196,6 +196,7 @@ export const projectsData = {
         },
         description: 'Clip tourné au Studio Kremlin pour le morceau Feng Shui (prod. Focus Beatz & JY). Dispositif studio construit autour d\'un travelling circulaire, avec une lumière entièrement pilotée au pupitre.',
         specs: {
+          duree: '2min40',
           format: 'Clip',
           lieu: 'Studio Kremlin, Ivry-sur-Seine',
           particularite: 'Travelling circulaire, lumière au pupitre'
@@ -520,6 +521,7 @@ export const projectsData = {
         images: [],
         description: 'Clip de meysi, produit par l\'association Stuzka (tourné sous le titre de travail « I Have Enough »). Tunnel, hangar et piste d\'aviation dans la brume : fumigènes et pyrotechnie.',
         specs: {
+          duree: '2min30',
           format: 'Clip'
         }
       },
@@ -622,7 +624,7 @@ export const projectsData = {
       },
       {
         id: 'vagues',
-        boucles: [10, 9, 8, 7, 6, 4].map((n) => `/videos/boucles/vagues-${n}`), // extraits muets enchaînés dans la grille
+        boucles: [4, 10, 9, 8, 7, 6].map((n) => `/videos/boucles/vagues-${n}`), // extraits muets enchaînés dans la grille
         boucleRatio: '1200 / 500', // format des extraits (bandes noires retirées)
         title: 'Ce que laissent les vagues',
         year: '2024',
@@ -713,6 +715,7 @@ export const projectsData = {
         images: [],
         youtubeId: 'GeE6Sa8rlDI',
         specs: {
+          duree: '3min19',
           format: 'Clip',
           lieu: 'Studio Kremlin, Ivry-sur-Seine',
           tournage: 'Mars 2026',
@@ -1109,6 +1112,7 @@ export const projectsData = {
         thumbnail: '/images/pardon-thumb.jpg',
         youtubeId: '9qQdzhmH8O0',
         specs: {
+          duree: '2min19',
           format: 'Court-métrage',
           lieu: 'Paris',
           tournage: 'Décembre 2024',
@@ -1151,6 +1155,7 @@ export const projectsData = {
         vimeoId: '1026723522',
         description: 'Court-métrage studio tourné en une journée lors des portes ouvertes de l\'ESEC. Carte blanche, style inspiré de The Office mais en plus malaisant.',
         specs: {
+          duree: '5min35',
           format: 'Court-métrage studio',
           jours: '1 jour',
           camera: 'Arri ALEXA Classic (SXT Plus)',
@@ -1201,6 +1206,7 @@ export const projectsData = {
         youtubeId: 'epDfHUrlK_0',
         description: 'Eliot (20 ans) est un jeune homme atteint d\'autisme avec déficience intellectuelle. Lorsque sa soeur décède brutalement, ne comprenant pas la mort, il part à sa recherche. Film de fin d\'études ESEC.',
         specs: {
+          duree: '10min19',
           format: 'Court-métrage fiction',
           lieu: 'Maisons-Laffitte',
           tournage: 'Avril 2024',
@@ -1248,6 +1254,7 @@ export const projectsData = {
         vimeoId: '1025523467?autoplay=1&loop=1&autopause=0&player_id=0&app_id=58479&background=1',
         specs: {
           format: 'Court-métrage fiction',
+          duree: '9min',
           coproduction: 'Filmakademie Baden-Württemberg, La Fémis, ARTE, SWR',
           pays: 'France / Allemagne',
           annee: '2024',
@@ -1379,6 +1386,7 @@ export const projectsData = {
         youtubeId: 'PPvxZQ_3x3c',
         description: 'Louis, un fils d\'immigrés chinois manifestant en France contre la politique du gouvernement, entre en conflit avec son père quand il apprend que celui-ci désapprouve sa révolte dans ce qui est pour lui une terre d\'accueil. Film de fin de cycle 1.',
         specs: {
+          duree: '10min22',
           format: 'Court-métrage fiction',
           annee: '2023',
           camera: 'Sony FS7',
@@ -1422,6 +1430,7 @@ export const projectsData = {
         youtubeId: 'c9wZt6gs-ZU',
         description: 'Sybille est la comédienne la plus populaire de son époque. Mère dirigiste et autoritaire, elle pousse sa fille Flora à rentrer dans le milieu. Mais la jeunesse de Flora effacera le succès de sa mère qui semblait être éternel… Film de fin d\'études ESEC.',
         specs: {
+          duree: '10min48',
           format: 'Court-métrage fiction',
           annee: '2022',
           camera: 'Arri ALEXA Classic (SXT Plus)',
@@ -1520,8 +1529,9 @@ export const projectsData = {
       duree: '2 événements',
       description: 'Photographie de soirées, en conditions de très faible lumière.',
       couverture: 1,
-      // Quelques photos de soirée (vignette + original en plein écran)
-      photos: Array.from({ length: 12 }, (_, i) => `/images/noctem/noctem-${i + 1}`)
+      // Flash direct en alternance avec les photos où la lumière de scène se voit
+      // (13 à 17 : dérivés Photos à 1086 px, à remplacer par les originaux)
+      photos: [14, 3, 15, 4, 13, 6, 16, 5, 17, 1].map((n) => `/images/noctem/noctem-${n}`)
     }
   ]
 };

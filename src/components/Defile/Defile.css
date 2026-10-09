@@ -18,6 +18,14 @@
   color: var(--color-text);
   text-align: left;
   cursor: pointer;
+  transition: transform 0.5s cubic-bezier(0.2, 0.7, 0.2, 1);
+}
+
+/* Survol (souris uniquement) : la carte entière grandit légèrement */
+@media (hover: hover) {
+  .defile__bande:hover {
+    transform: scale(1.025);
+  }
 }
 
 /* Image au format du film (4:3 ramené à 1,6:1, recadré vers le haut) */
@@ -40,8 +48,6 @@
   transition: transform 1.2s cubic-bezier(0.2, 0.7, 0.2, 1), opacity 0.5s ease;
 }
 
-.defile__bande:hover .defile__media video,
-.defile__bande:hover .defile__media > img:not(.defile__diapo):not(.defile__zoom),
 .defile__bande:focus-visible .defile__media video {
   transform: scale(1.04);
 }
@@ -115,10 +121,23 @@
   opacity: 0.5;
 }
 
+/* Badge « En post-production » : se détache de la ligne grisée */
 .defile__statut {
+  display: inline-block;
   margin-left: 0.75rem;
+  padding: 0.2rem 0.6rem;
   font-style: normal;
-  color: var(--color-accent);
+  font-weight: 600;
+  color: #000;
+  background: #e8dcc6;
+  border-radius: 999px;
+  vertical-align: 0.05em;
+}
+
+/* La ligne méta est atténuée : le badge reste à pleine intensité */
+.defile__meta:has(.defile__statut) {
+  opacity: 1;
+  color: rgba(255, 255, 255, 0.6);
 }
 
 .defile__voir {
@@ -141,3 +160,4 @@
     aspect-ratio: 2.39;
   }
 }
+

@@ -86,25 +86,41 @@ const Extraits = ({ sources }) => {
   const videos = useRef([]);
   const [actif, setActif] = useState(0);
   const [visible, setVisible] = useState(false);
+  const [ongletActif, setOngletActif] = useState(!document.hidden);
 
+  // Ne joue que si la carte est à moitié à l'écran (sous la barre de menu) :
+  // les cartes qui débordent en haut ou en bas restent en pause, moins de
+  // vidéos décodées en même temps pendant le défilement
   useEffect(() => {
     const el = conteneur.current;
     if (!el) return;
-    const observer = new IntersectionObserver(([entry]) => setVisible(entry.isIntersecting), { threshold: 0.2 });
+    const observer = new IntersectionObserver(
+      ([entry]) => setVisible(entry.isIntersecting),
+      { threshold: 0.5, rootMargin: '-70px 0px 0px 0px' }
+    );
     observer.observe(el);
     return () => observer.disconnect();
   }, []);
 
+  // Onglet en arrière-plan : tout en pause
+  useEffect(() => {
+    const maj = () => setOngletActif(!document.hidden);
+    document.addEventListener('visibilitychange', maj);
+    return () => document.removeEventListener('visibilitychange', maj);
+  }, []);
+
+  const joue = visible && ongletActif;
+
   useEffect(() => {
     videos.current.forEach((video, i) => {
       if (!video) return;
-      if (i === actif && visible) {
+      if (i === actif && joue) {
         video.play().catch(() => {});
       } else {
         video.pause();
       }
     });
-  }, [actif, visible]);
+  }, [actif, joue]);
 
   const suivant = () => {
     if (sources.length < 2) return;

@@ -22,9 +22,11 @@
   position: absolute;
   inset: 0;
   z-index: -1;
-  background: rgba(10, 10, 10, 0.45);
-  -webkit-backdrop-filter: blur(18px) saturate(160%);
-  backdrop-filter: blur(18px) saturate(160%);
+  /* Flou modéré et sans saturation : bien moins coûteux à recalculer
+     au-dessus des vidéos, fond un peu plus dense pour compenser */
+  background: rgba(10, 10, 10, 0.5);
+  -webkit-backdrop-filter: blur(12px);
+  backdrop-filter: blur(12px);
 }
 
 /* Header au scroll (plus compact) */

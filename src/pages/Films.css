@@ -63,23 +63,11 @@
 }
 
 .films-autres__statuts {
-  display: flex;
-  flex-wrap: wrap;
-  justify-content: center;
-  gap: 0.5rem;
   margin: 0;
-}
-
-/* Même pastille que le badge des cartes du défilé */
-.films-autres__pastille {
-  padding: 0.2rem 0.6rem;
-  font-size: 0.7rem;
-  font-weight: 600;
+  font-size: 0.75rem;
   text-transform: uppercase;
-  letter-spacing: 0.1em;
-  color: #000;
-  background: #e8dcc6;
-  border-radius: 999px;
+  letter-spacing: 0.15em;
+  opacity: 0.55;
 }
 
 /* Grille de tuiles de même largeur (4 colonnes) ; la dernière ligne
@@ -156,18 +144,6 @@
 .films-tuile__role {
   font-size: 0.8rem;
   opacity: 0.75;
-}
-
-.films-tuile__statut {
-  margin-top: auto;
-  padding: 0.15rem 0.5rem;
-  font-size: 0.6rem;
-  font-weight: 600;
-  text-transform: uppercase;
-  letter-spacing: 0.1em;
-  color: #000;
-  background: #e8dcc6;
-  border-radius: 999px;
 }
 
 .films-list {

@@ -52,18 +52,10 @@ const Films = ({ dansAccueil = false }) => {
               <p className="films-autres__compte">
                 + {filmsSecondaires.length} autres tournages, en fiction, documentaire et VR
               </p>
-              <p className="films-autres__statuts">
-                {Object.entries(
-                  filmsSecondaires.reduce((acc, f) => {
-                    if (f.status) acc[f.status] = (acc[f.status] || 0) + 1;
-                    return acc;
-                  }, {})
-                ).map(([statut, n]) => (
-                  <span key={statut} className="films-autres__pastille">
-                    {n} {statut.toLowerCase()}
-                  </span>
-                ))}
-              </p>
+              {/* Simple mention : le statut exact est sur chaque fiche */}
+              {filmsSecondaires.filter((f) => f.status).length > filmsSecondaires.length / 2 && (
+                <p className="films-autres__statuts">La plupart en post-production</p>
+              )}
             </header>
             <ul className="films-tuiles">
               {filmsSecondaires.map((film) => (
@@ -74,7 +66,6 @@ const Films = ({ dansAccueil = false }) => {
                       {film.artiste ? `${film.artiste} : ${film.title}` : film.title}
                     </span>
                     <span className="films-tuile__role">{film.role}</span>
-                    {film.status && <span className="films-tuile__statut">{film.status}</span>}
                   </button>
                 </li>
               ))}

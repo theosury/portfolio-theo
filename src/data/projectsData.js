@@ -187,12 +187,16 @@ export const projectsData = {
         images: [],
         youtubeId: 'elI5iDHsSGI',
         production: 'Facteur Humain × 29 Studio',
-        // Extraits du clip (version YouTube 1080p, sous-titres recadrés)
+        // Extraits : expérimentations Insta du réal + clip (version YouTube 1080p, sous-titres recadrés)
         extraits: {
           titre: 'Extraits',
           lien: 'https://www.instagram.com/p/DbYjL_gAD0B/',
           lienTexte: 'Les expérimentations de Facteur Humain sur Instagram',
-          videos: [2, 1, 3, 4, 5].map((n) => `/videos/ziak/ziak-${n}`),
+          // Expérimentations du réal (Insta) d'abord, puis les plans du clip
+          videos: [
+            ...[1, 2, 3, 4].map((n) => `/videos/ziak/ziak-insta-${n}`),
+            ...[2, 1, 3, 4, 5].map((n) => `/videos/ziak/ziak-${n}`),
+          ],
         },
         description: 'Clip tourné au Studio Kremlin pour le morceau Feng Shui (prod. Focus Beatz & JY). Dispositif studio construit autour d\'un travelling circulaire, avec une lumière entièrement pilotée au pupitre.',
         specs: {
@@ -500,7 +504,9 @@ export const projectsData = {
       },
       {
         id: 'the-right-choice',
-        boucles: [1, 4, 2, 5].map((n) => `/videos/boucles/the-right-choice-${n}`), // extraits muets enchaînés dans la grille
+        // Un seul plan du tunnel (1) : arche dans la fumée, pyro, contre-jour, fumée rouge
+        // (pas le plan du mannequin : lumière qui n'est pas de Théo)
+        boucles: [6, 1, 7, 2].map((n) => `/videos/boucles/the-right-choice-${n}`), // extraits muets enchaînés dans la grille
         boucleRatio: '1920 / 1080',
         title: 'The Right Choice',
         artiste: 'meysi',
@@ -624,7 +630,7 @@ export const projectsData = {
       },
       {
         id: 'vagues',
-        boucles: [4, 10, 9, 8, 7, 6].map((n) => `/videos/boucles/vagues-${n}`), // extraits muets enchaînés dans la grille
+        boucles: [4, 11, 10, 12, 13, 7].map((n) => `/videos/boucles/vagues-${n}`), // extraits muets enchaînés dans la grille
         boucleRatio: '1200 / 500', // format des extraits (bandes noires retirées)
         title: 'Ce que laissent les vagues',
         year: '2024',

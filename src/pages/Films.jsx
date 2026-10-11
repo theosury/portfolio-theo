@@ -6,6 +6,10 @@ import './Films.css';
 
 const estSecondaire = (film) => projetsSecondaires.includes(film.id);
 
+// Film visible en ligne (YouTube, Vimeo ou fichier) : sa tuile le montre
+const aUnFilm = (film) =>
+  Boolean(film.youtubeId || film.vimeoId || film.videoFile || film.youtubeIds?.length || film.vimeoIds?.length || film.videoFiles?.length);
+
 
 const Films = ({ dansAccueil = false }) => {
   const navigate = useNavigate();
@@ -50,22 +54,28 @@ const Films = ({ dansAccueil = false }) => {
           <section className="films-autres">
             <header className="films-autres__resume">
               <p className="films-autres__compte">
-                + {filmsSecondaires.length} autres tournages, en fiction, documentaire et VR
+                + {filmsSecondaires.length} autres tournages, du court-métrage à la publicité
               </p>
-              {/* Simple mention : le statut exact est sur chaque fiche */}
-              {filmsSecondaires.filter((f) => f.status).length > filmsSecondaires.length / 2 && (
-                <p className="films-autres__statuts">La plupart en post-production</p>
-              )}
             </header>
             <ul className="films-tuiles">
               {filmsSecondaires.map((film) => (
                 <li key={film.id}>
-                  <button type="button" className="films-tuile" onClick={() => handleProjectClick(film)}>
-                    {film.specs?.format && <span className="films-tuile__type">{film.specs.format}</span>}
+                  <button
+                    type="button"
+                    className={`films-tuile${aUnFilm(film) ? ' films-tuile--film' : ''}`}
+                    style={aUnFilm(film) ? { '--fond-tuile': `url("${film.thumbnail}")` } : undefined}
+                    onClick={() => handleProjectClick(film)}
+                  >
+                    <span className="films-tuile__haut">
+                      <span className="films-tuile__annee">{film.year}</span>
+                      {film.specs?.format && <span className="films-tuile__type">{film.specs.format}</span>}
+                    </span>
                     <span className="films-tuile__titre">
                       {film.artiste ? `${film.artiste} : ${film.title}` : film.title}
                     </span>
                     <span className="films-tuile__role">{film.role}</span>
+                    {aUnFilm(film) && <span className="films-tuile__voir">▶ Voir le film</span>}
+                    {!aUnFilm(film) && film.status && <span className="films-tuile__statut">{film.status}</span>}
                   </button>
                 </li>
               ))}

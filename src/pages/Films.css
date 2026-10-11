@@ -62,14 +62,6 @@
   margin: 0;
 }
 
-.films-autres__statuts {
-  margin: 0;
-  font-size: 0.75rem;
-  text-transform: uppercase;
-  letter-spacing: 0.15em;
-  opacity: 0.55;
-}
-
 /* Grille de tuiles de même largeur (4 colonnes) ; la dernière ligne
    est centrée, donc pas de trou d'un seul côté */
 .films-tuiles {
@@ -126,8 +118,21 @@
   }
 }
 
+/* Ligne du haut : année à gauche, type de projet à droite */
+.films-tuile__haut {
+  align-self: stretch;
+  display: flex;
+  justify-content: space-between;
+  gap: 0.75rem;
+}
+
+.films-tuile__annee {
+  font-size: 0.65rem;
+  letter-spacing: 0.15em;
+  opacity: 0.7;
+}
+
 .films-tuile__type {
-  align-self: flex-end;
   text-align: right;
   font-size: 0.65rem;
   text-transform: uppercase;
@@ -239,4 +244,55 @@
 
 .films-sous-titre .page-title-unified {
   font-size: clamp(1.8rem, 3.5vw, 2.6rem);
+}
+
+/* Tuiles des films visibles en ligne : vignette en fond, assombrie pour
+   le texte, qui s'éclaircit au survol */
+.films-tuile--film {
+  position: relative;
+  overflow: hidden;
+  isolation: isolate;
+  border-color: rgba(232, 220, 198, 0.35);
+}
+
+.films-tuile--film::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  background:
+    linear-gradient(rgba(0, 0, 0, 0.62), rgba(0, 0, 0, 0.72)),
+    var(--fond-tuile) center / cover no-repeat;
+  transition: opacity 0.4s ease, transform 0.8s cubic-bezier(0.2, 0.7, 0.2, 1);
+}
+
+@media (hover: hover) {
+  .films-tuile--film:hover::before {
+    background:
+      linear-gradient(rgba(0, 0, 0, 0.35), rgba(0, 0, 0, 0.6)),
+      var(--fond-tuile) center / cover no-repeat;
+  }
+}
+
+.films-tuile__voir {
+  margin-top: auto;
+  padding-top: 0.4rem;
+  font-size: 0.65rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.15em;
+  color: #e8dcc6;
+}
+
+/* Tuiles sans film visible : badge de statut en bas */
+.films-tuile__statut {
+  margin-top: auto;
+  padding: 0.15rem 0.5rem;
+  font-size: 0.6rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  color: #000;
+  background: #e8dcc6;
+  border-radius: 999px;
 }

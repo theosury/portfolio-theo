@@ -52,15 +52,9 @@ export const ordreManuel = [
   'casse-cest-casse',    // électro : cheval sous la pluie, colombe dans la fumée
   'the-right-choice',    // chef électro, plus petit projet : tunnel, pyrotechnie
   'insipide',            // réalisation
-  'quand-son-souffle',   // contre-jours, forêt, soleil couchant
   'tecnomat',            // pub TV
   'armanaque',
-  'bureau-du-karma',
-  'revolte',             // chef électro : temple
-  'casse-noisette',      // chef-op
-  'pardon',              // couleurs saturées, la mère
-  'loverdance',
-  'mode-kids',
+  'quand-son-souffle',   // contre-jours, forêt, soleil couchant
   // En post-production (section « En cours »)
   'super-vespapa',
   'jugement-dernier',
@@ -86,6 +80,15 @@ export const projetsSecondaires = [
   'gadfly',              // stagiaire ; terminé en septembre 2025 (FilmFreeway), pas encore diffusé
   'une-couronne',        // auxiliaire de régie, ESEC 2022 (extraits sur sa fiche)
   'bbc',
+  'pub-vs-ia',           // pas de film public (festivals) : photos de tournage
+  'nikon-vivi',          // « Mona » = titre du scénario, titre final à confirmer ; film pas encore retrouvé  // Sortis de la grande grille (audit du 11 oct 2026) : projets plus petits
+  // ou poste sans rapport avec la lumière et l'image
+  'bureau-du-karma',     // 1 minute, festival
+  'casse-noisette',      // portes ouvertes ESEC, une journée
+  'mode-kids',
+  'pardon',              // 1er assistant caméra
+  'loverdance',          // régisseur adjoint (production ARTE / La Fémis)
+  'revolte',             // film de 2e année d'école
 ];
 
 // Applique l'ordre manuel puis le tri par date sur le reste
@@ -112,6 +115,8 @@ export const projectsData = {
     const allFilms = [
       {
         id: 'tecnomat',
+        coordProd: 'Léonie Truin',
+        dirProd: 'Gabrielle Hennessy',
         boucles: [1, 3, 2].map((n) => `/videos/boucles/tecnomat-${n}`), // extraits muets enchaînés dans la grille
         boucleRatio: '1200 / 616', // format de la pub (bandes noires retirées)
         title: 'Tecnomat, vivez vos meilleurs chantiers',
@@ -120,7 +125,7 @@ export const projectsData = {
         role: 'Électricien',
         realisateur: 'Léo Sattin',
         production: 'Poolside Theory × Socialclub',
-        prodExec: 'Gabrielle Hennessy',
+        prodExec: 'Valentin Fertillet',
         premierAssReal: 'Estelle Duhem',
         chefOp: 'Lenny Lu',
         assistantCam: 'Patrick Nishimwbe & Félix Debeus',
@@ -145,9 +150,9 @@ export const projectsData = {
         specs: {
           format: 'Publicité',
           jours: '2 jours',
-          lieu: 'Studio EVO, Froyennes (Belgique)',
           tournage: 'Juillet 2026',
-          particularite: 'Décors studio, dolly, mur mobile'
+          lieu: 'Studio EVO, Froyennes (Belgique)',
+          particularite: 'Décors studio, dolly, mur mobile',
         },
         cast: [
           'Benoît Strulus (L\'Homme)',
@@ -201,10 +206,13 @@ export const projectsData = {
         },
         description: 'Clip tourné au Studio Kremlin pour le morceau Feng Shui (prod. Focus Beatz & JY). Dispositif studio construit autour d\'un travelling circulaire, avec une lumière entièrement pilotée au pupitre.',
         specs: {
-          duree: '2min40',
           format: 'Clip',
+          duree: '2min40',
+          jours: '1 jour (prélight et tournage)',
+          tournage: 'Avril 2026',
           lieu: 'Studio Kremlin, Ivry-sur-Seine',
-          particularite: 'Travelling circulaire, lumière au pupitre'
+          lumiere: '12 Vortex 8, 12 Astera AX9, 4 Nanlux 900c, SkyPanel S60, Aputure 600, Astera Pluto, 12 Esprite',
+          particularite: 'Travelling circulaire, lumière au pupitre',
         }
       },
       {
@@ -216,32 +224,33 @@ export const projectsData = {
         realisateur: 'Jean De Raissac',
         premierAssReal: 'Flora Mollier',
         secondAssReal: 'Max Menut',
-        script: 'Hugo Pederencino',
+        script: 'Hugo Pederencino & Marion Dupont',
         chefOp: 'Emma Deporte',
         assistantCam: 'Noémie Werquin, Morgan Noël & Lyne Goma-goma',
         chefElectro: 'Virgile Vermeulen',
         electros: 'Théo Sury, Louise Mariesant, Lou Cassot & Alice Urso',
         machino: 'Clément Simonnot',
-        son: 'Sasha Stalnikiewicz',
+        son: 'Sophie Derimian & Sasha Stalnikiewicz',
         maquillage: 'Justine Jouveneaux',
         accessoiriste: 'Romain Colard',
-        deco: 'May-Linh Dujardin',
+        deco: 'May-Linh Dujardin & Nathan Despringre-Baveye',
         photo: 'Elliott Biget',
-        regisseur: 'Elina Narbonne',
-        assistRegie: 'Aliénor Tellier, Yann Machet & Oscar Biget',
+        regisseur: 'Aliénor Tellier',
+        assistRegie: 'Oscar Biget & Yann Machet',
         thumbnail: '/images/placeholder-thumb.jpg',
         status: 'En post-production',
         images: [],
-        description: 'Court-métrage étudiant tourné dans le Nord, en partie dans un centre équestre abandonné.',
+        description: 'Deux hommes de main, Micka et Vincent, font halte près d\'un centre équestre abandonné avec un otage dans le coffre. Micka, très fier de sa veste en cuir, a surtout envie de discuter.\n\nCourt-métrage étudiant tourné dans le Nord.',
         specs: {
           format: 'Court-métrage fiction',
           jours: '6 jours',
-          lieu: 'Bondues (Nord)',
-          tournage: 'Juin 2026'
+          tournage: 'Juin 2026',
+          lieu: 'Club Hippique du Forest, Bondues (Nord)',
         },
         cast: [
           'Hakim Hachouche (Micka)',
-          'Edgar Dias (Antoine)'
+          'Edgar Dias (Antoine)',
+          'Charly Potter (Vincent)',
         ]
       },
       {
@@ -254,7 +263,7 @@ export const projectsData = {
         production: 'Drôle de Trame',
         producteur: 'Claire Lebouteiller',
         premierAssReal: 'Carole Reinhard',
-        chefOp: 'Nicolas Legal',
+        chefOp: 'Nicolas Le Gal',
         chefElectro: 'Renaud Bertrand',
         electros: 'Théo Sury',
         son: 'Julien Chaumat',
@@ -288,6 +297,9 @@ export const projectsData = {
       },
       {
         id: 'cache-toi-cest-mon-pere',
+        accessoiriste: 'Anaïs Bordessoules',
+        costume: 'Perline Gibouin',
+        steadicam: 'Grimaud Menu',
         title: 'Cache-toi, c\'est mon père !',
         year: '2026',
         month: 'Mai 2026',
@@ -297,13 +309,13 @@ export const projectsData = {
         premierAssReal: 'Gibril Kherroubi',
         secondAssReal: 'Nicolas Quintin',
         script: 'Emma Herrero-Boué',
-        chefOp: 'Max Guerin',
-        assistantCam: 'Paco Bernier',
+        chefOp: 'Maxime Guérin',
+        assistantCam: 'Paco Bernier & Antonin Leclere',
         chefElectro: 'Théo Sury',
-        electros: 'Laura Jacquet, Sacha Bonte & Clovis Belliel',
+        electros: 'Clara Bodino, Mattéo Mercat, Laura Jacquet-Crétides, Sacha Bonte & Clovis Belleil',
         son: 'Adrian Xavier',
         deco: 'Anaïs Bordessoules',
-        maquillage: 'Audrey Brugnerotto & Perline Gibouin',
+        maquillage: 'Audrey Brugnerotto',
         regisseur: 'Quentin Dissard',
         thumbnail: '/images/placeholder-thumb.jpg',
         status: 'En post-production',
@@ -312,8 +324,8 @@ export const projectsData = {
         specs: {
           format: 'Court-métrage fiction',
           jours: '4 jours',
-          lieu: 'Vincennes & Paris',
-          tournage: 'Mai 2026'
+          tournage: 'Mai 2026',
+          lieu: 'Vincennes, Fontenay-sous-Bois & Paris',
         },
         cast: [
           'Jeanne Richard (Léa)',
@@ -353,11 +365,15 @@ export const projectsData = {
         thumbnail: '/images/bureau-du-karma-thumb.jpg',
         images: [],
         videoFile: '/videos/bureau-du-karma.mp4',
-        description: 'Court-métrage d\'une minute réalisé pour le festival 1 minute 1 court, où il a été diffusé sous le numéro 35. Dans un bureau administratif d\'un autre âge, on tamponne les sentences karmiques.',
+        description: 'Court-métrage d\'une minute réalisé pour le festival 1 minute 1 court, où il a été diffusé sous le numéro 35. Dans un bureau administratif d\'un autre âge, on tamponne les sentences karmiques.\n\nPrix du scénario au festival 1 minute 1 court.',
         specs: {
           format: 'Court-métrage (festival 1 minute 1 court)',
           duree: '1min00',
-          jours: '1 jour'
+          jours: '1 jour',
+          tournage: 'Mars 2026',
+          lieu: 'Cité Paradis, Paris 10e',
+          camera: 'Sony FX6',
+          objectifs: 'Zeiss Vintage (PS-Technik) et Laowa 24 mm Macro',
         },
         cast: [
           'Alexandre Guilbaud (Le Chef)',
@@ -370,6 +386,7 @@ export const projectsData = {
       },
       {
         id: 'trauma-resonance',
+        masque: true, // caché pour une grille de tuiles symétrique (4 x 4), à remettre si besoin
         title: 'Trauma Résonance',
         year: '2026',
         month: 'Avril 2026',
@@ -388,7 +405,7 @@ export const projectsData = {
         costume: 'Sören Cozette',
         maquillage: 'Anaé Delmas & Margaux Prigent',
         deco: 'Morgane Bourdeau, Ramla Cherni, Léon Chauvet, Emma Navarrete & Hélène Powell-Smith',
-        photo: 'Ninon Daos & Aryane Nassirian Shehni',
+        photo: 'Ninon Dabos & Aryane Nassirian Shehni',
         regisseur: 'Jonathan Francillette',
         assistRegie: 'Emilien Rouillard & Thomas Raoult',
         thumbnail: '/images/placeholder-thumb.jpg',
@@ -398,8 +415,8 @@ export const projectsData = {
         specs: {
           format: 'Court-métrage fiction',
           jours: '5 jours',
-          lieu: 'Paris',
-          tournage: 'Avril 2026'
+          tournage: 'Avril 2026',
+          lieu: 'Paris & Choisy-le-Roi',
         },
         cast: [
           'Paola Benigni (Angela)',
@@ -442,9 +459,9 @@ export const projectsData = {
         specs: {
           format: 'Publicité (2 films)',
           duree: '48s et 31s',
-          jours: '1 jour',
-          lieu: 'Studio Le 14 Avenue, Marquette-lez-Lille',
-          tournage: 'Novembre 2025'
+          jours: '1 jour (installation la semaine précédente)',
+          tournage: 'Novembre 2025',
+          lieu: 'Grand Plateau du 14, Marquette-lez-Lille',
         }
       },
       {
@@ -494,8 +511,9 @@ export const projectsData = {
         specs: {
           format: 'Court-métrage fiction',
           jours: '5 jours',
+          tournage: 'Juin 2026',
           lieu: 'Écourt-Saint-Quentin (Pas-de-Calais)',
-          tournage: 'Juin 2026'
+          camera: 'ARRI Alexa Mini',
         },
         cast: [
           'Thomas Dubois (Guy)',
@@ -528,8 +546,12 @@ export const projectsData = {
         images: [],
         description: 'Clip de meysi, produit par l\'association Stuzka (tourné sous le titre de travail « I Have Enough »). Tunnel, hangar et piste d\'aviation dans la brume : fumigènes et pyrotechnie.',
         specs: {
+          format: 'Clip',
           duree: '2min30',
-          format: 'Clip'
+          jours: '3 jours',
+          tournage: 'Mars 2026',
+          lieu: 'Usine désaffectée à Sequedin, tunnel et aérodrome de Merville',
+          particularite: 'Fumigènes et pyrotechnie, lumière sur batteries Instagrid, sans groupe électrogène',
         }
       },
       {
@@ -543,7 +565,7 @@ export const projectsData = {
         producteur: 'Eric Quintin',
         prodExec: 'Karine Sevrain',
         assistProd: 'Ludivine Vongsavath Urtin & Jessy Mathiou',
-        chefOp: 'Nicolas Legal',
+        chefOp: 'Nicolas Le Gal',
         cadreur: 'Théo Sury',
         assistantCam: 'Théo Sury',
         thumbnail: '/images/placeholder-thumb.jpg',
@@ -553,13 +575,15 @@ export const projectsData = {
         specs: {
           format: 'Documentaire',
           jours: '3 jours',
-          lieu: 'Lille et métropole',
           tournage: 'Mars 2026',
-          particularite: 'HD 1080 25p, S-Log3, son direct sur caméra'
+          lieu: 'Lille et métropole',
+          camera: 'Panasonic EVA1 & Lumix S1H',
+          particularite: 'HD 1080 25p, S-Log3, son direct sur caméra',
         }
       },
       {
         id: 'la-table-regie',
+        electros: 'Loïs Blanchard & Corentin Claeysen',
         title: 'La Table Régie',
         year: '2026',
         month: 'Avril-Octobre 2026',
@@ -569,10 +593,17 @@ export const projectsData = {
         thumbnail: '/images/placeholder-thumb.jpg',
         status: 'En post-production', // tournage terminé en octobre 2026
         images: [],
+        // Installations lumière des blocs 4 et 5 (le réalisateur accepte que les techniciens partagent des images)
+        plateau: {
+          titre: 'Sur le plateau',
+          credit: 'Théo Sury',
+          photos: [1, 2, 3, 4, 5, 6].map((n) => `/images/la-table-regie-plateau/ltr-plateau-${n}.jpg`),
+        },
         description: 'Court-métrage tourné en cinq blocs. Électricien sur le prélight du premier bloc, puis chef électricien sur les blocs 4 et 5.',
         specs: {
           format: 'Court-métrage fiction',
-          jours: '5 blocs (prélight du bloc 1, chef électro sur les blocs 4 et 5)'
+          jours: '5 blocs (prélight du bloc 1, chef électro sur les blocs 4 et 5)',
+          lieu: 'Studios de la Montjoie, Saint-Denis',
         }
       },
       {
@@ -614,7 +645,8 @@ export const projectsData = {
           format: 'Court-métrage fiction',
           duree: '14min08',
           jours: '2 jours',
-          lieu: 'Studio',
+          tournage: 'Février-Mars 2024',
+          lieu: 'Studio de l\'ESEC, Paris 12e',
           camera: 'Arri ALEXA SXT Plus',
           objectifs: 'Cooke S4',
         },
@@ -639,7 +671,7 @@ export const projectsData = {
         // Que des plans de cinéma marquants et variés (pas d'intérieurs sur Alice)
         title: 'Ce que laissent les vagues',
         year: '2024',
-        month: 'Mai 2024',
+        month: 'Avril 2024',
         role: 'Cadreur',
         realisatrices: 'Luce Paz & Ana Maria Garza Flores',
         scenariste: 'Lou Argenti',
@@ -676,10 +708,11 @@ export const projectsData = {
           format: 'Court-métrage fiction',
           duree: '12min44',
           jours: '5 jours',
-          lieu: 'Bretagne',
+          tournage: 'Avril 2024',
+          lieu: 'Presqu\'île de Rhuys (Saint-Gildas-de-Rhuys, Arzon), Morbihan',
           camera: 'Arri ALEXA SXT Plus',
           objectifs: 'Cooke S4',
-          cadrage: 'Easyrig'
+          cadrage: 'Easyrig',
         },
         cast: [
           'Ambryn Guedin (Pablo Jeune)',
@@ -697,11 +730,12 @@ export const projectsData = {
       },
       {
         id: 'casse-cest-casse',
+        chefMachino: 'Roman Popsing',
         boucles: [1, 2, 3].map((n) => `/videos/boucles/casse-cest-casse-${n}`), // extraits muets enchaînés dans la grille
         boucleRatio: '1200 / 676', // format des extraits (bandes noires retirées)
         title: 'Cassé c\'est Cassé',
         year: '2026',
-        month: 'Mars 2026',
+        month: 'Février 2026',
         role: 'Électricien',
         artiste: 'Wallace Cleaver',
         realisateur: 'Romain Habousha',
@@ -715,7 +749,7 @@ export const projectsData = {
         secondAssistantCam: 'Tristan Vauvert & Sarah Francisco',
         chefElectro: 'Maxime Chastres',
         electros: 'Kyllian Bouvet, Nathan Leblanc, Loïs Blanchard & Théo Sury',
-        machino: 'Roman Popsing & Philippe de Vitry',
+        machino: 'Philippe de Vitry',
         deco: 'Anaïs Profit, Avril Lecoq, Léa Morel, Tiphaine Dupré De Puget, Gabriel Laville, Victor Jobard, Robin De Dieuleveult & Pauline Petit',
         stylisme: 'Jordan Curti',
         maquillage: 'Claire Villard',
@@ -726,10 +760,76 @@ export const projectsData = {
         images: [],
         youtubeId: 'GeE6Sa8rlDI',
         specs: {
-          duree: '3min19',
           format: 'Clip',
-          lieu: 'Studio Kremlin, Ivry-sur-Seine',
-          tournage: 'Mars 2026',
+          duree: '3min19',
+          jours: '2 jours',
+          tournage: 'Février 2026',
+          lieu: 'Studio Kremlin (Petite Halle), Ivry-sur-Seine',
+        },
+      },
+      {
+        id: 'pub-vs-ia',
+        title: 'Et ils vécurent sans ami·es',
+        year: '2026',
+        month: 'Avril 2026',
+        role: 'Électricien',
+        realisatrice: 'Alice Vaillant',
+        production: 'L\'Autre Rive Productions',
+        producteur: 'Mathilde Mokhtari (productrice déléguée et exécutive)',
+        assistantReal: 'Gibril Kherroubi',
+        chefOp: 'Mary Wolf',
+        steadicam: 'Émilie Palet',
+        assistantCam: 'Maxence Riffat & Audrey Goudin',
+        chefElectro: 'Basile Berthou',
+        electros: 'Jean-Baptiste Rime & Théo Sury',
+        son: 'Matin Jalali',
+        costume: 'Emma Lévêque',
+        deco: 'Esther Torsiello',
+        photo: 'Emeric Gallego',
+        monteur: 'Estefania Gagey',
+        vfx: 'Ewan Ros',
+        etalonneur: 'Christophe Chemin',
+        // Le film n'est pas diffusé publiquement pendant les festivals : images partagées par la prod sur Instagram
+        images: [1, 2, 3, 4, 5].map((n) => `/images/pub-vs-ia/film-${n}.jpg`),
+        plateau: {
+          titre: 'Sur le plateau',
+          credit: 'Théo Sury',
+          photos: [1, 2, 3].map((n) => `/images/pub-vs-ia/plateau-${n}.jpg`),
+        },
+        thumbnail: '/images/pub-vs-ia-thumb.jpg',
+        description: 'Lors d\'une cérémonie de mariage, le témoin du marié se révèle être un collier chatbot IA. Pour tous les invités, la situation semble parfaitement normale. Seul le prêtre semble troublé. Au moment de la signature des témoins, le « témoin » se retrouve évidemment dans l\'incapacité de signer…\n\nImages du film : L\'Autre Rive Productions. Actuellement en festivals.',
+        specs: {
+          format: 'Court-métrage (spot)',
+          jours: '1 jour',
+          lieu: 'Église Saint-Luc, Paris',
+          tournage: 'Avril 2026',
+        },
+        cast: [
+          'Nadia Mechaheb',
+          'Christophe Som',
+          'Ouerdia Taleb',
+          'Eric Fardeau',
+        ]
+      },
+      {
+        id: 'nikon-vivi',
+        masque: true, // titre « Mona » non confirmé : pas publié tant que ce n'est pas validé
+        title: 'Mona',
+        year: '2025',
+        month: 'Novembre 2025',
+        role: 'Électricien',
+        realisatrice: 'Virginie Courteille',
+        production: 'Nikon Film Festival',
+        thumbnail: '/images/nikon-vivi-thumb.jpg',
+        images: ['/images/nikon-vivi-1.jpg', '/images/nikon-vivi-2.jpg', '/images/nikon-vivi-3.jpg'], // photos de tournage
+        description: 'Louis vit reclus dans sa chambre en désordre. En retrouvant une bande de photos, il se souvient de Mona, sa meilleure amie d\'autrefois.',
+        specs: {
+          format: 'Court-métrage (Nikon Film Festival)',
+          duree: '2min20',
+          jours: '2 jours',
+          tournage: 'Novembre 2025',
+          lieu: 'Paris',
+          particularite: 'Thème du festival 2026 : « La Beauté »',
         },
       },
       {
@@ -808,8 +908,10 @@ export const projectsData = {
         specs: {
           format: 'Moyen-métrage fiction',
           duree: '40-50min (estimation)',
-          jours: '10 jours (2 semaines)',
-          camera: 'Blackmagic 6K'
+          jours: '11 jours',
+          tournage: 'Mars-Avril 2025',
+          lieu: 'Enghien-les-Bains & Cormeilles-en-Vexin (Val-d\'Oise)',
+          camera: 'Blackmagic 6K',
         }
       },
       {
@@ -874,21 +976,25 @@ export const projectsData = {
         // Photos de plateau (backstage, pas d'images du film)
         plateau: {
           titre: 'Sur le plateau',
-          photos: Array.from({ length: 7 }, (_, i) => `/images/gate66-plateau/gate66-plateau-${i + 1}.jpg`),
+          photos: [1, 8, 2, 9, 3, 4, 5, 6, 7].map((n) => `/images/gate66-plateau/gate66-plateau-${n}.jpg`),
         },
         images: [],
         specs: {
           format: 'Court-métrage',
-          lieu: 'Plaine Image, Tourcoing',
+          jours: '5 jours',
           tournage: 'Septembre 2025',
+          lieu: 'Plaine Image, Tourcoing',
           camera: 'Alexa 35 / Sony A7S IV',
           objectifs: 'Cooke Varotal / Cooke S8/i FF',
-          particularite: 'Dolly, machine à fumée, green screen'
+          particularite: 'Dolly, machine à fumée, green screen',
         }
       },
 
       {
         id: 'bbc',
+        coordProd: 'Nabawiya Ibrahima',
+        premierAssReal: 'Élisa Cazelles',
+        dirProd: 'Josi Frater',
         title: 'Brigade des Beaux Charmeurs',
         year: '2025',
         month: 'Aout 2025',
@@ -905,9 +1011,9 @@ export const projectsData = {
           format: 'Court-métrage fiction',
           duree: '~15min',
           jours: '6 jours',
-          camera: 'Arri ALEXA 35',
           tournage: 'Août 2025',
-          lieu: 'Paris'
+          lieu: 'Romainville & Paris 16e',
+          camera: 'Arri ALEXA 35',
         },
         cast: [
           'Joaquim Tivoukou (Xavier)',
@@ -931,7 +1037,7 @@ export const projectsData = {
         scripte: 'Jeannette Devendeville',
         regisseurs: 'Cécile Decroocq, Alice Lombard & Samuel Bénard',
         chefOp: 'Léo Salomé',
-        assistantCam: 'Eve Rameseyer',
+        assistantCam: 'Eve Ramseyer',
         secondAssistantCam: 'Maxime Lahaye',
         steadicam: 'Julien Néron',
         chefElectro: 'Loïc Latapie',
@@ -954,10 +1060,11 @@ export const projectsData = {
         description: 'Film de La Fémis écrit et réalisé par Khadija Sy. Une mère et son fils tombent, sans le savoir, dans le piège de YouTubeurs. Quand la caméra cachée est dévoilée sur les réseaux, c\'est leur relation qui vacille.',
         specs: {
           format: 'Court-métrage fiction',
-          lieu: 'LCR Les Tailleurs, Villeneuve-d\'Ascq',
+          jours: '5 jours et demi',
           tournage: 'Juillet 2025',
+          lieu: 'LCR Les Tailleurs, Villeneuve-d\'Ascq',
           camera: 'Alexa 35',
-          objectifs: 'Panavision Primo'
+          objectifs: 'Panavision Primo',
         },
         cast: [
           'Nathalie N\'Songan',
@@ -986,12 +1093,13 @@ export const projectsData = {
         chefHMC: 'Réjane Calvary',
         production: 'VHS Prod',
         thumbnail: '/images/azincourt-thumb.jpg',
-        diaporama: [1, 3, 2, 4].map((n) => `/images/azincourt-plateau/azincourt-plateau-${n}.jpg`), // backstage, pas d'images du film
+        // 3 (768 px) écartée, trop petite, original introuvable (album partagé)
+        diaporama: [2, 1, 4].map((n) => `/images/azincourt-plateau/azincourt-plateau-${n}.jpg`), // backstage, pas d'images du film
         diaporamaRatio: '3 / 2',
         status: 'En post-production',
         plateau: {
           titre: 'Sur le plateau',
-          photos: Array.from({ length: 4 }, (_, i) => `/images/azincourt-plateau/azincourt-plateau-${i + 1}.jpg`),
+          photos: [2, 1, 4].map((n) => `/images/azincourt-plateau/azincourt-plateau-${n}.jpg`), // 2400 px
         },
         images: [],
         specs: {
@@ -1005,6 +1113,7 @@ export const projectsData = {
       },
       {
         id: 'jugement-dernier',
+        description: 'Clip du titre « Jugement Dernier » de Luca Flodrops. Traqué par cinq bourreaux, un condamné traverse une série de supplices, du bûcher à la forêt.',
         title: 'Jugement Dernier',
         year: '2025',
         month: 'Décembre 2025',
@@ -1042,11 +1151,12 @@ export const projectsData = {
         images: [],
         specs: {
           format: 'Clip',
-          lieu: 'Château du Bec, Saint-Martin-Du-Bec, Normandie',
+          jours: '3 jours',
           tournage: 'Décembre 2025',
+          lieu: 'Château du Bec, Saint-Martin-Du-Bec, Normandie',
           camera: 'RED Komodo X',
           objectifs: 'Atlas Mercury Anamorphiques',
-          particularite: 'Scènes de torture, VFX'
+          particularite: 'Scènes de torture, VFX',
         },
         cast: [
           'Luca Flodrops (Protagoniste)',
@@ -1057,11 +1167,22 @@ export const projectsData = {
       },
       {
         id: 'armanaque',
+        cast: [
+          'Antoine Gourmelon (Alexis)',
+          'Arnaud Wattine (Bastien)',
+          'Emilien Ravel (Celyan)',
+          'Emmanuelle Taton (Diane)',
+          'Julie Van Rose (Flora)',
+          'Camille Haddad (Garance)',
+          'Maxence Bendjelloun (Henri)',
+          'Lorenzo Blondet (Keran)',
+          'Bastien Lapouille (Maeron)',
+        ],
         boucles: [1, 4].map((n) => `/videos/boucles/armanaque-${n}`),
         boucleRatio: '1200 / 632', // format des extraits (bandes noires retirées)
         title: 'Armanaque',
         year: '2024',
-        month: 'Juillet 2024',
+        month: 'Juin 2024',
         role: 'Chef-opérateur',
         realisateur: 'Antoine Gourmelon',
         assistantReal: 'Luce Paz',
@@ -1072,7 +1193,7 @@ export const projectsData = {
         regisseurGeneral: 'Vanina Nussbaumer',
         thumbnail: '/images/armanaque-thumb.jpg',
         images: [],
-        description: 'Moyen-métrage fiction (45min52) tourné en 2 semaines en banlieue parisienne. Film auto-produit avec matériel prêté par le Cours Florent et l\'ESEC.',
+        description: 'Des amis d\'enfance ouvrent un bar en banlieue parisienne. Des concurrents locaux vont tout faire pour les empêcher de concrétiser leur rêve. Entre vols, secrets et jalousie, leur amitié résistera-t-elle à de telles tensions ?\n\nMoyen-métrage auto-produit, tourné en 2 semaines avec du matériel prêté par le Cours Florent et l\'ESEC.',
         synopsis: 'Lumière dure à contre-jour, soleil écrasant et zones cramées pour un rendu chaud et organique. Exploration du point de vue avec de nombreux champ-contre-champ, caméra au plus proche des personnages pour servir le ton comédie. Défi technique : moyen-métrage tourné en FS7 avec uniquement du tungstène.',
         youtubeId: 'gJY3ENECfbQ',
         chefOp: 'Théo Sury',
@@ -1091,11 +1212,12 @@ export const projectsData = {
           format: 'Moyen-métrage fiction',
           duree: '45min52',
           jours: '2 semaines',
-          lieu: 'Banlieue parisienne',
+          tournage: 'Juin 2024',
+          lieu: 'Paris, Cachan, Maisons-Alfort, Châtenay-Malabry, Le Plessis-Robinson, Maurepas',
           camera: 'Sony FS7',
           objectifs: 'Sony G Master',
+          lumiere: 'Tungstène uniquement',
           budget: 'Très faible',
-          lumiere: 'Tungstène uniquement'
         }
       },
       {
@@ -1145,7 +1267,7 @@ export const projectsData = {
         boucleRatio: '1200 / 676', // format des extraits (bandes noires retirées)
         title: 'Casse-Noisette',
         year: '2024',
-        month: 'Juin 2024',
+        month: 'Octobre 2024',
         role: 'Chef-opérateur',
         realisateur: 'Tristan Lonné',
         assistantReal: 'Virginie Courteille',
@@ -1167,9 +1289,11 @@ export const projectsData = {
         vimeoId: '1026723522',
         description: 'Court-métrage studio tourné en une journée lors des portes ouvertes de l\'ESEC. Carte blanche, style inspiré de The Office mais en plus malaisant.',
         specs: {
-          duree: '5min35',
           format: 'Court-métrage',
+          duree: '5min35',
           jours: '1 jour',
+          tournage: 'Octobre 2024',
+          lieu: 'Studio de l\'ESEC, Paris 12e',
           camera: 'Arri ALEXA Classic (SXT Plus)',
           objectifs: 'Angénieux Optimo',
         },
@@ -1218,12 +1342,13 @@ export const projectsData = {
         youtubeId: 'epDfHUrlK_0',
         description: 'Eliot (20 ans) est un jeune homme atteint d\'autisme avec déficience intellectuelle. Lorsque sa soeur décède brutalement, ne comprenant pas la mort, il part à sa recherche. Film de fin d\'études ESEC.',
         specs: {
-          duree: '10min19',
           format: 'Court-métrage fiction',
-          lieu: 'Maisons-Laffitte',
+          duree: '10min19',
+          jours: '2 jours',
           tournage: 'Avril 2024',
+          lieu: 'Maisons-Laffitte',
           camera: 'Arri ALEXA Classic (SXT Plus)',
-          objectifs: 'Cooke S4/i'
+          objectifs: 'Cooke S4/i',
         }
       },
       {
@@ -1262,16 +1387,19 @@ export const projectsData = {
         production: 'Caïmans Productions',
         thumbnail: '/images/loverdance-thumb.jpg',
         images: [],
-        description: 'Lola rencontre Simon lors d\'un marathon de 24 heures de danse. Alors que la compétition bat son plein, ils développent une complicité qui la détourne de son objectif. Mais les éliminations se succèdent à un rythme effréné et, à bout de souffle, elle décide de s\'unir à lui pour une danse qui pourrait bien les mener à la victoire…',
+        description: 'Lola rencontre Simon lors d\'un marathon de 24 heures de danse. Alors que la compétition bat son plein, ils développent une complicité qui la détourne de son objectif. Mais les éliminations se succèdent à un rythme effréné et, à bout de souffle, elle décide de s\'unir à lui pour une danse qui pourrait bien les mener à la victoire…\n\nPrix Volpina au festival Amarcort de Rimini (2025), sélectionné au Corto Condorello (Rome) et au FlickerFest (Sydney).',
         vimeoId: '1025523467?autoplay=1&loop=1&autopause=0&player_id=0&app_id=58479&background=1',
         specs: {
           format: 'Court-métrage fiction',
           duree: '9min',
-          coproduction: 'Filmakademie Baden-Württemberg, La Fémis, ARTE, SWR',
-          pays: 'France / Allemagne',
+          jours: '5 jours',
+          tournage: 'Juillet 2024',
           annee: '2024',
           camera: 'Alexa Mini LF',
-          objectifs: 'Angénieux Style Optimo / ARRI Signature Zoom'
+          objectifs: 'Angénieux Style Optimo / ARRI Signature Zoom',
+          diffusion: 'ARTE (Court-circuit, juin 2025) et SWR',
+          pays: 'France / Allemagne',
+          coproduction: 'Filmakademie Baden-Württemberg, La Fémis, ARTE, SWR',
         },
         cast: [
           'Louise Luck (Lola)',
@@ -1328,9 +1456,10 @@ export const projectsData = {
       },
       {
         id: 'gadfly',
+        masque: true, // stagiaire : masqué (audit du 11 oct 2026), à remettre si besoin
         title: 'GADFLY',
         year: '2023',
-        month: 'Octobre 2023',
+        month: 'Novembre 2023',
         role: 'Stagiaire Électricien / Machino',
         realisateur: 'Taylor Knight',
         production: 'Pictor Prod × BAVARD',
@@ -1364,7 +1493,10 @@ export const projectsData = {
         synopsis: 'Mêlant tension psychologique et absurdité onirique, Gadfly explore la frontière fragile entre le réel et l\'imaginaire, entraînant son protagoniste (et le spectateur) dans un monde où rien n\'est vraiment ce qu\'il semble être.',
         specs: {
           format: 'Court-métrage',
-          duree: '11min06'
+          duree: '11min06',
+          jours: '2 nuits',
+          tournage: 'Novembre 2023',
+          lieu: 'Paris 20e',
         },
         cast: [
           'Eden Mele',
@@ -1413,13 +1545,15 @@ export const projectsData = {
       },
       {
         id: 'une-couronne',
+        photo: 'Vincent Milleville',
         boucles: [1, 2, 3].map((n) => `/videos/boucles/une-couronne-${n}`), // extraits muets (aperçu au survol dans la liste)
         boucleRatio: '1200 / 600',
         boucles: [1, 2, 3, 4, 5].map((n) => `/videos/boucles/une-couronne-${n}`), // extraits muets (YouTube)
         boucleRatio: '1200 / 600',
+        masque: true, // auxiliaire de régie : masqué (audit du 11 oct 2026), à remettre si besoin
         title: 'Une Couronne',
         year: '2022',
-        month: 'Juin 2022',
+        month: 'Avril 2022',
         role: 'Auxiliaire de régie',
         realisateurs: 'Salma Taibi & Bruno Ribuot-Hirsch',
         scenariste: 'Lisa Carette',
@@ -1445,11 +1579,12 @@ export const projectsData = {
         youtubeId: 'c9wZt6gs-ZU',
         description: 'Sybille est la comédienne la plus populaire de son époque. Mère dirigiste et autoritaire, elle pousse sa fille Flora à rentrer dans le milieu. Mais la jeunesse de Flora effacera le succès de sa mère qui semblait être éternel… Film de fin d\'études ESEC.',
         specs: {
-          duree: '10min48',
           format: 'Court-métrage fiction',
+          duree: '10min48',
+          tournage: 'Avril 2022',
           annee: '2022',
           camera: 'Arri ALEXA Classic (SXT Plus)',
-          objectifs: 'Cooke S4/i'
+          objectifs: 'Cooke S4/i',
         },
         cast: [
           'Maëlle Genet',

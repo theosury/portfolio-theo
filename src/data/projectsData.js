@@ -630,11 +630,12 @@ export const projectsData = {
       },
       {
         id: 'vagues',
-        boucles: [17, 15, 19, 18, 20, 4].map((n) => `/videos/boucles/vagues-${n}`), // extraits muets enchaînés dans la grille
+        boucles: [17, 15, 21, 18, 20, 22, 4].map((n) => `/videos/boucles/vagues-${n}`), // extraits muets enchaînés dans la grille
         boucleRatio: '1200 / 500', // format des extraits (bandes noires retirées)
         // Pas de plans sur fond de ciel gris seul, ni la trompette (l'équipe s'y reflète)
         // 17 : la valse (les mains en longue focale, puis le plan large), 15 : Pablo face à la mer, 18 : la course entière, de la mer à la plage,
-        // 19 : Alice dans la chambre, 20 : le baiser au crépuscule. Que des plans de cinéma intenses
+        // 20 : le baiser au crépuscule, 21 : la trompette en très gros plans, 22 : le trompettiste sur la plage.
+        // Que des plans de cinéma marquants et variés (pas d'intérieurs sur Alice)
         title: 'Ce que laissent les vagues',
         year: '2024',
         month: 'Mai 2024',

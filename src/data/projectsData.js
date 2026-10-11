@@ -630,7 +630,7 @@ export const projectsData = {
       },
       {
         id: 'vagues',
-        boucles: [4, 11, 10, 12, 13, 7].map((n) => `/videos/boucles/vagues-${n}`), // extraits muets enchaînés dans la grille
+        boucles: [14, 11, 4, 12, 10, 13, 7].map((n) => `/videos/boucles/vagues-${n}`), // extraits muets enchaînés dans la grille
         boucleRatio: '1200 / 500', // format des extraits (bandes noires retirées)
         title: 'Ce que laissent les vagues',
         year: '2024',

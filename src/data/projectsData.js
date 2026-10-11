@@ -74,7 +74,6 @@ export const ordreManuel = [
 // Indépendant du champ « status » : un film peut être en post-production
 // et rester en grille principale (ou l'inverse).
 export const projetsSecondaires = [
-  'verite-studio',        // film pas accessible en ligne
   'nothing-personal',
   'moutarderie-fallot-vr',
   'cache-toi-cest-mon-pere',
@@ -83,8 +82,10 @@ export const projetsSecondaires = [
   'lettre-a-lille',
   'la-table-regie',
   'undetoi',
-  'gadfly',              // stagiaire
-  'une-couronne',        // auxiliaire de régie, ESEC 2022
+  'verite-studio',        // pas encore d'extraits
+  'gadfly',              // stagiaire ; terminé en septembre 2025 (FilmFreeway), pas encore diffusé
+  'une-couronne',        // auxiliaire de régie, ESEC 2022 (extraits sur sa fiche)
+  'bbc',
 ];
 
 // Applique l'ordre manuel puis le tri par date sur le reste
@@ -112,7 +113,7 @@ export const projectsData = {
       {
         id: 'tecnomat',
         boucles: [1, 3, 2].map((n) => `/videos/boucles/tecnomat-${n}`), // extraits muets enchaînés dans la grille
-        boucleRatio: '1920 / 1080',
+        boucleRatio: '1200 / 616', // format de la pub (bandes noires retirées)
         title: 'Tecnomat, vivez vos meilleurs chantiers',
         year: '2026',
         month: 'Juillet 2026',
@@ -566,7 +567,7 @@ export const projectsData = {
         realisateur: 'Théo Carlier',
         chefOp: 'Léo Aguiton',
         thumbnail: '/images/placeholder-thumb.jpg',
-        status: 'En tournage', // dernier bloc le 9 octobre 2026
+        status: 'En post-production', // tournage terminé en octobre 2026
         images: [],
         description: 'Court-métrage tourné en cinq blocs. Électricien sur le prélight du premier bloc, puis chef électricien sur les blocs 4 et 5.',
         specs: {
@@ -886,10 +887,9 @@ export const projectsData = {
         }
       },
 
-      /*
       {
         id: 'bbc',
-        title: 'BBC',
+        title: 'Brigade des Beaux Charmeurs',
         year: '2025',
         month: 'Aout 2025',
         role: 'Électricien',
@@ -915,7 +915,6 @@ export const projectsData = {
           'Elisabeth Milla (Mme Kogo)'
         ]
       },
-      */
 
       {
         id: 'verite-studio',
@@ -949,7 +948,10 @@ export const projectsData = {
         maquillage: 'Arya Bardin',
         photo: 'Astrid Joos-Deligne',
         thumbnail: '/images/verite-studio-thumb.jpg',
-        images: [],
+        status: 'En post-production',
+        images: ['/images/verite_studio.jpg'], // photo de tournage (clap)
+        // Synopsis d'après la page de financement participatif (Proarti)
+        description: 'Film de La Fémis écrit et réalisé par Khadija Sy. Une mère et son fils tombent, sans le savoir, dans le piège de YouTubeurs. Quand la caméra cachée est dévoilée sur les réseaux, c\'est leur relation qui vacille.',
         specs: {
           format: 'Court-métrage fiction',
           lieu: 'LCR Les Tailleurs, Villeneuve-d\'Ascq',
@@ -993,7 +995,7 @@ export const projectsData = {
         },
         images: [],
         specs: {
-          format: 'Court-métrage médiéval',
+          format: 'Court-métrage',
           lieu: 'Château de la Lande, Montaigu-Vendée',
           tournage: 'Octobre 2025',
           camera: 'Alexa Mini LF',
@@ -1166,7 +1168,7 @@ export const projectsData = {
         description: 'Court-métrage studio tourné en une journée lors des portes ouvertes de l\'ESEC. Carte blanche, style inspiré de The Office mais en plus malaisant.',
         specs: {
           duree: '5min35',
-          format: 'Court-métrage studio',
+          format: 'Court-métrage',
           jours: '1 jour',
           camera: 'Arri ALEXA Classic (SXT Plus)',
           objectifs: 'Angénieux Optimo',
@@ -1361,7 +1363,8 @@ export const projectsData = {
         description: 'Une nuit, dans un diner faiblement éclairé, une simple erreur de commande plonge Joe dans un voyage surréaliste et troublant. Le temps se distord, la réalité bascule, et les visages familiers adoptent des rôles énigmatiques alors qu\'il cherche quelque chose qui n\'a peut-être jamais existé.',
         synopsis: 'Mêlant tension psychologique et absurdité onirique, Gadfly explore la frontière fragile entre le réel et l\'imaginaire, entraînant son protagoniste (et le spectateur) dans un monde où rien n\'est vraiment ce qu\'il semble être.',
         specs: {
-          format: 'Court-métrage'
+          format: 'Court-métrage',
+          duree: '11min06'
         },
         cast: [
           'Eden Mele',
@@ -1411,6 +1414,8 @@ export const projectsData = {
       {
         id: 'une-couronne',
         boucles: [1, 2, 3].map((n) => `/videos/boucles/une-couronne-${n}`), // extraits muets (aperçu au survol dans la liste)
+        boucleRatio: '1200 / 600',
+        boucles: [1, 2, 3, 4, 5].map((n) => `/videos/boucles/une-couronne-${n}`), // extraits muets (YouTube)
         boucleRatio: '1200 / 600',
         title: 'Une Couronne',
         year: '2022',

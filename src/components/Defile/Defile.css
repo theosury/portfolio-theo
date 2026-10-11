@@ -89,6 +89,31 @@
   padding-top: 1rem;
 }
 
+/* Type de projet en gras, en bas à droite de la vignette ; un voile sombre
+   limité à ce coin le garde lisible sur les images claires */
+.defile__media::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  background: radial-gradient(ellipse 40% 45% at 100% 100%, rgba(0, 0, 0, 0.5), transparent);
+  pointer-events: none;
+}
+
+.defile__type {
+  position: absolute;
+  right: 1rem;
+  bottom: 0.85rem;
+  z-index: 2;
+  font-size: 0.72rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.12em;
+  color: #fff;
+  text-shadow: 0 1px 8px rgba(0, 0, 0, 0.6);
+  pointer-events: none;
+}
+
 .defile__artiste {
   font-size: 0.7rem;
   text-transform: uppercase;
@@ -121,25 +146,6 @@
   opacity: 0.5;
 }
 
-/* Badge « En post-production » : se détache de la ligne grisée */
-.defile__statut {
-  display: inline-block;
-  margin-left: 0.75rem;
-  padding: 0.2rem 0.6rem;
-  font-style: normal;
-  font-weight: 600;
-  color: #000;
-  background: #e8dcc6;
-  border-radius: 999px;
-  vertical-align: 0.05em;
-}
-
-/* La ligne méta est atténuée : le badge reste à pleine intensité */
-.defile__meta:has(.defile__statut) {
-  opacity: 1;
-  color: rgba(255, 255, 255, 0.6);
-}
-
 .defile__voir {
   display: none;
 }
@@ -160,4 +166,5 @@
     aspect-ratio: 2.39;
   }
 }
+
 

@@ -38,6 +38,11 @@ const credits = (film) =>
     .filter(Boolean)
     .join(' · ');
 
+// Type de projet, court : sans la précision entre parenthèses ni « fiction »
+// (presque tous les films en sont), pour ne pas surcharger les vignettes
+const typeProjet = (film) =>
+  film.specs?.format?.replace(/\s*\(.*\)\s*/, '').replace(/\s+fiction$/i, '') || null;
+
 // Une bande du défilé. L'extrait ne se charge et ne joue que lorsque la bande
 // est à l'écran. Sans extrait (films en post-production, ou vidéo indisponible),
 // l'image de la vignette avance en lent zoom pour garder du mouvement.
@@ -58,15 +63,15 @@ const BandeFilm = ({ film, onClick }) => {
         ) : film.diaporama ? (
           <Diaporama images={film.diaporama} />
         ) : (
-          <img className="defile__zoom" src={film.thumbnail} alt="" loading="lazy" />
+          <img className="defile__zoom" src={film.thumbnail} alt="" loading="lazy" style={{ animationDelay: `-${(film.id.length * 1.7) % 6}s` }} />
         )}
+        {typeProjet(film) && <span className="defile__type">{typeProjet(film)}</span>}
       </div>
       <div className="defile__texte">
         {film.artiste && <span className="defile__artiste">{film.artiste}</span>}
         <span className="defile__nom">{film.title}</span>
         <span className="defile__meta">
           {film.year} · {film.role}
-          {film.status && <em className="defile__statut">{film.status}</em>}
         </span>
         {credits(film) && <span className="defile__credits">{credits(film)}</span>}
       </div>
@@ -165,13 +170,20 @@ const Extraits = ({ sources }) => {
   );
 };
 
-// Fondu enchaîné entre quelques photos, chacune en lent zoom
+// Quelques photos enchaînées, chacune en lent zoom. Chaque carte a son
+// propre rythme et son propre départ : les diaporamas voisins ne changent
+// pas d'image en même temps
 const Diaporama = ({ images }) => {
-  const [actif, setActif] = useState(0);
+  const [actif, setActif] = useState(() => Math.floor(Math.random() * images.length));
 
   useEffect(() => {
-    const timer = setInterval(() => setActif((i) => (i + 1) % images.length), 2400);
-    return () => clearInterval(timer);
+    const rythme = 2000 + Math.random() * 1200;
+    let timer;
+    const depart = setTimeout(() => {
+      setActif((i) => (i + 1) % images.length);
+      timer = setInterval(() => setActif((i) => (i + 1) % images.length), rythme);
+    }, Math.random() * rythme);
+    return () => { clearTimeout(depart); clearInterval(timer); };
   }, [images.length]);
 
   return images.map((src, i) => (

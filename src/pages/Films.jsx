@@ -23,29 +23,6 @@ const Films = ({ dansAccueil = false }) => {
   const filmsPrincipaux = projectsData.films.filter((film) => !estSecondaire(film));
   const filmsSecondaires = projectsData.films.filter(estSecondaire);
 
-  // Les projets de second plan sont listés, pas exposés en cartes
-  const renderListe = (films) => (
-    <ul className="films-list">
-      {films.map((film) => (
-        <li key={film.id}>
-          <button
-            type="button"
-            className="films-list__row"
-            onClick={() => handleProjectClick(film)}
-          >
-            <span className="films-list__title">
-              {film.artiste ? `${film.artiste} : ${film.title}` : film.title}
-            </span>
-            <span className="films-list__type">{film.specs?.format || ''}</span>
-            <span className="films-list__date">{film.month || film.year}</span>
-            <span className="films-list__role">{film.role}</span>
-            <span className="films-list__status" data-status={film.status}>{film.status || ''}</span>
-          </button>
-        </li>
-      ))}
-    </ul>
-  );
-
   return (
     <div className="films-page">
       <header className="page-header-unified">
@@ -67,14 +44,41 @@ const Films = ({ dansAccueil = false }) => {
       <div className="films-container">
 
 
-        {/* Tous les autres tournages, toujours visibles : ils montrent le volume de travail */}
+        {/* Les autres tournages en mosaïque de tuiles : on voit d'un coup d'œil
+            qu'il y en a beaucoup, et lesquels sont en cours, sans couper le défilement */}
         {filmsSecondaires.length > 0 && (
           <section className="films-autres">
-            <header className="page-header-unified films-sous-titre">
-              <h2 className="page-title-unified">Autres tournages</h2>
-              <p className="page-intro">{filmsSecondaires.length} projets, du court-métrage à la publicité.</p>
+            <header className="films-autres__resume">
+              <p className="films-autres__compte">
+                + {filmsSecondaires.length} autres tournages, en fiction, documentaire et VR
+              </p>
+              <p className="films-autres__statuts">
+                {Object.entries(
+                  filmsSecondaires.reduce((acc, f) => {
+                    if (f.status) acc[f.status] = (acc[f.status] || 0) + 1;
+                    return acc;
+                  }, {})
+                ).map(([statut, n]) => (
+                  <span key={statut} className="films-autres__pastille">
+                    {n} {statut.toLowerCase()}
+                  </span>
+                ))}
+              </p>
             </header>
-            {renderListe(filmsSecondaires)}
+            <ul className="films-tuiles">
+              {filmsSecondaires.map((film) => (
+                <li key={film.id}>
+                  <button type="button" className="films-tuile" onClick={() => handleProjectClick(film)}>
+                    {film.specs?.format && <span className="films-tuile__type">{film.specs.format}</span>}
+                    <span className="films-tuile__titre">
+                      {film.artiste ? `${film.artiste} : ${film.title}` : film.title}
+                    </span>
+                    <span className="films-tuile__role">{film.role}</span>
+                    {film.status && <span className="films-tuile__statut">{film.status}</span>}
+                  </button>
+                </li>
+              ))}
+            </ul>
           </section>
         )}
       </div>

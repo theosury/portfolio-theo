@@ -630,8 +630,9 @@ export const projectsData = {
       },
       {
         id: 'vagues',
-        boucles: [14, 11, 4, 12, 10, 13, 7].map((n) => `/videos/boucles/vagues-${n}`), // extraits muets enchaînés dans la grille
+        boucles: [14, 15, 11, 16, 12, 4, 7].map((n) => `/videos/boucles/vagues-${n}`), // extraits muets enchaînés dans la grille
         boucleRatio: '1200 / 500', // format des extraits (bandes noires retirées)
+        // 14 : la valse (plan large puis les mains en longue focale), 15 : Pablo face à la mer, 16 : la course hors de l'eau
         title: 'Ce que laissent les vagues',
         year: '2024',
         month: 'Mai 2024',

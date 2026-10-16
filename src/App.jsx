@@ -23,7 +23,8 @@ function AppContent() {
   const location = useLocation();
 
   useEffect(() => {
-    compterVisite(location.pathname);
+    // Sans barre finale : /films/vagues/ (lien direct) et /films/vagues (navigation) comptent ensemble
+    compterVisite(location.pathname.replace(/(.)\/$/, '$1'));
   }, [location.pathname]);
 
   return (

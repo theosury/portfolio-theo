@@ -342,7 +342,7 @@ footer.foot a:hover { color: var(--muted); }
         <div class="inp"><input id="p-margin" type="number" placeholder="ex. 25" min="0" step="5"><span>%</span></div>
       </div>
     </div>
-    <span class="hint" data-show="film">Repères de taux de tournage : 6 à 10:1 en pellicule, plus de 100:1 en documentaire (<a href="https://en.wikipedia.org/wiki/Shooting_ratio" target="_blank" rel="noopener">Wikipédia</a>, <a href="https://cinematography.net/edited-pages/ShootingRatio.htm" target="_blank" rel="noopener">CML</a>), 16:1 mesuré sur une fiction courte.</span>
+    <span class="hint" data-show="film">Repères de taux de tournage : environ 10:1 pour un court métrage de fiction, 6 à 10:1 en pellicule, plus de 100:1 en documentaire (<a href="https://en.wikipedia.org/wiki/Shooting_ratio" target="_blank" rel="noopener">Wikipédia</a>, <a href="https://cinematography.net/edited-pages/ShootingRatio.htm" target="_blank" rel="noopener">CML</a>).</span>
     <span class="hint" data-show="days">Tournage par jour : du premier moteur au dernier coupé, hors pause. Rushs par heure de tournage : 6,4 min mesurées sur une fiction courte en huis clos.</span>
 
     <details class="more">
@@ -422,7 +422,7 @@ footer.foot a:hover { color: var(--muted); }
     <div>
       <h3>Méthode</h3>
       <p>Rushs bruts = heures enregistrées × débit. Avec marge = rushs bruts × (1 + marge). Durée par support = capacité × (1 − réserve) ÷ débit. Stockage = rushs avec marge × nombre de copies. Plus gros jour = moyenne par jour × (1 + écart), pour les cartes et la copie du soir.</p>
-      <p>Les débits affichés sont ceux annoncés par les constructeurs. En ProRes, le débit réel varie avec l'image et reste en dessous : sur un court métrage tourné en Alexa Mini (ProRes 4444), on a mesuré environ 84 % du débit ARRI. Le calcul reste donc prudent.</p>
+      <p>Les débits affichés sont ceux annoncés par les constructeurs. En ProRes, le débit réel varie avec l'image et reste en dessous : sur un court métrage de fiction, 5 jours de tournage, Alexa Mini en ProRes 4444 2.8K 24p, 4 h 11 de rushs, on a mesuré environ 84 % du débit ARRI. Cette mesure est indicative : un seul projet, une seule caméra, un seul codec. Le calcul dimensionne sur le débit annoncé, qui reste prudent. Pour le ProRes (hors RAW), une estimation du volume réel probable est affichée en plus, sans modifier les cartes ni les disques.</p>
       <p>Unités décimales, comme les fabricants de cartes : 1 Go = 10<sup>9</sup> octets, 1 To = 1000 Go.</p>
     </div>
     <div>
@@ -711,6 +711,9 @@ function recordedHours() {
 // Journée la plus chargée par rapport à la moyenne
 const peakDay = total => total != null && val('days') > 0 ? total / S.days * (1 + pct('peak')) : null;
 
+// Part du débit annoncé réellement écrite, mesurée : ProRes 4444, Alexa Mini, 4 h 11 de rushs
+const REAL_PRORES = .84;
+const realShare = (cam, r) => /ProRes/.test(codecLabel(cam, r.codec)) && !/RAW/.test(codecLabel(cam, r.codec)) ? REAL_PRORES : null;
 function compute(r) {
   const cam = camById(r.cam);
   const { gbh, src, res } = rate(r);
@@ -722,7 +725,9 @@ function compute(r) {
   const cardH = gbh > 0 ? usable / gbh : 0;
   const cards = marg != null && usable > 0 ? Math.ceil(marg / usable - 1e-9) : null;
   const cardsDay = peakDay(marg) != null && usable > 0 ? Math.ceil(peakDay(marg) / usable - 1e-9) : null;
-  return { gbh, src, res, raw, marg, cardH, cards, cardsDay, store: marg != null && S.dests.length ? marg * S.dests.length : null };
+  const share = realShare(cam, r);
+  const prob = raw != null && share ? raw * share : null;
+  return { gbh, src, res, raw, marg, prob, cardH, cards, cardsDay, store: marg != null && S.dests.length ? marg * S.dests.length : null };
 }
 
 const nf = (d) => new Intl.NumberFormat('fr-FR', { minimumFractionDigits: d, maximumFractionDigits: d });
@@ -823,7 +828,7 @@ function rowHTML(r, i) {
 function outHTML(cam, r, c) {
   return `<dl class="row-out">
       <div><dt>Débit</dt><dd><span class="val">${nf(1).format(c.gbh)} <small>Go/h</small></span>${srcBadge(cam, r, c)}</dd></div>
-      <div class="key"><dt>Rushs avec marge</dt><dd><span class="val">${fmtSize(c.marg)}</span>${c.raw != null ? `<span class="sub-val">${txtSize(c.raw)} bruts</span>` : ''}</dd></div>
+      <div class="key"><dt>Rushs avec marge</dt><dd><span class="val">${fmtSize(c.marg)}</span>${c.raw != null ? `<span class="sub-val">${txtSize(c.raw)} bruts</span>` : ''}${c.prob != null ? `<span class="sub-val" title="${esc(REAL_NOTE)}">≈ ${txtSize(c.prob)} réels probables</span>` : ''}</dd></div>
       <div><dt>Un support tient</dt><dd><span class="val">${fmtHMS(c.cardH)}</span></dd></div>
       <div><dt>Supports remplis</dt><dd><span class="val">${c.cardsDay ?? c.cards ?? '—'}</span>${c.cardsDay != null ? `<span class="sub-val">le plus gros jour, ${c.cards} au total</span>` : ''}</dd></div>
       <div><dt>Stockage${S.dests.length ? ` ×${S.dests.length}` : ''}</dt><dd><span class="val">${fmtSize(c.store)}</span><span class="sub-val">${c.store == null ? (S.dests.length ? '' : 'workflow non choisi') : diskText(c.marg)}</span></dd></div>
@@ -837,15 +842,17 @@ function projectNotes(h) {
   if (val('margin') == null) out.push('Calcul sans marge. La méthode courante ajoute 25 %.');
   const days = val('days'), shoot = val('shoot');
   const pace = S.pmode === 'days' ? val('pace') : days > 0 && shoot > 0 ? h * 60 / days / shoot : null;
-  if (pace != null && S.pmode === 'film' && pace < 3) out.push(`${nf(1).format(pace)} min de rushs par heure de tournage : peu pour de la fiction (mesuré : 6,4). Un taux de tournage prévu à 10:1 a fini à 16:1 sur un court métrage récent.`);
+  if (pace != null && S.pmode === 'film' && pace < 3) out.push(`${nf(1).format(pace)} min de rushs par heure de tournage : peu pour de la fiction (mesuré : 6,4). Vérifier le taux de tournage ou le nombre de jours.`);
   if (pace != null && pace > 15) out.push(`${nf(1).format(pace)} min de rushs par heure de tournage : rythme très élevé, à vérifier (mesuré en fiction : 6,4).`);
   if (shoot > 12) out.push('Plus de 12 h de tournage par jour hors pause : à vérifier.');
   if (S.pmode === 'film' && days == null) out.push('Sans nombre de jours, pas de calcul par journée : cartes et copie du soir.');
   if (days > 1 && val('peak') == null) out.push('Plus gros jour non renseigné (réglages fins) : cartes calculées sur la journée moyenne. Mesuré : +40 %.');
   return out;
 }
+const REAL_NOTE = `Volume réel probable, à titre indicatif : le ProRes a un débit variable qui dépend de l'image (grain, détail, nuit). Mesuré à ${Math.round(REAL_PRORES * 100)} % du débit annoncé sur un court métrage de fiction, 5 jours de tournage, Alexa Mini en ProRes 4444 2.8K 24p, 4 h 11 de rushs. Cartes et disques restent calculés sur le débit annoncé.`;
 function camerasNotes() {
   const rows = validRows(), out = [];
+  if (recordedHours() != null && units().some(u => realShare(camById(u.cam), u))) out.push(REAL_NOTE);
   if (!S.sum && new Set(rows.map(r => r.cam)).size > 1) out.push('Plusieurs caméras différentes : si elles tournent en même temps, cocher « Caméras simultanées » pour additionner les volumes.');
   return out;
 }
@@ -1078,7 +1085,7 @@ function sheetText() {
 const txtSize = gb => fmtSize(gb).replace(/<\/?small>/g, '').replace(/ /g, ' ');
 function summaryText() {
   const rows = exportRows().map(x =>
-    `• ${x.cam.name} · ${x.mode.label} · ${x.codec} · ${fmtFps(x.r.fps)}\n   ${plain(x.c.gbh, 1)} Go/h · ${txtSize(x.c.marg)} avec marge · ${fmtHMS(x.c.cardH)} par ${x.media} · ${x.c.cards ?? '—'} supports remplis${x.c.cardsDay != null ? ` (${x.c.cardsDay} le plus gros jour)` : ''} · stockage ×${S.copies} : ${txtSize(x.c.store)}`);
+    `• ${x.cam.name} · ${x.mode.label} · ${x.codec} · ${fmtFps(x.r.fps)}\n   ${plain(x.c.gbh, 1)} Go/h · ${txtSize(x.c.marg)} avec marge${x.c.prob != null ? ` (≈ ${txtSize(x.c.prob)} réels probables)` : ''} · ${fmtHMS(x.c.cardH)} par ${x.media} · ${x.c.cards ?? '—'} supports remplis${x.c.cardsDay != null ? ` (${x.c.cardsDay} le plus gros jour)` : ''} ${S.dests.length ? ` · stockage ×${S.dests.length} : ${txtSize(x.c.store)}` : ''}`);
   let out = `CALCUL DE RUSHS\n${projectLine()}\n${fmtDur(recordedHours())} de rushs${S.sum ? ' par caméra' : ''}\n\n${rows.join('\n')}`;
   if (S.sum && units().length > 1 && recordedHours() != null) {
     const t = exportRows().reduce((a, x) => ({ marg: a.marg + x.c.marg, store: x.c.store == null ? null : a.store + x.c.store }), { marg: 0, store: 0 });

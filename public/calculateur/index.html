@@ -232,7 +232,7 @@ a.src:hover { border-color: var(--ink); color: var(--ink); }
 .site-bar nav a { font-size: .95rem; letter-spacing: .05em; position: relative; }
 .site-bar nav a::after { content: ""; position: absolute; bottom: -4px; left: 0; width: 0; height: 1px; background: #fff; transition: width .3s ease; }
 .site-bar nav a:hover::after { width: 100%; }
-@media (max-width: 720px) { .site-bar nav { display: none; } .site-bar-in { padding: 16px; } }
+@media (max-width: 720px) { .site-bar nav { gap: 18px; } .site-bar-in { padding: 16px; } }
 
 /* Enregistreur externe rattaché à une caméra */
 .rec { border-left: 2px solid var(--line-strong); padding: 4px 0 2px 18px; display: grid; gap: 14px; }
@@ -295,6 +295,21 @@ a.src:hover { border-color: var(--ink); color: var(--ink); }
 .m-res { color: #fff; } .m-key { color: #fff; font-weight: 600; text-decoration: underline; text-decoration-color: rgba(232, 220, 198, .5); text-underline-offset: 4px; }
 .calc-legend .m-res, .calc-legend .m-key { text-decoration: none; }
 .m-dim { opacity: .35; font-size: .8em; }
+/* Équation posée : chaque terme en grand, nommé dessous, couleur de sa nature */
+.eq { display: flex; flex-wrap: wrap; align-items: flex-start; gap: 6px 12px; margin: 0; }
+.eq + .eq { margin-top: 14px; }
+.eq-t { display: flex; flex-direction: column; align-items: center; min-width: 0; }
+.eq-v { font-family: var(--font-display); font-size: 34px; line-height: 1.1; font-variant-numeric: lining-nums tabular-nums; white-space: nowrap; }
+.eq-v small { font-family: var(--font-body); font-size: 13px; color: var(--muted); margin-left: 3px; }
+.eq-l { margin-top: 6px; padding-top: 5px; border-top: 2px solid currentColor; font-size: 10.5px; letter-spacing: .08em; text-transform: uppercase; text-align: center; white-space: nowrap; }
+.eq-l span { color: var(--muted); }
+.eq-op { font-family: var(--font-display); font-size: 30px; line-height: 1.15; color: var(--faint); }
+.eq-t.is-res .eq-v { color: #fff; }
+.eq-t.m-key { text-decoration: none; font-weight: 400; }
+.eq-t.is-res { background: rgba(232, 220, 198, .07); border-radius: 6px; padding: 4px 10px 6px; margin-top: -4px; }
+.eqs { padding: 16px 0 4px; }
+.eqs-sum { padding: 14px 0 2px; }
+@media (max-width: 560px) { .eq-v { font-size: 26px; } .eq-op { font-size: 22px; } .eq { gap: 6px 8px; } }
 @media (max-width: 560px) {
   .calc-steps li { grid-template-columns: 1fr; }
   .calc-why { grid-column: 1; }
@@ -380,7 +395,7 @@ footer.foot a:hover { color: var(--muted); }
 
 <header class="site-bar"><div class="site-bar-in">
   <a class="logo" href="https://theosury.fr/">Théo Sury</a>
-  <nav aria-label="Navigation du site"><a href="https://theosury.fr/films">Films</a><a href="https://theosury.fr/experiences">Expériences</a><a href="https://theosury.fr/photos">Photos</a><a href="https://theosury.fr/contact">Contact</a></nav>
+  <nav aria-label="Navigation du site"><a href="https://theosury.fr/">Portfolio</a><a href="https://theosury.fr/contact">Contact</a></nav>
 </div></header>
 <div class="wrap">
   <header class="hero">
@@ -464,6 +479,7 @@ footer.foot a:hover { color: var(--muted); }
       <span class="big" id="s-total">—</span>
       <span class="sub" id="s-detail"></span>
     </div>
+    <div class="eqs-sum" id="s-eq"></div>
     <ul class="obs" id="s-notes"></ul>
   </section>
 
@@ -964,6 +980,20 @@ const M = {
   u: t => `<span class="m-u">${t}</span>`,
 };
 const dg = v => v >= 100 ? 0 : v >= 10 ? 1 : 2;
+// Équation posée : termes [valeur, unité, nom, nature], opérateurs entre eux, résultat mis en avant
+const EQ = (terms, res) => `<div class="eq">${terms.map((t, i) => typeof t === 'string' ? `<span class="eq-op">${t}</span>`
+  : `<span class="eq-t m-${t[3]}"><span class="eq-v">${t[0]}${t[1] ? `<small>${t[1]}</small>` : ''}</span><span class="eq-l"><span>${t[2]}</span></span></span>`).join('')}<span class="eq-op">=</span><span class="eq-t is-res m-key"><span class="eq-v">${res[0]}${res[1] ? `<small>${res[1]}</small>` : ''}</span><span class="eq-l"><span>${res[2]}</span></span></span></div>`;
+const sizeParts = gb => gb >= 1000 ? [nf(2).format(gb / 1000), 'To'] : [nf(gb < 10 ? 1 : 0).format(gb), 'Go'];
+// Les équations clés d'une ligne : volume, supports, stockage
+function eqsHTML(r, c) {
+  const cam = camById(r.cam), h = recordedHours();
+  if (h == null) return '';
+  const cardGB = r.media === 'custom' ? +r.custom || 0 : cam.media[r.media][1], usable = cardGB * (1 - pct('reserve'));
+  const out = [EQ([[nf(1).format(c.gbh), 'Go/h', `débit à ${fmtFps(r.fps)}`, 'rate'], '×', [fmtDur(h), '', 'de rushs', 'time'], '×', [`(1 + ${val('margin') ?? 0} %)`, '', 'marge', 'margin']], [...sizeParts(c.marg), 'rushs avec marge'])];
+  if (c.cards != null) out.push(EQ([[nf(0).format(c.marg), 'Go', 'rushs avec marge', 'key'], '÷', [nf(usable >= 100 ? 0 : 1).format(usable), 'Go', `par support, ${val('reserve') ?? 0} % réservés`, 'media']], [String(c.cards), '', `support${c.cards > 1 ? 's' : ''} (${nf(1).format(c.marg / usable)} arrondi)`]));
+  if (c.store != null) out.push(EQ([[sizeParts(c.marg + c.proxy)[0], sizeParts(c.marg + c.proxy)[1], c.proxy ? 'rushs et proxys' : 'rushs avec marge', 'key'], '×', [String(S.dests.length), '', `copie${S.dests.length > 1 ? 's' : ''}`, 'media']], [...sizeParts(c.store), 'à stocker']));
+  return `<div class="eqs">${out.join('')}</div>`;
+}
 // Débit en Mb/s à la cadence choisie, à partir du chiffre publié
 function rateLines(r) {
   const cam = camById(r.cam), mode = modeOf(cam, r.mode), info = codecInfo(cam, r.codec), kind = info.kind, fps = r.fps;
@@ -1037,7 +1067,7 @@ function calcHTML(r) {
 }
 
 function outHTML(cam, r, c, key) {
-  const calc = key ? `<details class="calc" data-calc="${key}"${S.openCalc && S.openCalc.includes(key) ? ' open' : ''}><summary>Voir le calcul</summary>${calcHTML(r)}</details>` : '';
+  const calc = key ? `${eqsHTML(r, c)}<details class="calc" data-calc="${key}"${S.openCalc && S.openCalc.includes(key) ? ' open' : ''}><summary>Détail du calcul, de la doc constructeur à la copie</summary>${calcHTML(r)}</details>` : '';
   return `<dl class="row-out">
       <div><dt>Débit</dt><dd><span class="val">${nf(1).format(c.gbh)} <small>Go/h</small></span>${srcBadge(cam, r, c)}</dd></div>
       <div class="key"><dt>Rushs avec marge</dt><dd><span class="val">${fmtSize(c.marg)}</span>${c.raw != null ? `<span class="sub-val">${txtSize(c.raw)} bruts</span>` : ''}${c.prob != null ? `<span class="sub-val" title="${esc(REAL_NOTE)}">≈ ${txtSize(c.prob)} réels probables</span>` : ''}</dd></div>
@@ -1352,8 +1382,11 @@ function render(focus) {
   document.getElementById('s-detail').textContent = h == null
     ? (S.pmode === 'film' ? 'Durée du film et taux de tournage.' : 'Jours, heures de tournage par jour et rushs par heure.')
     : S.pmode === 'film'
-    ? `${S.dur} min × ${S.ratio}:1${S.days > 0 ? ` · ${fmtDur(h / S.days)} par jour sur ${S.days} jours` : ''}${S.days > 0 && S.shoot > 0 ? ` · ${nf(1).format(h * 60 / S.days / S.shoot)} min par heure de tournage` : ''}${S.sum ? ' · par caméra' : ''}`
-    : `${S.days} jours × ${nf(1).format(S.shoot)} h × ${nf(1).format(S.pace)} min par heure · ${fmtDur(h / Math.max(1, S.days))} par jour${S.sum ? ' · par caméra' : ''}`;
+    ? `${S.days > 0 ? `${fmtDur(h / S.days)} par jour sur ${S.days} jours` : ''}${S.days > 0 && S.shoot > 0 ? ` · ${nf(1).format(h * 60 / S.days / S.shoot)} min par heure de tournage` : ''}${S.sum ? ' · par caméra' : ''}`
+    : `${fmtDur(h / Math.max(1, S.days))} par jour${S.sum ? ' · par caméra' : ''}`;
+  document.getElementById('s-eq').innerHTML = h == null ? '' : S.pmode === 'film'
+    ? EQ([[String(S.dur), 'min', 'durée du film', 'time'], '×', [String(S.ratio), '', `taux de tournage ${S.ratio}:1`, 'margin']], [fmtDur(h), '', 'de rushs'])
+    : EQ([[String(S.days), '', 'jours', 'time'], '×', [nf(1).format(S.shoot), 'h', 'par jour', 'time'], '×', [nf(1).format(S.pace), 'min', 'de rushs par heure', 'rate'], '÷', ['60', '', 'min par heure', 'res']], [fmtDur(h), '', 'de rushs']);
   const sound = soundGB();
   document.getElementById('s-notes').innerHTML = [...(sound ? [`Son externe : ${txtSize(sound)} avec marge (${S.tracks} pistes WAV 48 kHz 24 bits), à ajouter au stockage.`] : []), ...projectNotes(h)].map(n => `<li>${esc(n)}</li>`).join('');
 

@@ -81,7 +81,9 @@ h2 { font-family: var(--font-display); font-size: 30px; font-weight: 400; line-h
 
 .fields { display: grid; grid-template-columns: repeat(auto-fill, minmax(150px, 1fr)); gap: 16px 18px; align-items: end; }
 .field { display: grid; gap: 6px; align-content: start; min-width: 0; }
-.field label { font-size: 13px; font-weight: 400; color: var(--muted); }
+.field label, .field .lab { font-size: 13px; font-weight: 400; color: var(--muted); }
+.field label.chk-line { display: flex; align-items: center; gap: 8px; min-height: 42px; color: var(--ink); font-size: 14px; cursor: pointer; } .chk-line input { accent-color: var(--accent); margin: 0; }
+.plan.pool { border: 1px solid var(--accent); padding: 16px 18px; }
 .hint { font-size: 13px; color: var(--muted); line-height: 1.5; max-width: 90ch; }
 .inp { display: flex; align-items: center; border: 1px solid var(--line); border-radius: 6px; background: var(--field); }
 .inp:focus-within { border-color: var(--accent); }
@@ -242,6 +244,7 @@ a.src:hover { border-color: var(--ink); color: var(--ink); }
 .rec-title { font-size: 13px; font-weight: 500; }
 .rec-head button, .add-rec { margin-left: auto; background: none; border: 0; color: var(--muted); font: inherit; font-size: 13px; cursor: pointer; padding: 4px 0; }
 .add-rec { margin: 0; justify-self: start; }
+.add-rec.chk { display: inline-flex; align-items: center; gap: 6px; } .add-rec.chk input { accent-color: var(--accent); margin: 0; }
 .adds { display: flex; flex-wrap: wrap; gap: 4px 20px; }
 .row-tag { font-size: 13px; color: var(--accent); margin-left: 10px; margin-right: auto; }
 .c-note { flex: 2 1 260px; } .c-min { flex: 1 1 180px; } .c-days { flex: 1 1 140px; }
@@ -504,7 +507,7 @@ footer.foot a:hover { color: var(--muted); }
       </div>
       <div class="field" data-show="film">
         <label for="p-ratio">Taux de tournage</label>
-        <div class="inp"><input id="p-ratio" type="number" placeholder="ex. 10" min="1" step="1"><span>: 1</span></div>
+        <div class="inp"><input id="p-ratio" type="number" placeholder="ex. 15" min="1" step="1"><span>: 1</span></div>
       </div>
       <div class="field">
         <label for="p-days">Jours de tournage</label>
@@ -523,7 +526,7 @@ footer.foot a:hover { color: var(--muted); }
         <div class="inp"><input id="p-margin" type="number" placeholder="ex. 25" min="0" step="5"><span>%</span></div>
       </div>
     </div>
-    <span class="hint" data-show="film">Repères de taux de tournage : environ 10:1 pour un court métrage de fiction, 6 à 10:1 en pellicule, plus de 100:1 en documentaire (<a href="https://en.wikipedia.org/wiki/Shooting_ratio" target="_blank" rel="noopener">Wikipédia</a>, <a href="https://cinematography.net/edited-pages/ShootingRatio.htm" target="_blank" rel="noopener">CML</a>).</span>
+    <span class="hint" data-show="film">Repères de taux de tournage : 10 à 20:1 mesuré sur des courts métrages de fiction, 6 à 10:1 en pellicule, plus de 100:1 en documentaire (<a href="https://en.wikipedia.org/wiki/Shooting_ratio" target="_blank" rel="noopener">Wikipédia</a>, <a href="https://cinematography.net/edited-pages/ShootingRatio.htm" target="_blank" rel="noopener">CML</a>).</span>
     <span class="hint" data-show="days">Tournage par jour : du premier moteur au dernier coupé, hors pause. Rushs par heure de tournage : 6,4 min mesurées sur une fiction courte en huis clos.</span>
 
     <details class="more">
@@ -631,8 +634,12 @@ footer.foot a:hover { color: var(--muted); }
     </div>
     <div class="fields cards-inputs">
       <div class="field">
-        <label for="p-ncards">Cartes par caméra</label>
+        <label for="p-ncards" id="l-ncards">Cartes par caméra</label>
         <div class="inp"><input id="p-ncards" type="number" placeholder="ex. 3" min="1" step="1"><span>cartes</span></div>
+      </div>
+      <div class="field" id="shared-f" hidden>
+        <span class="lab">Caméras A et B</span>
+        <label class="chk-line"><input type="checkbox" id="p-shared"> Mêmes cartes, mises en commun</label>
       </div>
       <div class="field">
         <label for="p-lunch">Pause déjeuner</label>
@@ -906,7 +913,7 @@ if (!Array.isArray(S.dests)) S.dests = [];
 // État venu d'un lien partagé ou du stockage local : ne garder que des valeurs du bon type avant tout affichage
 const numOr = (v, d = null) => typeof v === 'number' && isFinite(v) ? v : d;
 ['dur', 'ratio', 'days', 'shoot', 'pace', 'peak', 'margin', 'reserve', 'ncards', 'lunch', 'budget', 'proxy', 'tracks', 'ports'].forEach(k => { S[k] = numOr(S[k]); });
-S.recoRow = numOr(S.recoRow, 0);
+S.recoRow = numOr(S.recoRow, 0); S.shared = S.shared === true;
 S.pmode = S.pmode === 'days' ? 'days' : 'film';
 S.dests = S.dests.filter(d => d && DISKS[d.type]).map(d => ({ type: d.type, size: d.size === 'auto' ? 'auto' : numOr(d.size, 'auto') }));
 S.rows = S.rows.filter(r => r && typeof r === 'object').map(r => {
@@ -957,6 +964,19 @@ const noInternal = r => !!(r.rec && r.rec.internal === 'off');
 const units = () => validRows().flatMap(r => r.rec ? (noInternal(r) ? [recRow(r)] : [r, recRow(r)]) : [r]);
 const unitName = u => (u.parent ? `${camById(u.cam).name} (enregistreur, ${camById(u.parent.cam).name})` : camById(u.cam).name) + (spotOf(u) ? ` · ponctuelle${spotOf(u).note ? ` : ${spotOf(u).note}` : ''}` : '');
 
+// Cartes mises en commun entre caméras : même support (même modèle, même capacité)
+const cardKey = u => mediaName(camById(u.cam), u);
+const sharedOf = u => { if (!S.shared) return null; const k = cardKey(u), g = units().filter(x => cardKey(x) === k); return g.length > 1 ? g : null; };
+// Une seule carte de secours pour le groupe au lieu d'une par caméra
+function sharedPlans() {
+  if (!S.shared) return [];
+  const groups = {}; units().forEach(u => (groups[cardKey(u)] ||= []).push(u));
+  return Object.entries(groups).filter(([, g]) => g.length > 1).map(([k, g]) => {
+    const ps = g.map(plan); if (ps.some(p => !p.ready)) return { k, g, ready: false };
+    const sep = ps.reduce((a, p) => a + p.rec.k, 0), pool = ps.reduce((a, p) => a + p.rec.k - 1, 0) + 1;
+    return { k, g, ps, sep, pool, ready: true };
+  });
+}
 // Codec interne le plus léger disponible à la cadence de la ligne
 function lightestCodec(r) {
   const cam = camById(r.cam), mode = modeOf(cam, r.mode);
@@ -1135,7 +1155,7 @@ function rowHTML(r, i) {
   }
   const sp = r.spot;
   const spotHTML = sp ? `<div class="rec spot">
-      <div class="rec-head"><span class="rec-title">Usage ponctuel</span><span class="dim">ajouté au projet, en plus de la caméra principale</span><button data-act="delspot">Retirer</button></div>
+      <div class="rec-head"><span class="rec-title">Usage ponctuel</span><span class="dim">ajouté au projet, en plus de la caméra principale</span></div>
       <div class="row-config spot-config">
         <div class="cfg c-note"><label for="${id('spot-note')}">Ce que c'est</label><input id="${id('spot-note')}" data-f="spot-note" type="text" value="${esc(sp.note || '')}" placeholder="ex. ralentis, plans drone, caméra B sur la poursuite"></div>
         <div class="cfg c-min"><label for="${id('spot-min')}">Temps réellement enregistré</label><div class="inp"><input id="${id('spot-min')}" data-f="spot-min" type="number" min="0" step="1" value="${num(sp.min) ?? ''}" placeholder="ex. 20"><span>min</span></div></div>
@@ -1143,7 +1163,7 @@ function rowHTML(r, i) {
       </div>
       <span class="hint">Temps réel de tournage : 10 s filmées à ${fmtFps(Math.max(...fpsFor(cam, mode, r.codec)))} comptent 10 s, même si le plan dure plus longtemps à l'écran.${sp.min == null ? ' Indiquer les minutes pour calculer.' : ''}</span>
     </div>` : '';
-  const adds = [!r.rec && !cam.recorder ? '<button class="add-rec" data-act="addrec">+ Enregistreur externe</button>' : '', !sp ? '<button class="add-rec" data-act="slowmo">+ Ralentis</button>' : '', !sp ? '<button class="add-rec" data-act="addspot">+ Usage ponctuel</button>' : ''].filter(Boolean).join('');
+  const adds = [!r.rec && !cam.recorder ? '<button class="add-rec" data-act="addrec">+ Enregistreur externe</button>' : '', !sp ? '<button class="add-rec" data-act="slowmo">+ Ralentis</button>' : '', `<label class="add-rec chk"><input type="checkbox" data-act="togglespot"${sp ? ' checked' : ''}> Usage ponctuel</label>`].filter(Boolean).join('');
   if (adds) recHTML += `<div class="adds">${adds}</div>`;
   return `<article class="row" data-i="${i}">
     ${head}
@@ -1366,7 +1386,7 @@ function plan(r) {
   const evening = ch ? evSplit.card : dayRaw * 1000 / speed / 3600;
   const eveningSlow = evSplit && evSplit.slow;
   const cardDay = dayGB > 0 && val('shoot') ? S.shoot * usable / dayGB : null;
-  const n = val('ncards') == null ? null : Math.max(0, Math.floor(S.ncards));
+  const n = val('ncards') == null || sharedOf(r) ? null : Math.max(0, Math.floor(S.ncards));
   const pl = (k, w) => `${k} ${w}${k > 1 ? 's' : ''}`;
   // Cartes conseillées selon la rotation : une copie courte se fait à la pause ou en cours de journée,
   // une copie longue oblige à tout garder pour le soir. Toujours une carte de secours en plus.
@@ -1376,7 +1396,9 @@ function plan(r) {
   if (need > 2 && offCard <= 1 / 6 && (cardDay == null || offCard < cardDay / 2)) opts.push({ k: 3, how: 'rotation', why: `en rotation : ${fmtDur(offCard)} de copie par carte, déchargée pendant le tournage` });
   const rec = opts.reduce((a, o) => o.k < a.k ? o : a);
   let level = '', title = '', text;
-  if (n == null) {
+  if (n == null && sharedOf(r)) {
+    text = `Cartes mises en commun avec l'autre caméra : voir le total plus haut. Seule, elle demanderait ${pl(rec.k, 'carte')}.`;
+  } else if (n == null) {
     text = rec.how === 'soir'
       ? `Prévoir ${pl(rec.k, 'carte')} pour décharger le soir avec une carte de secours${offCard > 1 / 4 ? ` : une carte prend ${fmtDur(offCard)} à copier, trop long pour tourner en rotation` : ''}. Indiquer les cartes disponibles pour vérifier.`
       : `Prévoir ${pl(rec.k, 'carte')} ${rec.why}, dont une de secours. Pour tout décharger le soir, sans copie dans la journée : ${pl(need + 1, 'carte')}. Indiquer les cartes disponibles pour vérifier.`;
@@ -1529,12 +1551,13 @@ function renderBrief() {
   const gb = us.reduce((a, x) => a + x.c.marg + (x.c.proxy || 0), 0) + soundGB();
   const mine = S.dests.length ? wfEval({ dests: S.dests, port: PORTS[S.port] ? S.port : 'usb10', ports: S.ports, verify: S.verify !== false }, us) : null;
   const e = mine || (WF_PICK && WF_PICK.e), wl = mine ? 'workflow retenu' : WF_PICK ? `recommandé : ${WF_PICK.label}` : '';
-  const cards = us.map(x => { const p = plan(x.u); return p.ready ? `${p.rec.k} × ${esc(mediaName(x.cam, x.u))}${us.length > 1 ? ` <small>${esc(x.cam.name)}</small>` : ''}` : null; }).filter(Boolean);
+  const pools = sharedPlans().filter(G => G.ready), pooled = new Set(pools.map(G => G.k));
+  const cards = [...pools.map(G => `${G.pool} × ${esc(G.k)} <small>en commun</small>`), ...us.filter(x => !pooled.has(cardKey(x.u))).map(x => { const p = plan(x.u); return p.ready ? `${p.rec.k} × ${esc(mediaName(x.cam, x.u))}${us.length > 1 ? ` <small>${esc(x.cam.name)}</small>` : ''}` : null; })].filter(Boolean);
   const it = (k, v, sub, href) => `<a class="brief-it" href="#${href}"><span class="brief-k">${k}</span><span class="brief-v">${v}</span>${sub ? `<span class="brief-s">${sub}</span>` : ''}</a>`;
   box.innerHTML = [
     it('Rushs avec marge', fmtSize(gb), `${fmtDur(us[0].c.hours)} de rushs${us.length > 1 ? ', toutes sources' : ''}`, 't-compare'),
     e ? it('Disques', Object.entries(e.groups).map(([g, n]) => `${n} × ${g}`).join(' + '), `${fmtEur(e.cost, e.missing)}, ${wl}`, 't-recos') : '',
-    cards.length ? it('Cartes conseillées', cards.join('<br>'), 'pour décharger le soir, une de secours', 't-cards') : '',
+    cards.length ? it('Cartes conseillées', cards.join('<br>'), 'une carte de secours comprise', 't-cards') : '',
     e && e.ev ? it('Copie du soir', fmtDur(e.ev), e.slow ? `puis ${fmtDur(e.slow)} vers le ${esc(e.slowLabel)}, la nuit` : 'plus gros jour, vérification comprise', 't-recos') : '',
   ].join('');
   box.hidden = false;
@@ -1612,7 +1635,6 @@ function renderRecos() {
   if (!base) { box.innerHTML = '<p class="empty" style="border:0;padding:0">Ajouter une caméra pour comparer les codecs.</p>'; return; }
   const items = recoItems(base).map(x => ({ ...x, c: compute(x.r) }));
   const max = Math.max(...items.map(x => x.c.gbh));
-  const eco = items[0].c.gbh;
   // Pour chaque codec, chaque workflow : coût des disques et copie du soir
   const evals = items.map(x => Object.fromEntries(Object.keys(WORKFLOWS).map(k => [k, wfEval(wfCfg(k), [{ u: x.r, cam: x.cam, c: x.c }])])));
   // Phrase de synthèse : un codec plus riche avec un workflow plus rapide, sans allonger la soirée actuelle
@@ -1644,7 +1666,7 @@ function renderRecos() {
     const fill = nf(0).format(Math.min(100, e.gb / capGB * 100));
     if (i === baseIn) return `<p class="reco-fit">Disques prévus (${esc(refName)}) : ${list}, remplis à ${fill} %.</p>`;
     const copy = e.ev && baseE.ev ? ` Copie du soir ${fmtDur(e.ev)} au lieu de ${fmtDur(baseE.ev)}.` : '';
-    if (e.gb <= baseE.gb) return `<p class="reco-fit">Plus léger que le ${baseName} : ${list} restent remplis à ${fill} %.${copy}</p>`;
+    if (e.gb <= baseE.gb) return `<p class="reco-fit">${nf(1).format(baseE.gb / Math.max(1, e.gb))} fois plus léger que le ${baseName}, mais avec de vrais compromis sur l'image (voir les − plus bas) : à réserver aux contraintes de stockage ou de copie.${copy}</p>`;
     if (nDisks(e) <= nDisks(baseE)) return `<p class="reco-fit ok">Tient sur les disques prévus pour le ${baseName} (${list}, remplis à ${fill} %) : rien à acheter en plus.${copy}</p>`;
     const extra = e.cost && baseE.cost ? ` environ ${fmtEur([e.cost[0] - baseE.cost[0], e.cost[1] - baseE.cost[1]])} de plus,` : '';
     const auto = wfEval(refCfg, unit(i));
@@ -1654,10 +1676,10 @@ function renderRecos() {
   box.innerHTML = items.map(({ t, r, cam, note, c }, i) => {
     const g0 = (cam.iphone && IPHONE_GRADE[r.codec]) || (!cam.data && GRADE[r.codec]) || gradeFor(cam, r.codec);
     const g = cam.recorder && !camById(base.cam).recorder ? { p: g0.p, m: [...g0.m, 'Enregistreur externe à prévoir : budget, alimentation, câble'] } : g0;
-    const ratio = eco > 0 ? c.gbh / eco : 1;
+    const ratio = baseC.gbh > 0 ? c.gbh / baseC.gbh : 1, isBase = i === baseIn;
     const media = r.media === 'custom' ? `${r.custom} Go` : cam.media[r.media][0];
     return `<article class="panel reco">
-      <div class="reco-tier"><span>${t.label}</span><span>${ratio > 1.05 ? '×' + nf(1).format(ratio) + ' le volume' : 'référence'}</span></div>
+      <div class="reco-tier"><span>${t.label}</span><span>${isBase ? 'codec actuel' : ratio >= 1.05 ? `×${nf(1).format(ratio)} le volume du ${baseName}` : ratio <= 0.95 ? `${nf(1).format(1 / ratio)} fois plus léger` : `autant que le ${baseName}`}</span></div>
       <div><h3>${esc(codecLabel(cam, r.codec))}</h3>${note ? `<div class="mode-note">${esc(note)}</div>` : ''}</div>
       <div class="meter" aria-hidden="true"><i style="width:${max > 0 ? Math.max(4, c.gbh / max * 100) : 0}%"></i></div>
       <dl>
@@ -1675,7 +1697,20 @@ function renderRecos() {
 
 function renderPlans() {
   const rows = S.rows.flatMap((r, i) => !isSet(r) ? [] : r.rec ? (noInternal(r) ? [[recRow(r), i]] : [[r, i], [recRow(r), i]]) : [[r, i]]);
-  document.getElementById('plans').innerHTML = !rows.length ? '<p class="empty" style="border:0;padding:0">Ajouter une caméra pour dimensionner les cartes.</p>' : rows.map(([r, i]) => {
+  const keys = units().map(cardKey), canShare = keys.some((k, j) => keys.indexOf(k) !== j);
+  document.getElementById('shared-f').hidden = !canShare;
+  document.getElementById('p-shared').checked = !!S.shared;
+  const pools = canShare ? sharedPlans() : [];
+  document.getElementById('l-ncards').textContent = pools.length ? 'Cartes par caméra, ou en commun' : 'Cartes par caméra';
+  const nTot = val('ncards') == null ? null : Math.max(0, Math.floor(S.ncards));
+  const poolHTML = pools.map(G => {
+    const names = G.g.map(u => u.parent ? `${camById(u.cam).name} (enregistreur)` : camById(u.cam).name).join(' + ');
+    if (!G.ready) return `<article class="plan pool"><div class="plan-title"><strong>Cartes en commun · ${esc(G.k)}</strong><span>${esc(names)}</span></div></article>`;
+    const verdict = nTot == null ? 'Indiquer les cartes disponibles pour vérifier.' : nTot >= G.pool ? `Avec ${nTot} cartes en commun, ça passe.` : nTot === G.pool - 1 ? `Avec ${nTot} cartes, aucune carte de secours.` : `Avec ${nTot} cartes, il en manque ${G.pool - nTot}.`;
+    return `<article class="plan pool"><div class="plan-head"><div class="plan-title"><strong>Cartes en commun · ${esc(G.k)}</strong><span>${esc(names)}</span></div>${nTot != null ? `<span class="pill pill-${nTot >= G.pool ? 'ok' : nTot === G.pool - 1 ? 'warn' : 'bad'}">${nTot >= G.pool ? 'Confortable' : nTot === G.pool - 1 ? 'Juste' : 'Pas assez'}</span>` : ''}</div>
+      <p class="plan-text">Prévoir <strong>${G.pool} cartes</strong> pour l'ensemble, au lieu de ${G.sep} si chaque caméra avait les siennes : une seule carte de secours pour le groupe. ${G.ps.map((p, j) => `${esc(camById(G.g[j].cam).name)} : ${p.rec.k - 1} ${p.rec.how === 'soir' ? 'pour la journée' : p.rec.how === 'midi' ? 'avec une copie à la pause' : 'en rotation'}`).join(', ')}. ${verdict}</p></article>`;
+  }).join('');
+  document.getElementById('plans').innerHTML = !rows.length ? '<p class="empty" style="border:0;padding:0">Ajouter une caméra pour dimensionner les cartes.</p>' : poolHTML + rows.map(([r, i]) => {
     const p = plan(r), cam = p.cam;
     const media = r.media === 'custom' ? `${r.custom} Go` : cam.media[r.media][0];
     const head = `<div class="plan-head">
@@ -1774,6 +1809,7 @@ document.getElementById('add-dest').addEventListener('click', () => {
 });
 document.getElementById('p-recorow').addEventListener('change', e => { S.recoRow = +e.target.value; render('p-recorow'); });
 document.getElementById('p-recopdf').addEventListener('change', e => { S.recoPdf = e.target.checked; save(); });
+document.getElementById('p-shared').addEventListener('change', e => { S.shared = e.target.checked; render('p-shared'); });
 document.getElementById('workflows').addEventListener('click', e => {
   const k = e.target.dataset && e.target.dataset.wf; if (!k) return;
   const cfg = wfCfg(k); S.dests = cfg.dests; S.port = cfg.port; S.hub = false; render();
@@ -1822,6 +1858,7 @@ tbody.addEventListener('click', e => {
   if (act === 'lightint') { const k = lightestCodec(S.rows[i]); if (k) S.rows[i].codec = k; }
   if (act === 'addspot') S.rows[i].spot = { note: '', min: null, days: null };
   if (act === 'delspot') delete S.rows[i].spot;
+  if (act === 'togglespot') { if (S.rows[i].spot) delete S.rows[i].spot; else S.rows[i].spot = { note: '', min: null, days: null }; }
   // Ralentis : copie de la caméra en usage ponctuel, à la cadence la plus haute disponible
   if (act === 'slowmo') {
     const r = structuredClone(S.rows[i]), cam = camById(r.cam), fl = fpsFor(cam, modeOf(cam, r.mode), r.codec);

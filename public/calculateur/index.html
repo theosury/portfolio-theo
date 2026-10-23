@@ -344,6 +344,13 @@ body.no-calc .eqs, body.no-calc .eqs-sum, body.no-calc .calc { display: none; }
 /* Remarques contextuelles et états vides */
 .obs { margin: 0; padding: 0; list-style: none; display: grid; gap: 4px; font-size: 13px; color: var(--muted); }
 .obs:empty { display: none; }
+.brief { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 1px; background: var(--line); border: 1px solid var(--line); border-radius: 6px; overflow: hidden; margin-bottom: 20px; }
+.brief-it { display: grid; gap: 2px; align-content: start; padding: 14px 18px; background: var(--surface); color: inherit; text-decoration: none; }
+.brief-it:hover { background: #131313; }
+.brief-k { font-size: 13px; color: var(--muted); }
+.brief-v { font-size: 20px; font-weight: 500; color: #fff; line-height: 1.25; }
+.brief-v small { font-size: 12px; color: var(--muted); font-weight: 400; }
+.brief-s { font-size: 12px; color: var(--muted); }
 .wf-pick { grid-column: 1 / -1; margin: 0; font-size: 14px; }
 .wf.is-pick { border-color: var(--accent); }
 .wf-table { grid-column: 1 / -1; width: 100%; border-collapse: collapse; font-size: 14px; }
@@ -473,6 +480,8 @@ footer.foot a:hover { color: var(--muted); }
       <textarea id="export-text" readonly rows="8" aria-label="Texte à copier"></textarea>
     </div>
   </header>
+
+  <section class="brief" id="brief" aria-label="En bref" hidden></section>
 
   <section class="panel params" aria-labelledby="t-params">
     <div class="params-head">
@@ -888,7 +897,18 @@ if (location.hash.startsWith('#c=')) {
 S.real = 100;
 if (!Array.isArray(S.rows)) S.rows = [];
 if (!Array.isArray(S.dests)) S.dests = [];
-S.recoRow = S.recoRow || 0;
+// État venu d'un lien partagé ou du stockage local : ne garder que des valeurs du bon type avant tout affichage
+const numOr = (v, d = null) => typeof v === 'number' && isFinite(v) ? v : d;
+['dur', 'ratio', 'days', 'shoot', 'pace', 'peak', 'margin', 'reserve', 'ncards', 'lunch', 'budget', 'proxy', 'tracks', 'ports'].forEach(k => { S[k] = numOr(S[k]); });
+S.recoRow = numOr(S.recoRow, 0);
+S.pmode = S.pmode === 'days' ? 'days' : 'film';
+S.dests = S.dests.filter(d => d && DISKS[d.type]).map(d => ({ type: d.type, size: d.size === 'auto' ? 'auto' : numOr(d.size, 'auto') }));
+S.rows = S.rows.filter(r => r && typeof r === 'object').map(r => {
+  const o = { cam: String(r.cam || ''), mode: String(r.mode || ''), codec: String(r.codec || ''), fps: numOr(r.fps, 24), media: r.media === 'custom' ? 'custom' : numOr(r.media, 0), custom: numOr(r.custom, 256) };
+  if (r.rec && typeof r.rec === 'object') o.rec = { cam: String(r.rec.cam || ''), mode: String(r.rec.mode || ''), codec: String(r.rec.codec || ''), media: r.rec.media === 'custom' ? 'custom' : numOr(r.rec.media, 0), custom: numOr(r.rec.custom, 1000) };
+  if (r.spot && typeof r.spot === 'object') o.spot = { note: String(r.spot.note || '').slice(0, 80), min: numOr(r.spot.min), days: numOr(r.spot.days) };
+  return o;
+});
 const save = () => { try { localStorage.setItem(KEY, JSON.stringify(S)); } catch (e) {} };
 
 const camById = id => CAMERAS.find(c => c.id === id) || CAMERAS[0];
@@ -1031,7 +1051,7 @@ function fmtDur(h) {
   if (m < 1) return '< 1 min';
   return m >= 60 ? `${Math.floor(m / 60)} h ${String(m % 60).padStart(2, '0')}` : `${m} min`;
 }
-const esc = s => String(s).replace(/&/g, '&amp;').replace(/</g, '&lt;');
+const esc = s => String(s).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/"/g, '&quot;');
 
 const srcLabel = (cam, src) => ({ ref: cam.brand, calc: 'Calculé', est: 'Estimé' })[src];
 const srcTitle = (cam, src, kind) => ({
@@ -1091,7 +1111,7 @@ function rowHTML(r, i) {
           <span class="dim">${rc.res[0]} × ${rc.res[1]}</span></div>
         <div class="cfg c-codec"><label for="${id('rec-codec')}">Codec</label><select id="${id('rec-codec')}" data-f="rec-codec">${codecsFor(rec, rm).map(k => opt(k, codecLabel(rec, k), rr.codec)).join('')}</select>${fpsOk ? '' : `<span class="warn">${fmtFps(r.fps)} non disponible sur ce signal</span>`}</div>
         <div class="cfg c-media"><label for="${id('rec-media')}">Support</label><select id="${id('rec-media')}" data-f="rec-media">${rec.media.map((m, k) => opt(k, m[0], rr.media)).join('')}${opt('custom', 'Autre capacité…', rr.media)}</select>
-          ${rr.media === 'custom' ? `<div class="custom-cap"><input id="${id('rec-custom')}" data-f="rec-custom" type="number" min="1" value="${rr.custom}" aria-label="Capacité en Go"><span>Go</span></div>` : ''}</div>
+          ${rr.media === 'custom' ? `<div class="custom-cap"><input id="${id('rec-custom')}" data-f="rec-custom" type="number" min="1" value="${num(+rr.custom) ?? ''}" aria-label="Capacité en Go"><span>Go</span></div>` : ''}</div>
       </div>
       ${outHTML(rec, rr, rc, `r${i}-rec`)}
     </div>`;
@@ -1100,9 +1120,9 @@ function rowHTML(r, i) {
   const spotHTML = sp ? `<div class="rec spot">
       <div class="rec-head"><span class="rec-title">Usage ponctuel</span><span class="dim">ajouté au projet, en plus de la caméra principale</span><button data-act="delspot">Retirer</button></div>
       <div class="row-config spot-config">
-        <div class="cfg c-note"><label for="${id('spot-note')}">Ce que c'est</label><input id="${id('spot-note')}" data-f="spot-note" type="text" value="${esc(sp.note || '').replace(/"/g, '&quot;')}" placeholder="ex. ralentis, plans drone, caméra B sur la poursuite"></div>
-        <div class="cfg c-min"><label for="${id('spot-min')}">Temps réellement enregistré</label><div class="inp"><input id="${id('spot-min')}" data-f="spot-min" type="number" min="0" step="1" value="${sp.min ?? ''}" placeholder="ex. 20"><span>min</span></div></div>
-        <div class="cfg c-days"><label for="${id('spot-days')}">Sur</label><div class="inp"><input id="${id('spot-days')}" data-f="spot-days" type="number" min="1" step="1" value="${sp.days ?? ''}" placeholder="${val('days') ?? 'ex. 1'}"><span>jours</span></div></div>
+        <div class="cfg c-note"><label for="${id('spot-note')}">Ce que c'est</label><input id="${id('spot-note')}" data-f="spot-note" type="text" value="${esc(sp.note || '')}" placeholder="ex. ralentis, plans drone, caméra B sur la poursuite"></div>
+        <div class="cfg c-min"><label for="${id('spot-min')}">Temps réellement enregistré</label><div class="inp"><input id="${id('spot-min')}" data-f="spot-min" type="number" min="0" step="1" value="${num(sp.min) ?? ''}" placeholder="ex. 20"><span>min</span></div></div>
+        <div class="cfg c-days"><label for="${id('spot-days')}">Sur</label><div class="inp"><input id="${id('spot-days')}" data-f="spot-days" type="number" min="1" step="1" value="${num(sp.days) ?? ''}" placeholder="${val('days') ?? 'ex. 1'}"><span>jours</span></div></div>
       </div>
       <span class="hint">Temps réel de tournage : 10 s filmées à ${fmtFps(Math.max(...fpsFor(cam, mode, r.codec)))} comptent 10 s, même si le plan dure plus longtemps à l'écran.${sp.min == null ? ' Indiquer les minutes pour calculer.' : ''}</span>
     </div>` : '';
@@ -1117,7 +1137,7 @@ function rowHTML(r, i) {
       <div class="cfg c-codec"><label for="${id('codec')}">Codec</label><select id="${id('codec')}" data-f="codec">${codecsFor(cam, mode).map(k => opt(k, codecLabel(cam, k), r.codec)).join('')}</select>${warn}</div>
       <div class="cfg c-fps"><label for="${id('fps')}">Cadence</label><select id="${id('fps')}" data-f="fps">${fpsFor(cam, mode, r.codec).map(f => opt(f, fmtFps(f), r.fps)).join('')}</select></div>
       <div class="cfg c-media"><label for="${id('media')}">Support</label><select id="${id('media')}" data-f="media">${cam.media.map((m, k) => opt(k, m[0], r.media)).join('')}${opt('custom', 'Autre capacité…', r.media)}</select>
-        ${r.media === 'custom' ? `<div class="custom-cap"><input id="${id('custom')}" data-f="custom" type="number" min="1" value="${r.custom}" aria-label="Capacité en Go"><span>Go</span></div>` : ''}</div>
+        ${r.media === 'custom' ? `<div class="custom-cap"><input id="${id('custom')}" data-f="custom" type="number" min="1" value="${num(+r.custom) ?? ''}" aria-label="Capacité en Go"><span>Go</span></div>` : ''}</div>
     </div>
     ${spotHTML}
     ${outHTML(cam, r, c, `r${i}`)}
@@ -1472,6 +1492,24 @@ function recoConfig(base, codec) {
   return { r, cam, note };
 }
 
+let WF_PICK = null;
+// En bref : les réponses que cherche l'assistant, en haut de page
+function renderBrief() {
+  const box = document.getElementById('brief'), us = projectUnits().filter(x => x.c.marg != null);
+  if (!us.length) { box.hidden = true; return; }
+  const gb = us.reduce((a, x) => a + x.c.marg + (x.c.proxy || 0), 0) + soundGB();
+  const mine = S.dests.length ? wfEval({ dests: S.dests, port: PORTS[S.port] ? S.port : 'usb10', ports: S.ports, verify: S.verify !== false }, us) : null;
+  const e = mine || (WF_PICK && WF_PICK.e), wl = mine ? 'workflow retenu' : WF_PICK ? `recommandé : ${WF_PICK.label}` : '';
+  const cards = us.filter(x => !x.u.parent).map(x => { const p = plan(x.u); return p.ready ? `${p.need + 1} × ${esc(mediaName(x.cam, x.u))}${us.filter(y => !y.u.parent).length > 1 ? ` <small>${esc(x.cam.name)}</small>` : ''}` : null; }).filter(Boolean);
+  const it = (k, v, sub, href) => `<a class="brief-it" href="#${href}"><span class="brief-k">${k}</span><span class="brief-v">${v}</span>${sub ? `<span class="brief-s">${sub}</span>` : ''}</a>`;
+  box.innerHTML = [
+    it('Rushs avec marge', fmtSize(gb), `${fmtDur(us[0].c.hours)} de rushs${us.length > 1 ? ', toutes sources' : ''}`, 't-compare'),
+    e ? it('Disques', Object.entries(e.groups).map(([g, n]) => `${n} × ${g}`).join(' + '), `${fmtEur(e.cost, e.missing)}, ${wl}`, 't-recos') : '',
+    cards.length ? it('Cartes conseillées', cards.join('<br>'), 'pour décharger le soir, une de secours', 't-cards') : '',
+    e && e.ev ? it('Copie du soir', fmtDur(e.ev), e.slow ? `puis ${fmtDur(e.slow)} vers le ${esc(e.slowLabel)}, la nuit` : 'plus gros jour, vérification comprise', 't-recos') : '',
+  ].join('');
+  box.hidden = false;
+}
 function renderWorkflows() {
   const box = document.getElementById('workflows'), us = projectUnits();
   if (!us.length || us.every(x => x.c.marg == null)) { box.innerHTML = `<p class="empty" style="border:0;padding:0">${us.length ? 'Renseigner le tournage' : 'Ajouter une caméra'} pour proposer des workflows.</p>`; return; }
@@ -1488,6 +1526,7 @@ function renderWorkflows() {
   const pool = shown.filter(x => x[0] !== 'mine' && x[2].dests.length >= minCopies), okT = pool.filter(x => x[3].ev != null && x[3].ev <= 1);
   const pick = okT.length ? okT.reduce((a, x) => mid(x[3]) < mid(a[3]) ? x : a) : pool.reduce((a, x) => (x[3].ev ?? 99) < (a[3].ev ?? 99) ? x : a, pool[0]);
   const share = pick && budget && pick[3].cost ? mid(pick[3]) / budget : null;
+  WF_PICK = pick ? { label: pick[1].label, e: pick[3] } : null;
   const pickNote = pick ? `<p class="wf-pick">Recommandé : <b>${pick[1].label}</b>, ${okT.length ? `le moins cher avec au moins ${minCopies} copies et une copie du soir sous 1 h` : `le plus rapide avec au moins ${minCopies} copies : aucun ne tient la copie du soir sous 1 h`}${budget == null ? '. Renseigner le budget du film pour ajuster : 3 copies dès 30 000 €.' : budget >= 30000 ? `, budget de ${r10(budget)} € : une copie part hors du plateau.` : `, budget de ${r10(budget)} € : deux copies suffisent.`}${share != null ? ` Les disques représentent environ ${nf(share < 0.01 ? 1 : 0).format(share * 100)} % du budget.` : ''}</p>` : '';
   const lunchFit = ((val('lunch') ?? 60) - 15) / 60;
   const cmp = q => `<a href="https://www.idealo.fr/prechcat.html?q=${encodeURIComponent(q)}" target="_blank" rel="noopener">idealo</a>, <a href="https://ledenicheur.fr/search?search=${encodeURIComponent(q)}" target="_blank" rel="noopener">Le Dénicheur</a>`;
@@ -1635,6 +1674,7 @@ function render(focus) {
   document.getElementById('s-notes').innerHTML = [...(sound ? [`Son externe : ${txtSize(sound)} avec marge (${S.tracks} pistes WAV 48 kHz 24 bits), à ajouter au stockage.`] : []), ...projectNotes(h)].map(n => `<li>${esc(n)}</li>`).join('');
 
   renderRecos();
+  renderBrief();
   document.getElementById('wf-notes').innerHTML = workflowNotes().map(n => `<li>${esc(n)}</li>`).join('');
   renderPlans();
   document.querySelectorAll('[data-show]').forEach(el => { el.hidden = el.dataset.show !== S.pmode; });

@@ -340,6 +340,39 @@ body.no-calc .eqs, body.no-calc .eqs-sum, body.no-calc .calc { display: none; }
 /* Remarques contextuelles et états vides */
 .obs { margin: 0; padding: 0; list-style: none; display: grid; gap: 4px; font-size: 13px; color: var(--muted); }
 .obs:empty { display: none; }
+.wf-pick { grid-column: 1 / -1; margin: 0; font-size: 14px; }
+.wf.is-pick { border-color: var(--accent); }
+.wf-table { grid-column: 1 / -1; width: 100%; border-collapse: collapse; font-size: 14px; }
+.wf-table thead th { text-align: left; font-weight: 400; font-size: 13px; color: var(--muted); padding: 0 12px 8px; border-bottom: 1px solid var(--line); }
+.wf-table .num { text-align: right; }
+.wf-row > * { padding: 14px 12px 4px; vertical-align: top; text-align: left; font-weight: 400; }
+.wf-row td.num { text-align: right; }
+.wf-row small { display: block; font-size: 12px; color: var(--muted); margin-top: 2px; }
+.wf-row b { font-weight: 500; color: #fff; }
+.wf-table tbody { border-bottom: 1px solid var(--line); }
+.wf-table tbody.is-pick { background: rgba(232, 220, 198, .05); }
+.wf-table tbody.is-pick .wf-row > th { box-shadow: inset 2px 0 0 var(--accent); }
+.wf-table .wf-name { font-family: 'Instrument Serif', serif; font-size: 24px; line-height: 1.1; }
+.wf-tag { margin-left: 8px; font-size: 12px; color: var(--accent); }
+.wf-act { text-align: right; white-space: nowrap; }
+.wf-more td { padding: 0 12px 12px; font-size: 13px; color: var(--muted); }
+.wf-more details > summary { cursor: pointer; list-style: none; display: flex; gap: 6px; }
+.wf-more p { margin: 8px 0 0; max-width: 90ch; }
+.wf-more ul { margin: 8px 0 0; padding-left: 16px; display: grid; gap: 4px; }
+.wf-more a { color: var(--ink); }
+.muted { color: var(--muted); }
+@media (max-width: 760px) {
+  .wf-table thead { display: none; }
+  .wf-table, .wf-table tbody, .wf-row, .wf-more, .wf-more td { display: block; }
+  .wf-row { display: grid; grid-template-columns: 1fr 1fr; gap: 4px 12px; padding-top: 12px; }
+  .wf-row > * { padding: 4px 0; }
+  .wf-row > th { grid-column: 1 / -1; }
+  .wf-row td.num, .wf-act { text-align: left; }
+  .wf-row td::before { content: attr(data-l); display: block; font-size: 12px; color: var(--muted); }
+  .wf-act { grid-column: 1 / -1; }
+  .wf-more td { padding: 0 0 12px; }
+}
+.wf-skip { grid-column: 1 / -1; margin: 0; font-size: 13px; color: var(--muted); }
 .obs li { padding-left: 16px; position: relative; max-width: 95ch; }
 .obs li::before { content: "›"; position: absolute; left: 2px; color: var(--accent); }
 .empty { margin: 0; padding: 20px 24px; color: var(--muted); font-size: 14px; border-top: 1px solid var(--line); }
@@ -532,7 +565,7 @@ footer.foot a:hover { color: var(--muted); }
         <div class="inp"><select id="p-recorow"></select></div>
       </div>
     </div>
-    <div class="panel station-wrap"><span class="station-title">Ordinateur de déchargement</span>
+    <div class="panel station-wrap"><span class="station-title">Ordinateur de déchargement et budget</span>
     <div class="fields station" id="station">
       <div class="field">
         <label for="p-port">Liaison des disques</label>
@@ -545,6 +578,10 @@ footer.foot a:hover { color: var(--muted); }
       <div class="field">
         <label for="p-verify">Vérification</label>
         <div class="inp"><select id="p-verify"><option value="oui">Checksum et relecture</option><option value="non">Aucune</option></select></div>
+      </div>
+      <div class="field">
+        <label for="p-budget">Budget du film</label>
+        <div class="inp"><input id="p-budget" type="number" placeholder="ex. 15000" min="0" step="1000"><span>€</span></div>
       </div>
     </div>
     </div>
@@ -718,7 +755,7 @@ CAMERAS.push(...DATA_CAMS.filter(d => d.recorder).map(fromData));
 
 const DEFAULT = {
   pmode: 'film', dur: null, ratio: null, days: null, shoot: null, pace: null, peak: null, margin: null, reserve: null, real: 100, sum: false,
-  ncards: null, lunch: null, rows: [], dests: [],
+  ncards: null, lunch: null, budget: null, rows: [], dests: [],
 };
 
 // Vitesses soutenues réelles sur de gros transferts, après épuisement du cache (Mo/s), voir data/audit/offload.json
@@ -756,7 +793,9 @@ const PRESETS = {
 const OLD_BACKUP = { single: 'single', double: 'double', triple: 'triple', lto: 'lto' };
 // Workflows proposés : mêmes calculs que la sauvegarde, sans toucher aux choix de l'utilisateur
 const WORKFLOWS = {
-  eco:  { label: 'Économique', dests: ['ssd', 'ssd', 'hdd'], why: 'Deux SSD pour la prod et la post, un HDD moins cher en sécurité, rempli après coup depuis un SSD (copie en cascade dans Silverstack, Hedge ou OffShoot).' },
+  hdd2: { label: 'Tout HDD', dests: ['hdd', 'hdd'], why: 'Deux HDD portables : le moins cher. Copie lente, le HDD plafonne vers 80 Mo/s et la carte attend, et un HDD craint les chocs. Suffit sur un court ou un petit volume si la copie tient dans la pause ou la soirée.' },
+  duo:  { label: 'Deux copies', dests: ['ssd', 'hdd'], why: 'Le minimum courant sur un court ou un petit tournage : un SSD pour le montage, un HDD en sécurité. Pas de troisième copie hors du plateau, donc un vol ou un sinistre peut tout emporter. La carte attend la fin de la copie HDD.' },
+  eco:  { label: 'Mixte', dests: ['ssd', 'ssd', 'hdd'], why: 'Deux SSD pour la prod et la post, un HDD moins cher en sécurité, rempli après coup depuis un SSD (copie en cascade dans Silverstack, Hedge ou OffShoot).' },
   std:  { label: 'Standard', dests: ['ssd', 'ssd', 'ssd'], why: 'Trois SSD : copie rapide, une copie part chaque soir dans un autre lieu.' },
   fast: { label: 'Rapide', dests: ['ssdtb', 'ssdtb', 'ssdtb'], port: 'tb', why: 'SSD Thunderbolt sur des ports Thunderbolt distincts. Ne sert que si le lecteur de cartes suit : inutile derrière un lecteur CFast ou SD.' },
 };
@@ -767,13 +806,13 @@ const priceOf = (type, size) => { const x = PRICES[type] && PRICES[type][String(
 const projectUnits = () => (S.sum ? units() : units().filter(u => (u.parent || u) === S.rows[S.recoRow])).map(u => ({ u, cam: camById(u.cam), c: compute(u) }));
 function wfEval(cfg, us) {
   const gb = us.reduce((a, x) => a + (x.c.marg ?? 0) + (x.c.proxy || 0), 0) + (S.sum || us.length ? soundGB() : 0), tb = gb / 1000;
-  const groups = {}; let cost = [0, 0], missing = false;
-  cfg.dests.forEach(d => { const { size, n } = disksFor(d, tb), k = `${DISKS[d.type].short} ${sizeLabel(size)}`; groups[k] = (groups[k] || 0) + n; const eur = priceOf(d.type, size); if (eur == null) missing = true; else { cost[0] += eur[0] * n; cost[1] += eur[1] * n; } });
+  const groups = {}, items = {}; let cost = [0, 0], missing = false;
+  cfg.dests.forEach(d => { const { size, n } = disksFor(d, tb), k = `${DISKS[d.type].short} ${sizeLabel(size)}`; groups[k] = (groups[k] || 0) + n; items[k] = { type: d.type, size, n: groups[k] }; const eur = priceOf(d.type, size); if (eur == null) missing = true; else { cost[0] += eur[0] * n; cost[1] += eur[1] * n; } });
   const sp = us.map(x => copySplit(peakDay(x.c.raw), x.cam, cfg)).filter(Boolean);
   const ev = sp.reduce((a, x) => a + (x.card || 0), 0), slow = sp.reduce((a, x) => a + (x.slow || 0), 0);
   const fastD = cfg.dests.filter(d => !SLOW_RE.test(d.type));
   const ch = us[0] && chain(us[0].cam, slow && fastD.length ? { ...cfg, dests: fastD } : cfg);
-  return { gb, groups, cost: cost[1] ? cost : null, missing, ev: ev || null, slow: slow || null, slowLabel: sp[0] && sp[0].slowLabel, ch, devices: cfg.dests.length + 1 };
+  return { gb, groups, items, cost: cost[1] ? cost : null, missing, ev: ev || null, slow: slow || null, slowLabel: sp[0] && sp[0].slowLabel, ch, devices: cfg.dests.length + 1 };
 }
 const r10 = x => nf(0).format(Math.round(x / 10) * 10);
 const fmtEur = (e, missing) => e == null ? 'prix non relevé' : `${missing ? '≥ ' : ''}${r10(e[0])}${Math.round(e[1] / 10) > Math.round(e[0] / 10) ? ` – ${r10(e[1])}` : ''} €`;
@@ -801,10 +840,12 @@ function chain(cam, cfg = S) {
 // Copie en deux temps quand des disques lents (HDD, RAID, LTO) côtoient des SSD :
 // la carte est copiée et vérifiée sur les SSD, puis les disques lents sont remplis depuis un SSD, sans la carte
 const SLOW_RE = /^(hdd|raid|lto)/;
+const cascades = dests => dests.filter(d => !SLOW_RE.test(d.type)).length >= 2 && dests.some(d => SLOW_RE.test(d.type));
 function copySplit(gb, cam, cfg = S) {
   if (gb == null || !cam || !cfg.dests.length) return null;
   const fastD = cfg.dests.filter(d => !SLOW_RE.test(d.type)), slowD = cfg.dests.filter(d => SLOW_RE.test(d.type));
-  if (!fastD.length || !slowD.length) return { card: copyHours(gb, cam, cfg), slow: null };
+  // Cascade seulement si deux copies rapides existent : sinon la carte attend toutes les copies
+  if (fastD.length < 2 || !slowD.length) return { card: copyHours(gb, cam, cfg), slow: null };
   const src = DISKS[fastD[0].type];
   return { card: copyHours(gb, cam, { ...cfg, dests: fastD }), slow: copyHours(gb, { reader: { mbps: src.read, label: `lecture ${src.label}` } }, { ...cfg, dests: slowD }), slowLabel: [...new Set(slowD.map(d => DISKS[d.type].short))].join(' + ') };
 }
@@ -821,7 +862,9 @@ function diskText(gb) {
 function disksFor(d, tb) {
   const sizes = DISKS[d.type].sizes;
   if (d.size !== 'auto') return { size: d.size, n: Math.max(1, Math.ceil(tb / d.size - 1e-9)) };
-  const fit = sizes.find(z => z >= tb);
+  // Taille auto : la moins chère parmi celles qui suffisent (un 500 Go coûte parfois plus qu'un 1 To)
+  const mid = z => { const p = priceOf(d.type, z); return p ? (p[0] + p[1]) / 2 : Infinity; };
+  const fits = sizes.filter(z => z >= tb), fit = fits.reduce((a, z) => mid(z) < mid(a) ? z : a, fits[0]);
   return fit ? { size: fit, n: 1 } : { size: sizes[sizes.length - 1], n: Math.ceil(tb / sizes[sizes.length - 1] - 1e-9) };
 }
 
@@ -1207,7 +1250,7 @@ function workflowNotes() {
   if (S.dests.some(d => d.type === 'ssd7')) out.push('Samsung T7 classique : environ 340 Mo/s une fois les 40 à 80 premiers Go écrits. Le T7 Shield tient environ 850 Mo/s.');
   if (S.port === 'usb2') out.push('USB 2.0 ou câble de charge : environ 35 Mo/s, quel que soit le disque. Vérifier les câbles fournis avec les SSD.');
   if (S.port === 'usb5') out.push('Port ou câble USB 5 Gb/s : un SSD 10 Gb/s y plafonne vers 420 Mo/s.');
-  const fast = S.dests.filter(d => !SLOW_RE.test(d.type)), cfg = fast.length && fast.length < S.dests.length ? { ...S, dests: fast } : S;
+  const fast = S.dests.filter(d => !SLOW_RE.test(d.type)), cfg = cascades(S.dests) ? { ...S, dests: fast } : S;
   us.forEach(x => {
     const ch = chain(x.cam, cfg); if (!ch) return;
     if (ch.copyBy === x.cam.reader.label && fast.length) out.push(`${x.cam.name} : le lecteur de cartes (${nf(0).format(x.cam.reader.mbps)} Mo/s) limite la copie. Des disques plus rapides n'y changeront rien.`);
@@ -1245,7 +1288,7 @@ function plan(r) {
   const usable = cardGB * (1 - pct('reserve'));
   const dayGB = peakDay(c.marg), dayRaw = peakDay(c.raw);
   // Avec des disques lents, la carte n'attend que les SSD : c'est cette chaîne qui compte
-  const fastOnly = S.dests.some(d => SLOW_RE.test(d.type)) && S.dests.some(d => !SLOW_RE.test(d.type));
+  const fastOnly = cascades(S.dests);
   const ch = chain(cam, fastOnly ? { ...S, dests: S.dests.filter(d => !SLOW_RE.test(d.type)) } : S), slow = !!ch;
   const speed = ch ? Math.round(ch.copy) : cam.reader.mbps;
   const limiter = ch ? ch.copyBy : cam.reader.label;
@@ -1408,24 +1451,43 @@ function renderWorkflows() {
   const cur = Object.keys(WORKFLOWS).find(k => { const d = WORKFLOWS[k].dests; return d.length === S.dests.length && d.every((t, i) => S.dests[i].type === t); });
   // Le workflow retenu, s'il ne correspond à aucune proposition, est comparé à côté
   const list = [...(!cur && S.dests.length ? [['mine', { label: 'Ton workflow', why: 'Workflow retenu plus bas, avec tes disques et ta liaison.' }]] : []), ...Object.entries(WORKFLOWS)];
-  box.innerHTML = list.map(([k, w]) => {
-    const cfg = k === 'mine' ? { dests: S.dests, port: PORTS[S.port] ? S.port : 'usb10', ports: S.ports, verify: S.verify !== false } : wfCfg(k), e = wfEval(cfg, us);
-    const isCur = k === cur || k === 'mine';
-    return `<article class="panel reco wf${isCur ? ' is-current' : ''}">
-      <div class="wf-head"><h3 class="wf-name">${w.label}</h3><span>${isCur ? 'workflow retenu' : `${cfg.dests.length} copies`}</span></div>
-      <div class="wf-cost">${fmtEur(e.cost, e.missing)}<small>de disques</small></div>
-      <dl>
-        <dt>Disques</dt><dd>${Object.entries(e.groups).map(([g, n]) => `${n} × ${g}`).join('<br>')}</dd>
-        <dt>${e.slow ? 'Copie SSD' : 'Copie du soir'}</dt><dd>${e.ev ? fmtDur(e.ev) : '—'} <small>${e.slow ? 'carte libérée' : 'plus gros jour'}</small></dd>
-        ${e.slow ? `<dt>Copie ${esc(e.slowLabel)}</dt><dd>${fmtDur(e.slow)} <small>depuis le SSD</small></dd>` : ''}
-        <dt>Appareils</dt><dd>${e.devices} <small>${S.ports && S.ports < e.devices ? `pour ${S.ports} port${S.ports > 1 ? 's' : ''} : hub` : 'un port chacun'}</small></dd>
-        <dt>Liaison</dt><dd>${PORTS[cfg.port].label}</dd>
-      </dl>
-      ${e.ch ? `<p>Copie${e.slow ? ' SSD' : ''} à ${nf(0).format(e.ch.copy)} Mo/s, limitée par ${esc(e.ch.copyBy)}.${e.slow ? ' Le disque lent se remplit ensuite depuis un SSD : la carte est déjà libre.' : ''}</p>` : ''}
-      <p>${esc(w.why)}</p>
-      ${isCur ? '' : `<button class="btn ghost small" data-wf="${k}">Utiliser ce workflow</button>`}
-    </article>`;
+  const evals = list.map(([k, w]) => { const cfg = k === 'mine' ? { dests: S.dests, port: PORTS[S.port] ? S.port : 'usb10', ports: S.ports, verify: S.verify !== false } : wfCfg(k); return [k, w, cfg, wfEval(cfg, us)]; });
+  // Le workflow rapide n'est proposé que s'il fait vraiment gagner du temps : derrière un lecteur lent, il coûte plus pour rien
+  const E = k => (evals.find(x => x[0] === k) || [])[3], fe = E('fast'), se = E('std');
+  const gain = fe && se && fe.ev && se.ev ? se.ev - fe.ev : 0, fastUseful = cur === 'fast' || (gain >= 1 / 6 && gain >= se.ev * 0.2);
+  const shown = evals.filter(x => x[0] !== 'fast' || fastUseful);
+  // Recommandation : le moins cher qui a assez de copies pour le budget et dont la copie du soir tient en 1 h
+  const budget = val('budget'), minCopies = budget != null && budget >= 30000 ? 3 : 2, mid = e => e.cost ? (e.cost[0] + e.cost[1]) / 2 : Infinity;
+  const pool = shown.filter(x => x[0] !== 'mine' && x[2].dests.length >= minCopies), okT = pool.filter(x => x[3].ev != null && x[3].ev <= 1);
+  const pick = okT.length ? okT.reduce((a, x) => mid(x[3]) < mid(a[3]) ? x : a) : pool.reduce((a, x) => (x[3].ev ?? 99) < (a[3].ev ?? 99) ? x : a, pool[0]);
+  const share = pick && budget && pick[3].cost ? mid(pick[3]) / budget : null;
+  const pickNote = pick ? `<p class="wf-pick">Recommandé : <b>${pick[1].label}</b>, ${okT.length ? `le moins cher avec au moins ${minCopies} copies et une copie du soir sous 1 h` : `le plus rapide avec au moins ${minCopies} copies : aucun ne tient la copie du soir sous 1 h`}${budget == null ? '. Renseigner le budget du film pour ajuster : 3 copies dès 30 000 €.' : budget >= 30000 ? `, budget de ${r10(budget)} € : une copie part hors du plateau.` : `, budget de ${r10(budget)} € : deux copies suffisent.`}${share != null ? ` Les disques représentent environ ${nf(share < 0.01 ? 1 : 0).format(share * 100)} % du budget.` : ''}</p>` : '';
+  const lunchFit = ((val('lunch') ?? 60) - 15) / 60;
+  const cmp = q => `<a href="https://www.idealo.fr/prechcat.html?q=${encodeURIComponent(q)}" target="_blank" rel="noopener">idealo</a>, <a href="https://ledenicheur.fr/search?search=${encodeURIComponent(q)}" target="_blank" rel="noopener">Le Dénicheur</a>`;
+  const pricesHTML = e => Object.entries(e.items).map(([k, it]) => {
+    const p = PRICES[it.type] && PRICES[it.type][String(it.size)], offers = p ? [...p.offers].sort((a, b) => a.eur - b.eur) : [];
+    const q = offers[0] && offers[0].model ? offers[0].model.replace(/\s+(noir|beige|bleu|gris|blanc|orange|rouge)\b.*$/i, '') : `${DISKS[it.type].ex ? DISKS[it.type].ex.split(',')[0] : DISKS[it.type].label} ${sizeLabel(it.size)}`;
+    return `<li><b>${k}</b> ${p ? fmtEur([p.min, p.max]) : 'prix non relevé'}${offers.length ? ` : ${offers.slice(0, 4).map(o => `<a href="${esc(o.url)}" target="_blank" rel="noopener">${esc(o.shop)} ${nf(0).format(o.eur)} €</a>`).join(', ')}` : ''}. Comparer : ${cmp(q)}</li>`;
   }).join('');
+  const fastNote = fastUseful || !fe ? '' : `<p class="wf-skip">Pas de workflow rapide : ${fe.ch && /^Lecteur/.test(fe.ch.copyBy) ? `le lecteur de cartes (${nf(0).format(fe.ch.copy)} Mo/s) limite déjà la copie, ` : ''}des SSD Thunderbolt${fe.cost && se.cost ? `, environ ${r10(fe.cost[0] - se.cost[0])} € de plus,` : ''} ne feraient gagner que ${gain > 0 ? fmtDur(gain) : 'quelques secondes'} de copie le plus gros jour.</p>`;
+  const anySlow = shown.some(x => x[3].slow);
+  const rows = shown.map(([k, w, cfg, e]) => {
+    const isCur = k === cur || k === 'mine', isPick = pick && pick[0] === k;
+    const ecoNote = k === 'eco' && e.cost && se && se.cost && e.cost[0] + e.cost[1] > 0.9 * (se.cost[0] + se.cost[1]) ? ' Ici à peine moins cher que Standard : sur ce volume, le HDD n\'économise presque rien et copie bien plus lentement.' : '';
+    return `<tbody class="${isCur ? 'is-current' : ''}${isPick ? ' is-pick' : ''}"><tr class="wf-row">
+      <th scope="row"><span class="wf-name">${w.label}</span>${isPick ? '<span class="wf-tag">recommandé</span>' : ''}<small>${cfg.dests.length} copies · ${PORTS[cfg.port].label}</small></th>
+      <td data-l="Disques">${Object.entries(e.groups).map(([g, n]) => `${n} × ${g}`).join('<br>')}</td>
+      <td data-l="Prix" class="num"><b>${fmtEur(e.cost, e.missing)}</b></td>
+      <td data-l="${e.slow ? 'Copie SSD' : 'Copie du soir'}" class="num"><b>${e.ev ? fmtDur(e.ev) : '—'}</b><small>${e.ev && e.ev <= lunchFit ? 'tient à la pause déj' : e.slow ? 'carte libérée' : 'carte immobilisée'}</small></td>
+      ${anySlow ? `<td data-l="Puis HDD" class="num">${e.slow ? `<b>${fmtDur(e.slow)}</b><small>depuis un SSD, la nuit</small>` : '<span class="muted">—</span>'}</td>` : ''}
+      <td class="wf-act">${isCur ? '<span class="muted">retenu</span>' : `<button class="btn ghost small" data-wf="${k}">Utiliser</button>`}</td>
+    </tr><tr class="wf-more"><td colspan="${anySlow ? 6 : 5}"><details><summary>Détail et prix</summary>
+      <p>${esc(w.why)}${ecoNote}</p>
+      ${e.ch ? `<p>Copie${e.slow ? ' SSD' : ''} à ${nf(0).format(e.ch.copy)} Mo/s, limitée par ${esc(e.ch.copyBy)}. ${e.devices} appareils : le lecteur de cartes et ${cfg.dests.length} disques${S.ports && S.ports < e.devices ? `, sur ${S.ports} port${S.ports > 1 ? 's' : ''} libres (hub)` : ''}.</p>` : ''}
+      <ul>${pricesHTML(e)}</ul>
+    </details></td></tr></tbody>`;
+  }).join('');
+  box.innerHTML = pickNote + `<table class="wf-table"><thead><tr><th>Workflow</th><th>Disques</th><th class="num">Prix des disques</th><th class="num">Copie du soir</th>${anySlow ? '<th class="num">Puis HDD</th>' : ''}<th></th></tr></thead>${rows}</table>` + fastNote;
 }
 
 function renderRecos() {
@@ -1552,7 +1614,7 @@ function render(focus) {
 }
 
 // Paramètres projet
-const P = { proxy: 'p-proxy', tracks: 'p-tracks', dur: 'p-dur', ratio: 'p-ratio', days: 'p-days', shoot: 'p-shoot', pace: 'p-pace', peak: 'p-peak', margin: 'p-margin', reserve: 'p-reserve', ncards: 'p-ncards', lunch: 'p-lunch' };
+const P = { proxy: 'p-proxy', tracks: 'p-tracks', dur: 'p-dur', ratio: 'p-ratio', days: 'p-days', shoot: 'p-shoot', pace: 'p-pace', peak: 'p-peak', margin: 'p-margin', reserve: 'p-reserve', ncards: 'p-ncards', lunch: 'p-lunch', budget: 'p-budget' };
 for (const [k, id] of Object.entries(P)) {
   const el = document.getElementById(id);
   el.value = S[k] ?? '';
@@ -1715,7 +1777,7 @@ function recapHTML() {
     ? us.map(x => `<li>${esc(x.cam.name)} : ${diskText((x.c.marg ?? 0) + (x.c.proxy || 0))}</li>`).join('')
     : `<li><strong>${diskText(total)}</strong> pour ${txtSize(total)} par copie${soundGB() ? ' (son compris)' : ''}</li>`) : '<li>Workflow ou tournage non renseigné.</li>';
   const offl = us.map(x => { const p = plan(x.r); return p.ready && p.ch ? `<li>${esc(x.cam.name)} : copie ${p.eveningSlow ? "SSD " : ""}du soir ${fmtDur(p.evening)} le plus gros jour, une carte ${fmtDur(p.offCard)}${p.ch.verify ? ' vérification comprise' : ''}. ${esc(p.text)}</li>` : ''; }).join('');
-  const split = S.dests.some(d => SLOW_RE.test(d.type)) && S.dests.some(d => !SLOW_RE.test(d.type));
+  const split = cascades(S.dests);
   const ch = us[0] && chain(camById(us[0].r.cam), split ? { ...S, dests: S.dests.filter(d => !SLOW_RE.test(d.type)) } : S);
   const srcs = [...new Set(us.map(x => { const k = modeOf(camById(x.r.cam), x.r.mode).id + '|' + x.r.codec; const c = camById(x.r.cam); return c.data ? c.src[k] : null; }).filter(Boolean))];
   const dl = list => `<dl>${list.map(([k, val, wide]) => `<div${wide ? ' class="wide"' : ''}><dt>${k}</dt><dd>${val}</dd></div>`).join('')}</dl>`;

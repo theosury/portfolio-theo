@@ -241,6 +241,10 @@ a.src:hover { border-color: var(--ink); color: var(--ink); }
 .rec-title { font-size: 13px; font-weight: 500; }
 .rec-head button, .add-rec { margin-left: auto; background: none; border: 0; color: var(--muted); font: inherit; font-size: 13px; cursor: pointer; padding: 4px 0; }
 .add-rec { margin: 0; justify-self: start; }
+.adds { display: flex; flex-wrap: wrap; gap: 4px 20px; }
+.row-tag { font-size: 13px; color: var(--accent); margin-left: 10px; margin-right: auto; }
+.c-note { flex: 2 1 260px; } .c-min { flex: 1 1 180px; } .c-days { flex: 1 1 140px; }
+.cfg .inp input { border: 0; background: transparent; font-size: 14px; padding: 8px 9px; }
 .rec-head button:hover, .add-rec:hover { color: var(--ink); }
 
 /* Recommandations */
@@ -545,6 +549,7 @@ footer.foot a:hover { color: var(--muted); }
         <h2 id="t-compare">Caméras et enregistreurs</h2>
         <div class="tools">
           <label class="switch" title="Additionne les volumes des lignes"><input type="checkbox" id="p-sum"> Caméras simultanées</label>
+          <button class="btn ghost" id="add-spot" title="Ralentis, drone, caméra B sur quelques plans">Caméra ponctuelle</button>
           <button class="btn ghost" id="add">Ajouter une caméra</button>
         </div>
       </div>
@@ -663,9 +668,11 @@ footer.foot a:hover { color: var(--muted); }
       <ul id="brand-sources"></ul>
       <p><strong style="color:var(--ink)">Vitesses de copie</strong> : débits soutenus mesurés sur de gros transferts, une fois le cache des SSD rempli, et non les pics annoncés. Un T7 classique annoncé à 1000 Mo/s écrit à environ 340 Mo/s au-delà de 40 à 80 Go.</p>
       <ul id="copy-sources"></ul>
-      <p>La copie avance à la vitesse du maillon le plus lent : lecteur, liaison, écriture du disque le plus lent. Un hub partage un seul lien entre tous les disques. La vérification relit ensuite chaque copie entière avant de libérer la carte (Silverstack, Hedge, OffShoot, ShotPut Pro) : compter environ deux fois le temps de copie seule. Un coefficient de 1,1 couvre les frais par fichier, il retrouve les durées publiées par <a href="https://web.archive.org/web/20260607105702/https://www.arri.com/en/camera-systems/camera-components/recording-media/codex-compact-drive/high-speed-dock-vs" target="_blank" rel="noopener">ARRI</a> (1 To : 16 min de copie, 32 à 40 min avec vérification). Avec un HDD, un RAID ou une LTO parmi les destinations, le calcul suppose la copie en cascade (Silverstack, Hedge, OffShoot) : la carte est copiée et vérifiée sur les SSD, puis le disque lent est rempli depuis un SSD, sans la carte. Les deux durées sont données séparément.</p>
+      <p>La copie avance à la vitesse du maillon le plus lent : lecteur, liaison, écriture du disque le plus lent. Un hub partage un seul lien entre tous les disques. La vérification relit ensuite chaque copie entière avant de libérer la carte (Silverstack, Hedge, OffShoot, ShotPut Pro) : compter environ deux fois le temps de copie seule. Un coefficient de 1,1 couvre les frais par fichier, il retrouve les durées publiées par <a href="https://web.archive.org/web/20260607105702/https://www.arri.com/en/camera-systems/camera-components/recording-media/codex-compact-drive/high-speed-dock-vs" target="_blank" rel="noopener">ARRI</a> (1 To : 16 min de copie, 32 à 40 min avec vérification). Avec au moins deux SSD et un HDD, un RAID ou une LTO parmi les destinations, le calcul suppose la copie en cascade (Silverstack, Hedge, OffShoot) : la carte est copiée et vérifiée sur les SSD, puis le disque lent est rempli depuis un SSD, sans la carte. Les deux durées sont données séparément. Avec un seul SSD, la carte attend toutes les copies : elle ne doit pas être effacée tant que deux copies n'existent pas.</p>
       <p>Ports : chaque appareil (lecteur, disques) prend un port. S'il y a moins de ports libres que d'appareils, les disques en trop partagent un même port via un hub et se partagent son débit. Le lecteur reste branché en direct.</p>
-      <p>Prix des disques : fourchette relevée chez plusieurs revendeurs français à la date indiquée, hors promotions. Indicatif.</p>
+      <p>Prix des disques : fourchette relevée le 23 octobre 2026 chez LDLC, Top Achat, Boulanger, Digit-Photo et MacWay, hors promotions et hors marketplace. Indicatif : les SSD varient beaucoup en 2026. Chaque workflow donne les offres relevées et un lien vers idealo et Le Dénicheur pour le prix du jour. En taille auto, la capacité retenue est la moins chère parmi celles qui suffisent.</p>
+      <p>Workflow recommandé : le moins cher parmi ceux qui ont assez de copies et dont la copie du soir, au plus gros jour, tient en une heure. Deux copies suffisent sur un court ou un petit budget ; à partir de 30 000 € de budget, trois copies, dont une qui part hors du plateau. Le workflow rapide n'apparaît que s'il fait gagner au moins 10 minutes et 20 % de copie : derrière un lecteur lent, des SSD Thunderbolt ne servent à rien.</p>
+      <p>Usage ponctuel (ralentis, drone, caméra B sur une scène) : le volume vient du temps réellement enregistré, pas de la durée à l'écran, réparti sur les jours indiqués, sinon sur tout le tournage. Il s'ajoute à la caméra principale dans les workflows et le total.</p>
       <p>iPhone HEVC et H.264 : débit variable, d'après les tailles affichées par iOS dans Réglages › Appareil photo › Enregistrement vidéo.</p>
       <p>Atomos : le débit dépend du signal envoyé par la caméra. Les résolutions RAW viennent des fiches de compatibilité Atomos ; les cadences hautes (50 et 60 i/s en 5K et plus, 8K) ne sont enregistrables que sur Ninja TX et Shogun Ultra, ainsi que sur les anciens Ninja V+, Ninja Ultra et Shogun Connect. Ninja TX GO et Ninja RAW sont limités à 6K 30 i/s. Le RAW en SDI demande un module sur Ninja V+ et Ninja Ultra (AtomX SDI ou Atomos Connect). 4K DCI en ProRes et DNxHR : chiffre UHD Atomos × 4096/3840.</p>
     </div>
@@ -803,12 +810,12 @@ const wfCfg = k => { const w = WORKFLOWS[k]; return { dests: w.dests.map(type =>
 // Fourchette de prix [min, max] en euros, relevée chez plusieurs revendeurs
 const priceOf = (type, size) => { const x = PRICES[type] && PRICES[type][String(size)]; return x ? [x.min, x.max] : null; };
 // Unités prises en compte : toutes si les caméras tournent ensemble, sinon la configuration choisie
-const projectUnits = () => (S.sum ? units() : units().filter(u => (u.parent || u) === S.rows[S.recoRow])).map(u => ({ u, cam: camById(u.cam), c: compute(u) }));
+const projectUnits = () => (S.sum ? units() : units().filter(u => (u.parent || u) === S.rows[S.recoRow] || spotOf(u))).map(u => ({ u, cam: camById(u.cam), c: compute(u) }));
 function wfEval(cfg, us) {
   const gb = us.reduce((a, x) => a + (x.c.marg ?? 0) + (x.c.proxy || 0), 0) + (S.sum || us.length ? soundGB() : 0), tb = gb / 1000;
   const groups = {}, items = {}; let cost = [0, 0], missing = false;
   cfg.dests.forEach(d => { const { size, n } = disksFor(d, tb), k = `${DISKS[d.type].short} ${sizeLabel(size)}`; groups[k] = (groups[k] || 0) + n; items[k] = { type: d.type, size, n: groups[k] }; const eur = priceOf(d.type, size); if (eur == null) missing = true; else { cost[0] += eur[0] * n; cost[1] += eur[1] * n; } });
-  const sp = us.map(x => copySplit(peakDay(x.c.raw), x.cam, cfg)).filter(Boolean);
+  const sp = us.map(x => copySplit(x.c.dayRaw, x.cam, cfg)).filter(Boolean);
   const ev = sp.reduce((a, x) => a + (x.card || 0), 0), slow = sp.reduce((a, x) => a + (x.slow || 0), 0);
   const fastD = cfg.dests.filter(d => !SLOW_RE.test(d.type));
   const ch = us[0] && chain(us[0].cam, slow && fastD.length ? { ...cfg, dests: fastD } : cfg);
@@ -920,7 +927,7 @@ function normalizeRec(r) {
 }
 // Tout ce qui enregistre : caméras choisies et leurs enregistreurs
 const units = () => validRows().flatMap(r => r.rec ? [r, recRow(r)] : [r]);
-const unitName = u => u.parent ? `${camById(u.cam).name} (enregistreur, ${camById(u.parent.cam).name})` : camById(u.cam).name;
+const unitName = u => (u.parent ? `${camById(u.cam).name} (enregistreur, ${camById(u.parent.cam).name})` : camById(u.cam).name) + (spotOf(u) ? ` · ponctuelle${spotOf(u).note ? ` : ${spotOf(u).note}` : ''}` : '');
 
 function normalize(r) {
   const cam = camById(r.cam);
@@ -978,6 +985,11 @@ function recordedHours() {
 }
 // Journée la plus chargée par rapport à la moyenne
 const peakDay = total => total != null && val('days') > 0 ? total / S.days * (1 + pct('peak')) : null;
+// Caméra ponctuelle (ralentis, drone, caméra B sur une scène) : temps réellement enregistré, réparti sur ses propres jours
+const spotOf = r => (r.parent || r).spot || null;
+const num = v => typeof v === 'number' && isFinite(v) && v > 0 ? v : null;
+const unitHours = r => { const sp = spotOf(r); return sp ? (num(sp.min) != null ? sp.min / 60 : null) : recordedHours(); };
+const unitDay = (total, r) => { const sp = spotOf(r); if (!sp) return peakDay(total); return total == null ? null : total / (num(sp.days) || num(val('days')) || 1); };
 
 // Part du débit annoncé réellement écrite, mesurée : ProRes 4444, Alexa Mini, 4 h 11 de rushs
 const REAL_PRORES = .84;
@@ -987,19 +999,20 @@ const soundGB = () => { const h = recordedHours(); return h != null && val('trac
 function compute(r) {
   const cam = camById(r.cam);
   const { gbh, src, res } = rate(r);
-  const hours = recordedHours();
+  const hours = unitHours(r);
   const raw = hours == null ? null : gbh * hours;
   const marg = raw == null ? null : raw * (1 + pct('margin'));
   const cardGB = r.media === 'custom' ? +r.custom || 0 : cam.media[r.media][1];
   const usable = cardGB * (1 - pct('reserve'));
   const cardH = gbh > 0 ? usable / gbh : 0;
   const cards = marg != null && usable > 0 ? Math.ceil(marg / usable - 1e-9) : null;
-  const cardsDay = peakDay(marg) != null && usable > 0 ? Math.ceil(peakDay(marg) / usable - 1e-9) : null;
+  const dayRaw = unitDay(raw, r), dayMarg = unitDay(marg, r);
+  const cardsDay = dayMarg != null && usable > 0 ? Math.ceil(dayMarg / usable - 1e-9) : null;
   const share = realShare(cam, r);
   const prob = raw != null && share ? raw * share : null;
   // Proxys enregistrés en parallèle par la caméra (pas par l'enregistreur), avec la même marge
   const proxy = hours != null && val('proxy') && !r.parent && !cam.recorder ? S.proxy * .45 * hours * (1 + pct('margin')) : 0;
-  return { gbh, src, res, raw, marg, prob, cardH, cards, cardsDay, proxy, store: marg != null && S.dests.length ? (marg + proxy) * S.dests.length : null };
+  return { gbh, src, res, hours, raw, marg, dayRaw, dayMarg, prob, cardH, cards, cardsDay, proxy, store: marg != null && S.dests.length ? (marg + proxy) * S.dests.length : null };
 }
 
 const nf = (d) => new Intl.NumberFormat('fr-FR', { minimumFractionDigits: d, maximumFractionDigits: d });
@@ -1053,7 +1066,7 @@ function camOptions(sel) {
 function rowHTML(r, i) {
   const id = f => `r${i}-${f}`;
   const head = `<div class="row-head">
-      <span class="row-num" aria-label="Ligne ${i + 1}">${i + 1}</span>
+      <span class="row-num" aria-label="Ligne ${i + 1}">${i + 1}</span>${r.spot ? `<span class="row-tag">ponctuelle${r.spot.note ? ` · ${esc(r.spot.note)}` : ''}</span>` : ''}
       <div class="row-actions">${isSet(r) ? '<button data-act="dup" title="Dupliquer la ligne">Dupliquer</button>' : ''}<button data-act="del" aria-label="Supprimer la ligne" title="Supprimer">Supprimer</button></div>
     </div>`;
   if (!isSet(r)) return `<article class="row" data-i="${i}">${head}
@@ -1082,7 +1095,19 @@ function rowHTML(r, i) {
       </div>
       ${outHTML(rec, rr, rc, `r${i}-rec`)}
     </div>`;
-  } else if (!cam.recorder) recHTML = '<button class="add-rec" data-act="addrec">+ Enregistreur externe</button>';
+  }
+  const sp = r.spot;
+  const spotHTML = sp ? `<div class="rec spot">
+      <div class="rec-head"><span class="rec-title">Usage ponctuel</span><span class="dim">ajouté au projet, en plus de la caméra principale</span><button data-act="delspot">Retirer</button></div>
+      <div class="row-config spot-config">
+        <div class="cfg c-note"><label for="${id('spot-note')}">Ce que c'est</label><input id="${id('spot-note')}" data-f="spot-note" type="text" value="${esc(sp.note || '').replace(/"/g, '&quot;')}" placeholder="ex. ralentis, plans drone, caméra B sur la poursuite"></div>
+        <div class="cfg c-min"><label for="${id('spot-min')}">Temps réellement enregistré</label><div class="inp"><input id="${id('spot-min')}" data-f="spot-min" type="number" min="0" step="1" value="${sp.min ?? ''}" placeholder="ex. 20"><span>min</span></div></div>
+        <div class="cfg c-days"><label for="${id('spot-days')}">Sur</label><div class="inp"><input id="${id('spot-days')}" data-f="spot-days" type="number" min="1" step="1" value="${sp.days ?? ''}" placeholder="${val('days') ?? 'ex. 1'}"><span>jours</span></div></div>
+      </div>
+      <span class="hint">Temps réel de tournage : 10 s filmées à ${fmtFps(Math.max(...fpsFor(cam, mode, r.codec)))} comptent 10 s, même si le plan dure plus longtemps à l'écran.${sp.min == null ? ' Indiquer les minutes pour calculer.' : ''}</span>
+    </div>` : '';
+  const adds = [!r.rec && !cam.recorder ? '<button class="add-rec" data-act="addrec">+ Enregistreur externe</button>' : '', !sp ? '<button class="add-rec" data-act="slowmo">+ Ralentis</button>' : '', !sp ? '<button class="add-rec" data-act="addspot">+ Usage ponctuel</button>' : ''].filter(Boolean).join('');
+  if (adds) recHTML += `<div class="adds">${adds}</div>`;
   return `<article class="row" data-i="${i}">
     ${head}
     <div class="row-config">
@@ -1094,6 +1119,7 @@ function rowHTML(r, i) {
       <div class="cfg c-media"><label for="${id('media')}">Support</label><select id="${id('media')}" data-f="media">${cam.media.map((m, k) => opt(k, m[0], r.media)).join('')}${opt('custom', 'Autre capacité…', r.media)}</select>
         ${r.media === 'custom' ? `<div class="custom-cap"><input id="${id('custom')}" data-f="custom" type="number" min="1" value="${r.custom}" aria-label="Capacité en Go"><span>Go</span></div>` : ''}</div>
     </div>
+    ${spotHTML}
     ${outHTML(cam, r, c, `r${i}`)}
     ${notes.length ? `<ul class="obs">${notes.map(n => `<li>${esc(n)}</li>`).join('')}</ul>` : ''}
     ${recHTML}
@@ -1113,10 +1139,10 @@ const EQ = (terms, res) => `<div class="eq">${terms.map((t, i) => typeof t === '
 const sizeParts = gb => gb >= 1000 ? [nf(2).format(gb / 1000), 'To'] : [nf(gb < 10 ? 1 : 0).format(gb), 'Go'];
 // Les équations clés d'une ligne : volume, supports, stockage
 function eqsHTML(r, c) {
-  const cam = camById(r.cam), h = recordedHours();
+  const cam = camById(r.cam), h = unitHours(r);
   if (h == null) return '';
   const cardGB = r.media === 'custom' ? +r.custom || 0 : cam.media[r.media][1], usable = cardGB * (1 - pct('reserve'));
-  const out = [EQ([[nf(1).format(c.gbh), 'Go/h', `débit à ${fmtFps(r.fps)}`, 'rate'], '×', [fmtDur(h), '', 'de rushs', 'time'], '×', [`(1 + ${val('margin') ?? 0} %)`, '', 'marge', 'margin']], [...sizeParts(c.marg), 'rushs avec marge'])];
+  const out = [EQ([[nf(1).format(c.gbh), 'Go/h', `débit à ${fmtFps(r.fps)}`, 'rate'], '×', [fmtDur(h), '', spotOf(r) ? 'en temps réel' : 'de rushs', 'time'], '×', [`(1 + ${val('margin') ?? 0} %)`, '', 'marge', 'margin']], [...sizeParts(c.marg), 'rushs avec marge'])];
   if (c.cards != null) out.push(EQ([[nf(0).format(c.marg), 'Go', 'rushs avec marge', 'key'], '÷', [nf(usable >= 100 ? 0 : 1).format(usable), 'Go', `par support, ${val('reserve') ?? 0} % réservés`, 'media']], [String(c.cards), '', `support${c.cards > 1 ? 's' : ''} (${nf(1).format(c.marg / usable)} arrondi)`]));
   if (c.store != null) out.push(EQ([[sizeParts(c.marg + c.proxy)[0], sizeParts(c.marg + c.proxy)[1], c.proxy ? 'rushs et proxys' : 'rushs avec marge', 'key'], '×', [String(S.dests.length), '', `copie${S.dests.length > 1 ? 's' : ''}`, 'media']], [...sizeParts(c.store), 'à stocker']));
   return `<div class="eqs">${out.join('')}</div>`;
@@ -1167,9 +1193,9 @@ function rateLines(r) {
 function calcHTML(r) {
   const cam = camById(r.cam), c = compute(r), { L, mbps } = rateLines(r);
   if (mbps != null) L.push({ k: 'En Go par heure', h: `${M.f(`${M.n(mbps, 'rate', 1)} ${M.u('Mb/s')} × 3600 ${M.u('s')}`, `8 × 1000`)} = ${M.n(c.gbh, 'rate', 1)} ${M.u('Go/h')}`, why: '8 bits par octet, 1000 Mo par Go' });
-  const h = recordedHours();
+  const h = unitHours(r), sp = spotOf(r);
   if (h != null) {
-    L.push({ k: 'Heures de rushs', h: S.pmode === 'film'
+    L.push(sp ? { k: 'Temps réel enregistré', h: `${M.f(`${M.n(sp.min, 'time', 0)} ${M.u('min')}`, '60')} = ${M.n(h, 'time', 2)} ${M.u('h')}`, why: `usage ponctuel${sp.note ? ` : ${esc(sp.note)}` : ''}, compté en temps réel, pas en durée à l'écran` } : { k: 'Heures de rushs', h: S.pmode === 'film'
       ? `${M.f(`${M.n(S.dur, 'time', 0)} ${M.u('min')} × ${M.n(S.ratio, 'time', 0)}`, '60')} = ${M.n(h, 'time', 2)} ${M.u('h')}`
       : `${M.f(`${M.n(S.days, 'time', 0)} ${M.u('j')} × ${M.n(S.shoot, 'time', 1)} ${M.u('h')} × ${M.n(S.pace, 'time', 1)} ${M.u('min')}`, '60')} = ${M.n(h, 'time', 2)} ${M.u('h')}` });
     L.push({ k: 'Rushs bruts', h: `${M.n(c.gbh, 'rate', 1)} × ${M.n(h, 'time', 2)} = ${M.n(c.raw, 'res', dg(c.raw))} ${M.u('Go')}` });
@@ -1180,12 +1206,13 @@ function calcHTML(r) {
   L.push({ k: 'Un support tient', h: `${M.f(`${M.n(cap, 'media', 0)} ${M.u('Go')} × (1 − ${M.n(val('reserve') ?? 0, 'margin', 0)} %)`, `${M.n(c.gbh, 'rate', 1)} ${M.u('Go/h')}`)} = ${M.n(fmtHMS(c.cardH), 'res')}` });
   if (c.marg != null) {
     L.push({ k: 'Supports remplis', h: `${M.f(`${M.n(c.marg, 'key', dg(c.marg))} ${M.u('Go')}`, `${M.n(usable, 'media', dg(usable))} ${M.u('Go')}`)} = ${M.n(c.marg / usable, 'res', 2)} → ${M.n(c.cards, 'key', 0)}`, why: 'arrondi au support entier supérieur' });
-    if (c.cardsDay != null) L.push({ k: 'Plus gros jour', h: `${M.f(`${M.n(c.marg, 'key', dg(c.marg))}`, M.n(S.days, 'time', 0))} × (1 + ${M.n(val('peak') ?? 0, 'margin', 0)} %) = ${M.n(peakDay(c.marg), 'res', dg(peakDay(c.marg)))} ${M.u('Go')} → ${M.n(c.cardsDay, 'key', 0)} ${M.u('support' + (c.cardsDay > 1 ? 's' : ''))}` });
+    if (c.cardsDay != null && sp) L.push({ k: 'Par jour d\'usage', h: `${M.f(`${M.n(c.marg, 'key', dg(c.marg))}`, M.n(num(sp.days) || num(val('days')) || 1, 'time', 0))} = ${M.n(c.dayMarg, 'res', dg(c.dayMarg))} ${M.u('Go')} → ${M.n(c.cardsDay, 'key', 0)} ${M.u('support' + (c.cardsDay > 1 ? 's' : ''))}` });
+    else if (c.cardsDay != null) L.push({ k: 'Plus gros jour', h: `${M.f(`${M.n(c.marg, 'key', dg(c.marg))}`, M.n(S.days, 'time', 0))} × (1 + ${M.n(val('peak') ?? 0, 'margin', 0)} %) = ${M.n(c.dayMarg, 'res', dg(c.dayMarg))} ${M.u('Go')} → ${M.n(c.cardsDay, 'key', 0)} ${M.u('support' + (c.cardsDay > 1 ? 's' : ''))}` });
     if (c.proxy) L.push({ k: 'Proxys', h: `${M.f(`${M.n(S.proxy, 'rate', 0)} ${M.u('Mb/s')} × 3600`, '8 × 1000')} × ${M.n(h, 'time', 2)} × (1 + ${M.n(val('margin') ?? 0, 'margin', 0)} %) = ${M.n(c.proxy, 'res', dg(c.proxy))} ${M.u('Go')}` });
     if (c.store != null) L.push({ k: 'Stockage', h: `${c.proxy ? `(${M.n(c.marg, 'key', dg(c.marg))} + ${M.n(c.proxy, 'res', dg(c.proxy))})` : M.n(c.marg, 'key', dg(c.marg))} ${M.u('Go')} × ${M.n(S.dests.length, 'media', 0)} ${M.u('copies')} = ${M.n(c.store, 'key', dg(c.store))} ${M.u('Go')}` });
     const ch = chain(cam);
     if (ch && c.raw != null && val('days')) {
-      const g = peakDay(c.raw), sp = copySplit(g, cam);
+      const g = c.dayRaw, sp = copySplit(g, cam);
       // Une étape de copie : (volume / vitesse de copie + volume / vitesse de relecture) × frais par fichier
       const step = (k, src, cfg, why) => {
         const x = chain(src, cfg), t = copyHours(g, src, cfg);
@@ -1237,7 +1264,7 @@ function camerasNotes() {
 function rowNotes(r, cam, c) {
   const out = [];
   if (c.cardH > 0 && c.cardH < .5) out.push(`Un support ne tient que ${fmtDur(c.cardH)} : changements fréquents en tournage.`);
-  if (r.fps >= 48) out.push(`À ${fmtFps(r.fps)}, le calcul suppose tout le tournage à cette cadence. Pour quelques plans ralentis, garder la cadence principale et ajouter une ligne.`);
+  if (r.fps >= 48 && !r.spot) out.push(`À ${fmtFps(r.fps)}, le calcul suppose tout le tournage à cette cadence. Pour quelques plans au ralenti, garder la cadence principale et utiliser « + Ralentis ».`);
   return out;
 }
 
@@ -1255,7 +1282,7 @@ function workflowNotes() {
     const ch = chain(x.cam, cfg); if (!ch) return;
     if (ch.copyBy === x.cam.reader.label && fast.length) out.push(`${x.cam.name} : le lecteur de cartes (${nf(0).format(x.cam.reader.mbps)} Mo/s) limite la copie. Des disques plus rapides n'y changeront rien.`);
     if (ch.hub) out.push(`${ch.hub} : hub nécessaire, la copie est ralentie. Un ordinateur avec plus de ports, ou un dock Thunderbolt, règle le problème.`);
-    const sp = copySplit(peakDay(x.c.raw), x.cam);
+    const sp = copySplit(x.c.dayRaw, x.cam);
     if (sp && sp.card > 2) out.push(`${x.cam.name} : ${fmtDur(sp.card)} de copie le plus gros jour, la carte immobilisée. Décharger aussi à la pause, ou prévoir un DIT.`);
   });
   return [...new Set(out)];
@@ -1286,7 +1313,7 @@ function plan(r) {
   const cam = camById(r.cam), c = compute(r);
   const cardGB = r.media === 'custom' ? +r.custom || 0 : cam.media[r.media][1];
   const usable = cardGB * (1 - pct('reserve'));
-  const dayGB = peakDay(c.marg), dayRaw = peakDay(c.raw);
+  const dayGB = c.dayMarg, dayRaw = c.dayRaw;
   // Avec des disques lents, la carte n'attend que les SSD : c'est cette chaîne qui compte
   const fastOnly = cascades(S.dests);
   const ch = chain(cam, fastOnly ? { ...S, dests: S.dests.filter(d => !SLOW_RE.test(d.type)) } : S), slow = !!ch;
@@ -1492,13 +1519,14 @@ function renderWorkflows() {
 
 function renderRecos() {
   const sel = document.getElementById('p-recorow');
-  if (!S.rows[S.recoRow] || !isSet(S.rows[S.recoRow])) S.recoRow = S.rows.findIndex(isSet);
+  const mainRow = r => isSet(r) && !r.spot;
+  if (!S.rows[S.recoRow] || !mainRow(S.rows[S.recoRow])) S.recoRow = S.rows.findIndex(mainRow);
   sel.innerHTML = S.rows.map((r, i) => {
-    if (!isSet(r)) return '';
+    if (!mainRow(r)) return '';
     const cam = camById(r.cam);
     return `<option value="${i}"${i === S.recoRow ? ' selected' : ''}>${i + 1}. ${esc(cam.name)} · ${esc(modeOf(cam, r.mode).label)} · ${fmtFps(r.fps)}</option>`;
   }).join('');
-  sel.closest('.field').hidden = validRows().length < 2;
+  sel.closest('.field').hidden = S.rows.filter(mainRow).length < 2;
   document.getElementById('p-recopdf').checked = !!S.recoPdf;
   renderWorkflows();
   const base = S.rows[S.recoRow];
@@ -1512,7 +1540,7 @@ function renderRecos() {
   const evals = items.map(x => Object.fromEntries(Object.keys(WORKFLOWS).map(k => [k, wfEval(wfCfg(k), [{ u: x.r, cam: x.cam, c: x.c }])])));
   // Phrase de synthèse : un codec plus riche avec un workflow plus rapide, sans allonger la soirée actuelle
   const baseIdx = Math.max(0, items.findIndex(x => x.r.codec === base.codec && x.cam.id === base.cam));
-  const nowSp = copySplit(peakDay(compute(base).raw), camById(base.cam)), nowEv = nowSp && nowSp.card;
+  const nowSp = copySplit(compute(base).dayRaw, camById(base.cam)), nowEv = nowSp && nowSp.card;
   if (nowEv != null) {
     for (let i = items.length - 1; i > baseIdx; i--) {
       const k = Object.keys(WORKFLOWS).find(k => evals[i][k].ev != null && evals[i][k].ev <= nowEv * 1.05);
@@ -1577,11 +1605,12 @@ function render(focus) {
   document.getElementById('c-notes').innerHTML = camerasNotes().map(n => `<li>${esc(n)}</li>`).join('');
 
   const foot = document.getElementById('foot');
-  if (S.sum && units().length > 1) {
+  const totU = S.sum ? units() : projectUnits().map(x => x.u), nSpot = validRows().filter(r => r.spot).length;
+  if (totU.length > 1 && (S.sum || nSpot)) {
     const add = (a, b) => a == null || b == null ? null : a + b;
-    const t = units().map(compute).reduce((a, c) => ({ raw: add(a.raw, c.raw), marg: add(a.marg, c.marg), store: add(a.store, c.store), gbh: a.gbh + c.gbh }), { raw: 0, marg: 0, store: 0, gbh: 0 });
+    const t = totU.map(compute).reduce((a, c) => ({ raw: add(a.raw, c.raw), marg: add(a.marg, c.marg), store: add(a.store, c.store), gbh: a.gbh + c.gbh }), { raw: 0, marg: 0, store: 0, gbh: 0 });
     foot.innerHTML = `<div class="row total">
-      <div class="total-label">Total · ${validRows().length} caméra${validRows().length > 1 ? 's' : ''}${units().length > validRows().length ? ` + ${units().length - validRows().length} enregistreur${units().length - validRows().length > 1 ? 's' : ''}` : ''}</div>
+      <div class="total-label">Total · ${S.sum ? `${validRows().length} caméra${validRows().length > 1 ? 's' : ''}${units().length > validRows().length ? ` + ${units().length - validRows().length} enregistreur${units().length - validRows().length > 1 ? 's' : ''}` : ''}` : `caméra principale + ${nSpot} usage${nSpot > 1 ? 's' : ''} ponctuel${nSpot > 1 ? 's' : ''}`}</div>
       <dl class="row-out">
         <div><dt>Débit cumulé</dt><dd><span class="val">${nf(1).format(t.gbh)} <small>Go/h</small></span></dd></div>
         <div class="key"><dt>Rushs avec marge</dt><dd><span class="val">${fmtSize(t.marg)}</span>${t.raw != null ? `<span class="sub-val">${txtSize(t.raw)} bruts</span>` : ''}</dd></div>
@@ -1663,7 +1692,11 @@ tbody.addEventListener('change', e => {
   const f = e.target.dataset.f; if (!f) return;
   const i = +e.target.closest('[data-i]').dataset.i, r = S.rows[i];
   const v = e.target.value;
-  if (f.startsWith('rec-')) {
+  if (f.startsWith('spot-')) {
+    const k = f.slice(5);
+    r.spot[k] = k === 'note' ? v.trim() : (parseFloat(v) > 0 ? parseFloat(v) : null);
+  }
+  else if (f.startsWith('rec-')) {
     const k = f.slice(4);
     r.rec[k] = k === 'media' ? (v === 'custom' ? 'custom' : +v) : k === 'custom' ? parseFloat(v) || 0 : v;
     if (k === 'cam') r.rec.media = 0;
@@ -1682,6 +1715,14 @@ tbody.addEventListener('click', e => {
   if (act === 'del') S.rows.splice(i, 1);
   if (act === 'addrec') S.rows[i].rec = { cam: 'atomos-ninja-tx' };
   if (act === 'delrec') delete S.rows[i].rec;
+  if (act === 'addspot') S.rows[i].spot = { note: '', min: null, days: null };
+  if (act === 'delspot') delete S.rows[i].spot;
+  // Ralentis : copie de la caméra en usage ponctuel, à la cadence la plus haute disponible
+  if (act === 'slowmo') {
+    const r = structuredClone(S.rows[i]), cam = camById(r.cam), fl = fpsFor(cam, modeOf(cam, r.mode), r.codec);
+    delete r.rec; r.fps = Math.max(...fl); r.spot = { note: 'Ralentis', min: null, days: null };
+    S.rows.splice(i + 1, 0, r);
+  }
   render();
 });
 tbody.addEventListener('toggle', e => {
@@ -1699,6 +1740,10 @@ document.getElementById('p-ports').addEventListener('input', e => { const v = pa
 document.getElementById('p-verify').addEventListener('change', e => { S.verify = e.target.value === 'oui'; render('p-verify'); });
 document.getElementById('add').addEventListener('click', () => {
   S.rows.push({ cam: '' });
+  render(`r${S.rows.length - 1}-cam`);
+});
+document.getElementById('add-spot').addEventListener('click', () => {
+  S.rows.push({ cam: '', spot: { note: '', min: null, days: null } });
   render(`r${S.rows.length - 1}-cam`);
 });
 
@@ -1772,9 +1817,10 @@ function recapHTML() {
       <td class="n">${p.ready ? p.need + 1 : '—'}</td></tr>`;
   }).join('');
   const total = us.reduce((a, x) => a + (x.c.marg ?? 0) + (x.c.proxy || 0), 0) + soundGB();
-  const many = us.length > 1;
+  const spotGB = S.sum ? 0 : us.filter(x => spotOf(x.r)).reduce((a, x) => a + (x.c.marg ?? 0), 0);
+  const many = us.filter(x => !spotOf(x.r)).length > 1;
   const disks = S.dests.length && h != null ? (many && !S.sum
-    ? us.map(x => `<li>${esc(x.cam.name)} : ${diskText((x.c.marg ?? 0) + (x.c.proxy || 0))}</li>`).join('')
+    ? us.filter(x => !spotOf(x.r)).map(x => `<li>${esc(x.cam.name)}${spotGB ? ' et usages ponctuels' : ''} : ${diskText((x.c.marg ?? 0) + (x.c.proxy || 0) + spotGB)}</li>`).join('')
     : `<li><strong>${diskText(total)}</strong> pour ${txtSize(total)} par copie${soundGB() ? ' (son compris)' : ''}</li>`) : '<li>Workflow ou tournage non renseigné.</li>';
   const offl = us.map(x => { const p = plan(x.r); return p.ready && p.ch ? `<li>${esc(x.cam.name)} : copie ${p.eveningSlow ? "SSD " : ""}du soir ${fmtDur(p.evening)} le plus gros jour, une carte ${fmtDur(p.offCard)}${p.ch.verify ? ' vérification comprise' : ''}. ${esc(p.text)}</li>` : ''; }).join('');
   const split = cascades(S.dests);

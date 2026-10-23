@@ -215,6 +215,7 @@ a.src:hover { border-color: var(--ink); color: var(--ink); }
 .plan-title { display: grid; gap: 2px; flex: 1 1 260px; min-width: 0; }
 .plan-title strong { font-weight: 600; }
 .plan-title span { font-size: 13px; color: var(--muted); }
+.linkish { background: none; border: 0; padding: 0; font: inherit; color: var(--ink); text-decoration: underline; text-underline-offset: 3px; cursor: pointer; }
 .pill { flex: none; font-size: 11px; font-weight: 600; letter-spacing: .1em; text-transform: uppercase; padding: 2px 8px; border-radius: 4px; border: 1px solid currentColor; white-space: nowrap; }
 .pill-ok { color: var(--ok); } .pill-warn { color: var(--warn); } .pill-bad { color: var(--bad); }
 .row-out.plan-out { grid-template-columns: repeat(5, minmax(0, 1fr)); }
@@ -563,6 +564,7 @@ footer.foot a:hover { color: var(--muted); }
         <div class="dests" id="dests"></div>
         <button class="btn ghost small" id="add-dest">Ajouter une copie</button>
         <span class="hint" id="backup-hint"></span>
+        <ul class="obs" id="wf-notes"></ul>
       </div>
     </div>
   </section>
@@ -1197,6 +1199,24 @@ function rowNotes(r, cam, c) {
 }
 
 
+// Points d'attention sur le workflow retenu, calculés à partir de la chaîne de copie
+function workflowNotes() {
+  const out = [], us = projectUnits().filter(x => !x.u.parent);
+  if (!S.dests.length) return out;
+  if (S.dests.length === 1) out.push('Une seule copie : si ce disque lâche, les rushs sont perdus. Deux copies au minimum avant d\'effacer une carte.');
+  if (S.dests.some(d => d.type === 'ssd7')) out.push('Samsung T7 classique : environ 340 Mo/s une fois les 40 à 80 premiers Go écrits. Le T7 Shield tient environ 850 Mo/s.');
+  if (S.port === 'usb2') out.push('USB 2.0 ou câble de charge : environ 35 Mo/s, quel que soit le disque. Vérifier les câbles fournis avec les SSD.');
+  if (S.port === 'usb5') out.push('Port ou câble USB 5 Gb/s : un SSD 10 Gb/s y plafonne vers 420 Mo/s.');
+  const fast = S.dests.filter(d => !SLOW_RE.test(d.type)), cfg = fast.length && fast.length < S.dests.length ? { ...S, dests: fast } : S;
+  us.forEach(x => {
+    const ch = chain(x.cam, cfg); if (!ch) return;
+    if (ch.copyBy === x.cam.reader.label && fast.length) out.push(`${x.cam.name} : le lecteur de cartes (${nf(0).format(x.cam.reader.mbps)} Mo/s) limite la copie. Des disques plus rapides n'y changeront rien.`);
+    if (ch.hub) out.push(`${ch.hub} : hub nécessaire, la copie est ralentie. Un ordinateur avec plus de ports, ou un dock Thunderbolt, règle le problème.`);
+    const sp = copySplit(peakDay(x.c.raw), x.cam);
+    if (sp && sp.card > 2) out.push(`${x.cam.name} : ${fmtDur(sp.card)} de copie le plus gros jour, la carte immobilisée. Décharger aussi à la pause, ou prévoir un DIT.`);
+  });
+  return [...new Set(out)];
+}
 function renderDests() {
   S.dests.forEach(d => { if (!DISKS[d.type]) d.type = 'ssd'; if (d.size !== 'auto' && !DISKS[d.type].sizes.includes(d.size)) d.size = DISKS[d.type].def; });
   document.getElementById('dests').innerHTML = S.dests.map((d, i) => `<div class="dest" data-d="${i}">
@@ -1386,10 +1406,13 @@ function renderWorkflows() {
   const box = document.getElementById('workflows'), us = projectUnits();
   if (!us.length || us.every(x => x.c.marg == null)) { box.innerHTML = `<p class="empty" style="border:0;padding:0">${us.length ? 'Renseigner le tournage' : 'Ajouter une caméra'} pour proposer des workflows.</p>`; return; }
   const cur = Object.keys(WORKFLOWS).find(k => { const d = WORKFLOWS[k].dests; return d.length === S.dests.length && d.every((t, i) => S.dests[i].type === t); });
-  box.innerHTML = Object.entries(WORKFLOWS).map(([k, w]) => {
-    const cfg = wfCfg(k), e = wfEval(cfg, us);
-    return `<article class="panel reco wf${k === cur ? ' is-current' : ''}">
-      <div class="wf-head"><h3 class="wf-name">${w.label}</h3><span>${k === cur ? 'workflow retenu' : `${cfg.dests.length} copies`}</span></div>
+  // Le workflow retenu, s'il ne correspond à aucune proposition, est comparé à côté
+  const list = [...(!cur && S.dests.length ? [['mine', { label: 'Ton workflow', why: 'Workflow retenu plus bas, avec tes disques et ta liaison.' }]] : []), ...Object.entries(WORKFLOWS)];
+  box.innerHTML = list.map(([k, w]) => {
+    const cfg = k === 'mine' ? { dests: S.dests, port: PORTS[S.port] ? S.port : 'usb10', ports: S.ports, verify: S.verify !== false } : wfCfg(k), e = wfEval(cfg, us);
+    const isCur = k === cur || k === 'mine';
+    return `<article class="panel reco wf${isCur ? ' is-current' : ''}">
+      <div class="wf-head"><h3 class="wf-name">${w.label}</h3><span>${isCur ? 'workflow retenu' : `${cfg.dests.length} copies`}</span></div>
       <div class="wf-cost">${fmtEur(e.cost, e.missing)}<small>de disques</small></div>
       <dl>
         <dt>Disques</dt><dd>${Object.entries(e.groups).map(([g, n]) => `${n} × ${g}`).join('<br>')}</dd>
@@ -1400,7 +1423,7 @@ function renderWorkflows() {
       </dl>
       ${e.ch ? `<p>Copie${e.slow ? ' SSD' : ''} à ${nf(0).format(e.ch.copy)} Mo/s, limitée par ${esc(e.ch.copyBy)}.${e.slow ? ' Le disque lent se remplit ensuite depuis un SSD : la carte est déjà libre.' : ''}</p>` : ''}
       <p>${esc(w.why)}</p>
-      ${k === cur ? '' : `<button class="btn ghost small" data-wf="${k}">Utiliser ce workflow</button>`}
+      ${isCur ? '' : `<button class="btn ghost small" data-wf="${k}">Utiliser ce workflow</button>`}
     </article>`;
   }).join('');
 }
@@ -1488,7 +1511,7 @@ function render(focus) {
   S.copies = S.dests.length;
   renderDests();
   S.rows.filter(isSet).forEach(r => { normalize(r); if (r.rec) normalizeRec(r); });
-  document.getElementById('rows').innerHTML = S.rows.length ? S.rows.map(rowHTML).join('') : '<p class="empty">Aucune caméra. Ajouter une caméra pour commencer.</p>';
+  document.getElementById('rows').innerHTML = S.rows.length ? S.rows.map(rowHTML).join('') : '<p class="empty">Aucune caméra. Ajouter une caméra pour commencer, ou <button class="linkish" id="load-example">voir un exemple</button> : court métrage mesuré, Alexa Mini en ProRes 4444, 5 jours.</p>';
   document.getElementById('c-notes').innerHTML = camerasNotes().map(n => `<li>${esc(n)}</li>`).join('');
 
   const foot = document.getElementById('foot');
@@ -1521,6 +1544,7 @@ function render(focus) {
   document.getElementById('s-notes').innerHTML = [...(sound ? [`Son externe : ${txtSize(sound)} avec marge (${S.tracks} pistes WAV 48 kHz 24 bits), à ajouter au stockage.`] : []), ...projectNotes(h)].map(n => `<li>${esc(n)}</li>`).join('');
 
   renderRecos();
+  document.getElementById('wf-notes').innerHTML = workflowNotes().map(n => `<li>${esc(n)}</li>`).join('');
   renderPlans();
   document.querySelectorAll('[data-show]').forEach(el => { el.hidden = el.dataset.show !== S.pmode; });
   if (focus) { const el = document.getElementById(focus); if (el) el.focus(); }
@@ -1735,6 +1759,15 @@ document.getElementById('export-pdf').addEventListener('click', () => {
   window.print();
 });
 document.getElementById('copy-text').addEventListener('click', e => copyOut(summaryText(), e.currentTarget));
+// Exemple mesuré (court métrage de fiction) chargé sur demande, jamais par défaut
+document.addEventListener('click', e => {
+  if (e.target.id !== 'load-example') return;
+  S = { ...structuredClone(DEFAULT), pmode: 'days', days: 5, shoot: 7.83, pace: 6.4, margin: 25, reserve: 5, peak: 40, ncards: 3,
+    rows: [{ cam: 'mini', mode: '28k43', codec: 'prores4444', fps: 24, media: 0 }], dests: presetDests('ssdhdd'), port: 'usb10' };
+  document.getElementById('pm-days').checked = true;
+  ['days', 'shoot', 'pace', 'margin', 'reserve', 'peak', 'ncards'].forEach(k => { const el = document.getElementById('p-' + k); if (el) el.value = S[k]; });
+  render();
+});
 document.getElementById('copy-link').addEventListener('click', e => copyOut(shareLink(), e.currentTarget));
 
 render();

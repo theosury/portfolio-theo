@@ -1492,7 +1492,7 @@ function recoConfig(base, codec) {
   return { r, cam, note };
 }
 
-let WF_PICK = null;
+let WF_PICK = null, WF_FAST = true;
 // En bref : les réponses que cherche l'assistant, en haut de page
 function renderBrief() {
   const box = document.getElementById('brief'), us = projectUnits().filter(x => x.c.marg != null);
@@ -1521,6 +1521,7 @@ function renderWorkflows() {
   const E = k => (evals.find(x => x[0] === k) || [])[3], fe = E('fast'), se = E('std');
   const gain = fe && se && fe.ev && se.ev ? se.ev - fe.ev : 0, fastUseful = cur === 'fast' || (gain >= 1 / 6 && gain >= se.ev * 0.2);
   const shown = evals.filter(x => x[0] !== 'fast' || fastUseful);
+  WF_FAST = fastUseful;
   // Recommandation : le moins cher qui a assez de copies pour le budget et dont la copie du soir tient en 1 h
   const budget = val('budget'), minCopies = budget != null && budget >= 30000 ? 3 : 2, mid = e => e.cost ? (e.cost[0] + e.cost[1]) / 2 : Infinity;
   const pool = shown.filter(x => x[0] !== 'mine' && x[2].dests.length >= minCopies), okT = pool.filter(x => x[3].ev != null && x[3].ev <= 1);
@@ -1831,7 +1832,7 @@ function summaryText() {
 function recapWorkflows() {
   const us = projectUnits();
   if (!us.length || us.every(x => x.c.marg == null)) return '';
-  const rows = Object.entries(WORKFLOWS).map(([k, w]) => { const e = wfEval(wfCfg(k), us); return `<tr><td><strong>${w.label}</strong></td><td>${Object.entries(e.groups).map(([g, n]) => `${n} × ${g}`).join(' + ')}</td><td class="n">${fmtEur(e.cost, e.missing)}</td><td class="n">${e.ev ? fmtDur(e.ev) : '—'}${e.slow ? `<br><small>puis ${fmtDur(e.slow)} vers ${esc(e.slowLabel)}, depuis le SSD</small>` : ''}</td></tr>`; }).join('');
+  const rows = Object.entries(WORKFLOWS).filter(([k]) => k !== 'fast' || WF_FAST).map(([k, w]) => { const e = wfEval(wfCfg(k), us); return `<tr><td><strong>${w.label}</strong>${WF_PICK && WF_PICK.label === w.label ? '<br><small>recommandé</small>' : ''}</td><td>${Object.entries(e.groups).map(([g, n]) => `${n} × ${g}`).join(' + ')}</td><td class="n">${fmtEur(e.cost, e.missing)}</td><td class="n">${e.ev ? fmtDur(e.ev) : '—'}${e.slow ? `<br><small>puis ${fmtDur(e.slow)} vers ${esc(e.slowLabel)}, depuis le SSD</small>` : ''}</td></tr>`; }).join('');
   let opt = '';
   const base = S.rows[S.recoRow];
   if (S.recoPdf && base) {

@@ -825,7 +825,12 @@ export const projectsData = {
         assistantReal: 'Guillaume Bosteau',
         script: 'Julia Nogueira',
         electros: 'Simon Clarisse, Diego Galuteau, Clothilde Barbier, Julie Puel, Théo Frachon, Arthur Flavini & Théo Sury (prélight)',
-        thumbnail: '/images/placeholder-thumb.jpg',
+        thumbnail: '/images/marcus-thumb.jpg',
+        // Photos de prélight (13 au 15 octobre 2026)
+        plateau: {
+          titre: 'Sur le plateau',
+          photos: Array.from({ length: 8 }, (_, i) => `/images/marcus-plateau/marcus-plateau-${i + 1}.jpg`),
+        },
         status: 'En post-production',
         images: [],
         description: 'Marcus s\'interpose quand deux hommes s\'en prennent à Hedda à la sortie d\'un club.\n\nCourt-métrage tourné aux studios de la Montjoie, dans des décors construits pour le film. Trois jours de prélight sur une grosse installation au grill : une boîte à lumière immense et des lyres automatiques Proteus Maximus, pilotées par un pupitreur.',

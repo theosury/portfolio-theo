@@ -824,12 +824,12 @@ export const projectsData = {
         prodExec: 'Romain Ferreira',
         assistantReal: 'Guillaume Bosteau',
         script: 'Julia Nogueira',
-        electros: 'Simon Clarisse, Diego Galuteau, Clothilde Barbier, Julie Puel, Théo Frachon, Arthur Flavini & Théo Sury (prélight)',
+        electros: 'Simon Clarisse, Diego Galuteau, Clothilde Barbier, Julie Puel, Théo Frachon, Arthur Flavini, Théo Sury & Jade Sinturet-Cuinier (prélight)',
         thumbnail: '/images/marcus-thumb.jpg',
         // Photos de prélight (13 au 15 octobre 2026), redressées et cadrées pour la grille
         plateau: {
           titre: 'Sur le plateau',
-          photos: Array.from({ length: 9 }, (_, i) => `/images/marcus-plateau/marcus-plateau-${i + 1}.jpg`),
+          photos: Array.from({ length: 7 }, (_, i) => `/images/marcus-plateau/marcus-plateau-${i + 1}.jpg`),
         },
         status: 'En post-production',
         images: [],

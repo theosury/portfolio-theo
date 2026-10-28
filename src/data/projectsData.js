@@ -21,7 +21,8 @@ const parseDate = (project) => {
       const monthName = sansAccent(match[2] || match[1]);
       const month = monthsMap[monthName] || 1;
       const year = parseInt(match[3]);
-      return new Date(year, month - 1);
+      // jour : départage deux projets du même mois (dernier jour de tournage)
+      return new Date(year, month - 1, project.jour || 1);
     }
   }
   // Sinon, utiliser l'année uniquement
@@ -214,7 +215,7 @@ export const projectsData = {
         // Photos de tournage tirées de la bibliothèque Photos, redressées et cadrées pour la grille
         plateau: {
           titre: 'Sur le plateau',
-          photos: Array.from({ length: 6 }, (_, i) => `/images/ziak-plateau/ziak-plateau-${i + 1}.jpg`),
+          photos: [1, 3, 5, 6].map((n) => `/images/ziak-plateau/ziak-plateau-${n}.jpg`),
         },
         description: 'Clip tourné au Studio Kremlin pour le morceau Feng Shui (prod. Focus Beatz & JY). Dispositif studio construit autour d\'un travelling circulaire, avec une lumière entièrement pilotée au pupitre.',
         specs: {
@@ -256,7 +257,7 @@ export const projectsData = {
         // Photos de tournage tirées de la bibliothèque Photos, redressées et cadrées pour la grille
         plateau: {
           titre: 'Sur le plateau',
-          photos: Array.from({ length: 3 }, (_, i) => `/images/nothing-personal-plateau/nothing-personal-plateau-${i + 1}.jpg`),
+          photos: [1].map((n) => `/images/nothing-personal-plateau/nothing-personal-plateau-${n}.jpg`),
         },
         description: 'Deux hommes de main, Micka et Vincent, font halte près d\'un centre équestre abandonné avec un otage dans le coffre. Micka, très fier de sa veste en cuir, a surtout envie de discuter.\n\nCourt-métrage étudiant tourné dans le Nord.',
         specs: {
@@ -348,7 +349,7 @@ export const projectsData = {
         // Photos de tournage tirées de la bibliothèque Photos, redressées et cadrées pour la grille
         plateau: {
           titre: 'Sur le plateau',
-          photos: Array.from({ length: 12 }, (_, i) => `/images/cache-toi-plateau/cache-toi-plateau-${i + 1}.jpg`),
+          photos: [1, 2, 3, 5, 6, 8, 9, 11, 12].map((n) => `/images/cache-toi-plateau/cache-toi-plateau-${n}.jpg`),
         },
         description: 'Court-métrage tourné à Vincennes et à Paris, en décors naturels : un appartement, une rue et un restaurant.',
         specs: {
@@ -649,7 +650,7 @@ export const projectsData = {
         plateau: {
           titre: 'Sur le plateau',
           credit: 'Théo Sury',
-          photos: [1, 2, 3, 4, 5, 6].map((n) => `/images/la-table-regie-plateau/ltr-plateau-${n}.jpg`),
+          photos: [1, 3, 5, 6].map((n) => `/images/la-table-regie-plateau/ltr-plateau-${n}.jpg`),
         },
         description: 'Court-métrage tourné en cinq blocs. Électricien sur le prélight du premier bloc, puis chef électricien sur les blocs 4 et 5.',
         specs: {
@@ -815,7 +816,7 @@ export const projectsData = {
         // Photos de tournage tirées de la bibliothèque Photos, redressées et cadrées pour la grille
         plateau: {
           titre: 'Sur le plateau',
-          photos: Array.from({ length: 7 }, (_, i) => `/images/casse-cest-casse-plateau/casse-plateau-${i + 1}.jpg`),
+          photos: [1, 2, 4, 5, 6, 7].map((n) => `/images/casse-cest-casse-plateau/casse-plateau-${n}.jpg`),
         },
         description: 'Clip tourné au Studio Kremlin à Ivry-sur-Seine.\n\nRéal : Romain Habousha\nChef-opérateur : Aïlé Mandé\nChef électricien : Maxime Chastres',
         thumbnail: '/images/casse-cest-casse-thumb.jpg',
@@ -880,6 +881,7 @@ export const projectsData = {
         title: 'Marcus',
         year: '2026',
         month: 'Octobre 2026',
+        jour: 15,
         role: 'Électricien (prélight)',
         realisateur: 'Jules Devoise',
         production: 'La Radieuse × Volt & Picseyes',
@@ -917,6 +919,7 @@ export const projectsData = {
         title: 'Mamie',
         year: '2026',
         month: 'Octobre 2026',
+        jour: 25,
         role: 'Électricien',
         realisatrice: 'Virginie Courteille',
         production: 'Nikon Film Festival',
@@ -940,7 +943,7 @@ export const projectsData = {
         // Installations (bibliothèque) puis photos de tournage (dossier PHOTO VIVI), sans les portraits d'équipe
         plateau: {
           titre: 'Sur le plateau',
-          photos: Array.from({ length: 12 }, (_, i) => `/images/nikon-mamie-plateau/mamie-plateau-${i + 1}.jpg`),
+          photos: [1, 2, 3, 4, 5, 6, 8, 9, 10, 12].map((n) => `/images/nikon-mamie-plateau/mamie-plateau-${n}.jpg`),
         },
         description: 'Court-métrage pour le Nikon Film Festival, tourné en trois jours dans une maison de Corbeil-Essonnes, avec une lumière pilotée au pupitre.',
         specs: {
@@ -1131,7 +1134,7 @@ export const projectsData = {
         // Photos de plateau (backstage, pas d'images du film)
         plateau: {
           titre: 'Sur le plateau',
-          photos: [1, 8, 2, 9, 3, 4, 5, 6, 7].map((n) => `/images/gate66-plateau/gate66-plateau-${n}.jpg`),
+          photos: [8, 2, 9, 3, 4, 5, 7].map((n) => `/images/gate66-plateau/gate66-plateau-${n}.jpg`),
         },
         images: [],
         specs: {
@@ -1165,7 +1168,7 @@ export const projectsData = {
         // Photos de tournage tirées de la bibliothèque Photos, redressées et cadrées pour la grille
         plateau: {
           titre: 'Sur le plateau',
-          photos: Array.from({ length: 3 }, (_, i) => `/images/bbc-plateau/bbc-plateau-${i + 1}.jpg`),
+          photos: Array.from({ length: 7 }, (_, i) => `/images/bbc-plateau/bbc-plateau-${i + 1}.jpg`),
         },
         description: 'Xavier et Awa rentrent chez eux et croisent Madame Kogo dans l\'ascenseur. Elle apprend qu\'Awa va avoir une fille et confronte Xavier sur son passé, lui indiquant qu\'il doit procéder à un processus de réparation avant de devenir père.',
         specs: {
@@ -1261,7 +1264,7 @@ export const projectsData = {
         status: 'En post-production',
         plateau: {
           titre: 'Sur le plateau',
-          photos: Array.from({ length: 12 }, (_, i) => `/images/azincourt-tournage/azincourt-tournage-${i + 1}.jpg`), // camp, forêt, nuit : redressées et cadrées pour la grille
+          photos: [1, 2, 3, 4, 5, 6, 9, 10, 11, 12].map((n) => `/images/azincourt-tournage/azincourt-tournage-${n}.jpg`), // camp, forêt, nuit : redressées et cadrées pour la grille
         },
         images: [],
         specs: {

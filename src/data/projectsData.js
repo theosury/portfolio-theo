@@ -592,10 +592,11 @@ export const projectsData = {
         role: 'Chef électricien',
         realisateur: 'Théo Carlier',
         chefOp: 'Léo Aguiton',
-        thumbnail: '/images/placeholder-thumb.jpg',
+        thumbnail: '/images/la-table-regie-thumb.jpg',
+        couvertureTuile: true,
         status: 'En post-production', // tournage terminé en octobre 2026
         images: [],
-        // Installations lumière des blocs 4 et 5 (le réalisateur accepte que les techniciens partagent des images)
+        // Installations lumière des blocs 4 et 5 (le réalisateur accepte que les techniciens partagent des images) ; pont sur deux long johns en tête
         plateau: {
           titre: 'Sur le plateau',
           credit: 'Théo Sury',

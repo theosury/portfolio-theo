@@ -546,7 +546,9 @@ const VimeoPlayer = ({ videoId, hash, title }) => {
 // Grille de photos de plateau. Au clic, la photo s'ouvre en plein écran
 // (mêmes styles que la modale des images du film) ; flèches et Échap au clavier.
 const PhotosPlateau = ({ plateau, titre }) => {
-  const { photos, credit, legende, lien } = plateau;
+  const { photos, credit, legende, lien, entieres = [] } = plateau;
+  // Agrandissement : version non recadrée quand la photo est en portrait (entieres = numéros concernés)
+  const enGrand = (i) => (entieres.includes(i + 1) ? photos[i].replace(/\.jpg$/, '-entiere.jpg') : photos[i]);
   const [ouverte, setOuverte] = useState(null);
   const aller = (i) => setOuverte((i + photos.length) % photos.length);
 
@@ -585,7 +587,7 @@ const PhotosPlateau = ({ plateau, titre }) => {
         <div className="image-modal-overlay" role="dialog" aria-label="Photo en plein écran" onClick={() => setOuverte(null)}>
           <div className="image-modal" onClick={(e) => e.stopPropagation()}>
             <button className="image-modal__close" onClick={() => setOuverte(null)} aria-label="Fermer">×</button>
-            <img src={photos[ouverte]} alt={`${titre} - sur le plateau ${ouverte + 1}`} className="image-modal__image" />
+            <img src={enGrand(ouverte)} alt={`${titre} - sur le plateau ${ouverte + 1}`} className="image-modal__image" />
             <button className="image-modal__nav image-modal__nav--prev" onClick={() => aller(ouverte - 1)} aria-label="Photo précédente">‹</button>
             <button className="image-modal__nav image-modal__nav--next" onClick={() => aller(ouverte + 1)} aria-label="Photo suivante">›</button>
             <div className="image-modal__counter" aria-live="polite">{ouverte + 1} / {photos.length}</div>

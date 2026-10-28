@@ -292,6 +292,7 @@ export const projectsData = {
         maquillage: 'Géraldine Geretier',
         vfx: 'Martial Brard & Charlotte Didier (3D), Julien Brard (post-production 3D)',
         thumbnail: '/images/moutarderie-fallot-thumb.webp',
+        couvertureTuile: true,
         status: 'En post-production',
         images: [],
         // Photos de tournage tirées de la bibliothèque Photos, redressées et cadrées pour la grille
@@ -852,6 +853,7 @@ export const projectsData = {
           photos: [1, 2, 3].map((n) => `/images/pub-vs-ia/plateau-${n}.jpg`),
         },
         thumbnail: '/images/pub-vs-ia-thumb.jpg',
+        couvertureTuile: true,
         description: 'Lors d\'une cérémonie de mariage, le témoin du marié se révèle être un collier chatbot IA. Pour tous les invités, la situation semble parfaitement normale. Seul le prêtre semble troublé. Au moment de la signature des témoins, le « témoin » se retrouve évidemment dans l\'incapacité de signer…\n\nImages du film : L\'Autre Rive Productions. Actuellement en festivals.',
         specs: {
           format: 'Court-métrage (spot)',
@@ -925,7 +927,7 @@ export const projectsData = {
         maquillage: 'Eleonora Covalet',
         regisseur: 'Alex Birot',
         thumbnail: '/images/nikon-mamie-thumb.jpg',
-        couvertureTuile: true, // image en fond de sa tuile dans « Voir les autres projets »
+        couvertureTuile: '/images/nikon-mamie-plateau/mamie-plateau-1.jpg', // la vignette est trop sombre sous le voile de la tuile
         status: 'En post-production',
         images: [],
         // Photos de tournage (dossier PHOTO VIVI), sans les portraits d'équipe
@@ -1035,6 +1037,7 @@ export const projectsData = {
         assistRegie: 'Ming Saw & Paul Legendre',
         coordinatriceIntimite: 'Luce Paz',
         thumbnail: '/images/male-addict-thumb.jpg',
+        couvertureTuile: true,
         status: 'En post-production',
         images: [],
         // Photos de tournage tirées de la bibliothèque Photos, redressées et cadrées pour la grille
@@ -1073,6 +1076,7 @@ export const projectsData = {
         assistantSon: 'Louise Bride',
         deco: 'Mila Martineau & Jules Coquet',
         thumbnail: '/images/undetoi-thumb.jpg',
+        couvertureTuile: '/images/undetoi-plateau/undetoi-plateau-3.jpg', // la vignette est trop sombre sous le voile de la tuile
         status: 'En post-production',
         images: [],
         // Photos de tournage tirées de la bibliothèque Photos, redressées et cadrées pour la grille
@@ -1148,6 +1152,7 @@ export const projectsData = {
         chefElectro: 'Leo Aguiton',
         production: 'MOLIMO Prod',
         thumbnail: '/images/bbc-thumb.jpg',
+        couvertureTuile: true,
         status: 'En post-production',
         images: [],
         // Photos de tournage tirées de la bibliothèque Photos, redressées et cadrées pour la grille
@@ -1203,6 +1208,7 @@ export const projectsData = {
         maquillage: 'Arya Bardin',
         photo: 'Astrid Joos-Deligne',
         thumbnail: '/images/verite-studio-thumb.jpg',
+        couvertureTuile: true,
         status: 'En post-production',
         images: ['/images/verite_studio.jpg'], // photo de tournage (clap)
         // Synopsis d'après la page de financement participatif (Proarti)

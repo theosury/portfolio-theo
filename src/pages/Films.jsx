@@ -10,8 +10,10 @@ const estSecondaire = (film) => projetsSecondaires.includes(film.id);
 const aUnFilm = (film) =>
   Boolean(film.youtubeId || film.vimeoId || film.videoFile || film.youtubeIds?.length || film.vimeoIds?.length || film.videoFiles?.length);
 
-// Image en fond de tuile : film visible, ou couverture demandée sur la fiche (couvertureTuile)
+// Image en fond de tuile : film visible, ou couverture demandée sur la fiche (couvertureTuile).
+// couvertureTuile peut nommer sa propre image quand la vignette de la fiche est trop sombre sous le voile de la tuile.
 const aUneCouverture = (film) => aUnFilm(film) || Boolean(film.couvertureTuile);
+const imageDeTuile = (film) => (typeof film.couvertureTuile === 'string' ? film.couvertureTuile : film.thumbnail);
 
 
 const Films = ({ dansAccueil = false }) => {
@@ -66,7 +68,7 @@ const Films = ({ dansAccueil = false }) => {
                   <button
                     type="button"
                     className={`films-tuile${aUneCouverture(film) ? ' films-tuile--film' : ''}`}
-                    style={aUneCouverture(film) ? { '--fond-tuile': `url("${film.thumbnail}")` } : undefined}
+                    style={aUneCouverture(film) ? { '--fond-tuile': `url("${imageDeTuile(film)}")` } : undefined}
                     onClick={() => handleProjectClick(film)}
                   >
                     <span className="films-tuile__haut">

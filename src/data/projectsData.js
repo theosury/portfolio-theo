@@ -81,6 +81,7 @@ export const projetsSecondaires = [
   'une-couronne',        // auxiliaire de régie, ESEC 2022 (extraits sur sa fiche)
   'bbc',
   'pub-vs-ia',           // pas de film public (festivals) : photos de tournage
+  'marcus',              // prélight électro (3 jours), tournage 14 oct 2026 à la Montjoie
   'nikon-mamie',         // Nikon de Vivi tourné du 23 au 25 oct 2026, en montage en novembre
   'nikon-vivi',          // « Mona » = titre du scénario, titre final à confirmer ; film pas encore retrouvé  // Sortis de la grande grille (audit du 11 oct 2026) : projets plus petits
   // ou poste sans rapport avec la lumière et l'image
@@ -813,6 +814,36 @@ export const projectsData = {
         ]
       },
       {
+        id: 'marcus',
+        title: 'Marcus',
+        year: '2026',
+        month: 'Octobre 2026',
+        role: 'Électricien (prélight)',
+        realisateur: 'Jules Devoise',
+        production: 'La Radieuse × Volt & Picseyes',
+        prodExec: 'Romain Ferreira',
+        assistantReal: 'Guillaume Bosteau',
+        script: 'Julia Nogueira',
+        electros: 'Simon Clarisse, Diego Galuteau, Clothilde Barbier, Julie Puel, Théo Frachon, Arthur Flavini & Théo Sury (prélight)',
+        thumbnail: '/images/placeholder-thumb.jpg',
+        status: 'En post-production',
+        images: [],
+        description: 'Marcus s\'interpose quand deux hommes s\'en prennent à Hedda à la sortie d\'un club.\n\nCourt-métrage tourné aux studios de la Montjoie, dans des décors construits pour le film. Trois jours de prélight sur une grosse installation au grill : une boîte à lumière immense et des lyres automatiques Proteus Maximus, pilotées par un pupitreur.',
+        specs: {
+          format: 'Court-métrage fiction',
+          tournage: 'Octobre 2026',
+          lieu: 'Studios de la Montjoie, Saint-Denis',
+          lumiere: 'Boîte à lumière géante au grill, lyres Proteus Maximus',
+          particularite: 'Décors studio construits pour le film, lumière au pupitre',
+        },
+        cast: [
+          'Aurélien Jazosz (Marcus)',
+          'Eve Bros (Hedda)',
+          'Dimitri Decaux (Agresseur 1)',
+          'Julien Marty (Agresseur 2)',
+        ]
+      },
+      {
         id: 'nikon-mamie',
         title: 'Mamie',
         year: '2026',
@@ -825,6 +856,7 @@ export const projectsData = {
         assistantCam: 'Antoine Vérité & Isaac Camille-Jean',
         chefElectro: 'Abel Duflo',
         electros: 'Théo Sury & Guilhem Leroux',
+        son: 'Mattéo Comby',
         perchman: 'Fabiana Castronuovo',
         monteur: 'Raphaël Bailly',
         maquillage: 'Eleonora Covalet',
@@ -839,6 +871,7 @@ export const projectsData = {
           jours: '3 jours',
           tournage: 'Octobre 2026',
           lieu: 'Corbeil-Essonnes (Essonne)',
+          camera: 'Sony FX6',
           particularite: 'Format 4/3, soleil tourné sous la pluie et pluie tournée au soleil',
         },
       },

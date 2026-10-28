@@ -1260,7 +1260,12 @@ export const projectsData = {
         production: 'VHS Prod',
         thumbnail: '/images/azincourt-thumb.jpg',
         // 3 (768 px) écartée, trop petite, original introuvable (album partagé)
-        diaporama: [2, 1, 4].map((n) => `/images/azincourt-plateau/azincourt-plateau-${n}.jpg`), // backstage, pas d'images du film
+        diaporama: [ // backstage, pas d'images du film ; une seule ambiance (tentes, feu, sous-bois), pas de ciel bleu
+          '/images/azincourt-plateau/azincourt-plateau-4.jpg',
+          '/images/azincourt-tournage/azincourt-tournage-8.jpg',
+          '/images/azincourt-plateau/azincourt-plateau-2.jpg',
+          '/images/azincourt-tournage/azincourt-tournage-7.jpg',
+        ],
         diaporamaRatio: '3 / 2',
         status: 'En post-production',
         plateau: {

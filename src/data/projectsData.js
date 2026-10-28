@@ -829,7 +829,7 @@ export const projectsData = {
         // Photos de prélight (13 au 15 octobre 2026)
         plateau: {
           titre: 'Sur le plateau',
-          photos: Array.from({ length: 8 }, (_, i) => `/images/marcus-plateau/marcus-plateau-${i + 1}.jpg`),
+          photos: Array.from({ length: 7 }, (_, i) => `/images/marcus-plateau/marcus-plateau-${i + 1}.jpg`),
         },
         status: 'En post-production',
         images: [],

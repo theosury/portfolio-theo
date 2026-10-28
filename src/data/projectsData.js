@@ -81,6 +81,7 @@ export const projetsSecondaires = [
   'une-couronne',        // auxiliaire de régie, ESEC 2022 (extraits sur sa fiche)
   'bbc',
   'pub-vs-ia',           // pas de film public (festivals) : photos de tournage
+  'nikon-mamie',         // Nikon de Vivi tourné du 23 au 25 oct 2026, en montage en novembre
   'nikon-vivi',          // « Mona » = titre du scénario, titre final à confirmer ; film pas encore retrouvé  // Sortis de la grande grille (audit du 11 oct 2026) : projets plus petits
   // ou poste sans rapport avec la lumière et l'image
   'bureau-du-karma',     // 1 minute, festival
@@ -810,6 +811,36 @@ export const projectsData = {
           'Ouerdia Taleb',
           'Eric Fardeau',
         ]
+      },
+      {
+        id: 'nikon-mamie',
+        title: 'Mamie',
+        year: '2026',
+        month: 'Octobre 2026',
+        role: 'Électricien',
+        realisatrice: 'Virginie Courteille',
+        production: 'Nikon Film Festival',
+        assistantReal: 'Marine Houé',
+        chefOp: 'Léo Aguiton',
+        assistantCam: 'Antoine Vérité & Isaac Camille-Jean',
+        chefElectro: 'Abel Duflo',
+        electros: 'Théo Sury & Guilhem Leroux',
+        perchman: 'Fabiana Castronuovo',
+        monteur: 'Raphaël Bailly',
+        maquillage: 'Eleonora Covalet',
+        regisseur: 'Alex Birot',
+        thumbnail: '/images/nikon-mamie-thumb.jpg',
+        status: 'En post-production',
+        images: [],
+        description: 'Court-métrage pour le Nikon Film Festival, l\'histoire la plus personnelle de Virginie Courteille. Tourné en trois jours dans une maison de Corbeil-Essonnes, avec une lumière pilotée au pupitre.',
+        specs: {
+          format: 'Court-métrage (Nikon Film Festival)',
+          duree: '2min20',
+          jours: '3 jours',
+          tournage: 'Octobre 2026',
+          lieu: 'Corbeil-Essonnes (Essonne)',
+          particularite: 'Format 4/3, soleil tourné sous la pluie et pluie tournée au soleil',
+        },
       },
       {
         id: 'nikon-vivi',

@@ -1222,6 +1222,12 @@ export const projectsData = {
         couvertureTuile: true,
         status: 'En post-production',
         images: ['/images/verite_studio.jpg'], // photo de tournage (clap)
+        // Photos de tournage tirées de la bibliothèque Photos (export de Théo), redressées et cadrées pour la grille
+        plateau: {
+          titre: 'Sur le plateau',
+          photos: Array.from({ length: 10 }, (_, i) => `/images/verite-studio-plateau/verite-plateau-${i + 1}.jpg`),
+          entieres: [5, 6, 9], // portraits : non recadrés à l'agrandissement
+        },
         // Synopsis d'après la page de financement participatif (Proarti)
         description: 'Film de La Fémis écrit et réalisé par Khadija Sy. Une mère et son fils tombent, sans le savoir, dans le piège de YouTubeurs. Quand la caméra cachée est dévoilée sur les réseaux, c\'est leur relation qui vacille.',
         specs: {

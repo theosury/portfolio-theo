@@ -203,7 +203,7 @@ export const projectsData = {
           // Expérimentations du réal (Insta) d'abord, puis les plans du clip
           videos: [
             ...[1, 2, 3, 4].map((n) => `/videos/ziak/ziak-insta-${n}`),
-            ...[2, 1, 3, 4, 5].map((n) => `/videos/ziak/ziak-${n}`),
+            ...[1, 3, 4, 5].map((n) => `/videos/ziak/ziak-${n}`), // ziak-2 retiré : même gros plan que ziak-insta-4
           ],
         },
         description: 'Clip tourné au Studio Kremlin pour le morceau Feng Shui (prod. Focus Beatz & JY). Dispositif studio construit autour d\'un travelling circulaire, avec une lumière entièrement pilotée au pupitre.',

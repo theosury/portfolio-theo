@@ -148,6 +148,11 @@ export const projectsData = {
           { id: 'jcBrf4wYUFU', title: 'La salle de bains d\'Hervé' },
           { id: 'VTrNGDpIBoo', title: 'L\'aménagement des combles par Alex' },
         ],
+        // Photos de tournage tirées de la bibliothèque Photos, redressées et cadrées pour la grille
+        plateau: {
+          titre: 'Sur le plateau',
+          photos: Array.from({ length: 3 }, (_, i) => `/images/tecnomat-plateau/tecnomat-plateau-${i + 1}.jpg`),
+        },
         description: 'Deux films TV pour l\'enseigne de matériaux Tecnomat, diffusés en septembre 2026 et tournés en studio en Belgique. Deux décors montés sur le plateau : une salle de bain et des combles aménagés en chambre d\'enfant.',
         specs: {
           format: 'Publicité',
@@ -205,6 +210,11 @@ export const projectsData = {
             ...[1, 2, 3, 4].map((n) => `/videos/ziak/ziak-insta-${n}`),
             ...[1, 3, 4, 5].map((n) => `/videos/ziak/ziak-${n}`), // ziak-2 retiré : même gros plan que ziak-insta-4
           ],
+        },
+        // Photos de tournage tirées de la bibliothèque Photos, redressées et cadrées pour la grille
+        plateau: {
+          titre: 'Sur le plateau',
+          photos: Array.from({ length: 6 }, (_, i) => `/images/ziak-plateau/ziak-plateau-${i + 1}.jpg`),
         },
         description: 'Clip tourné au Studio Kremlin pour le morceau Feng Shui (prod. Focus Beatz & JY). Dispositif studio construit autour d\'un travelling circulaire, avec une lumière entièrement pilotée au pupitre.',
         specs: {
@@ -384,6 +394,11 @@ export const projectsData = {
         thumbnail: '/images/bureau-du-karma-thumb.jpg',
         images: [],
         videoFile: '/videos/bureau-du-karma.mp4',
+        // Photos de tournage tirées de la bibliothèque Photos, redressées et cadrées pour la grille
+        plateau: {
+          titre: 'Sur le plateau',
+          photos: Array.from({ length: 3 }, (_, i) => `/images/bureau-du-karma-plateau/karma-plateau-${i + 1}.jpg`),
+        },
         description: 'Court-métrage d\'une minute réalisé pour le festival 1 minute 1 court, où il a été diffusé sous le numéro 35. Dans un bureau administratif d\'un autre âge, on tamponne les sentences karmiques.\n\nPrix du scénario au festival 1 minute 1 court.',
         specs: {
           format: 'Court-métrage (festival 1 minute 1 court)',
@@ -474,6 +489,11 @@ export const projectsData = {
             title: 'Mode Mum & Kid'
           }
         ],
+        // Photos de tournage tirées de la bibliothèque Photos, redressées et cadrées pour la grille
+        plateau: {
+          titre: 'Sur le plateau',
+          photos: Array.from({ length: 4 }, (_, i) => `/images/mode-kids-plateau/mode-kids-plateau-${i + 1}.jpg`),
+        },
         description: 'Deux films publicitaires tournés en studio pour valoriser des collections de mode enfant. Le premier place les enfants dans les rôles de l\'équipe technique (réalisateur, cadreur, styliste) et fait du tournage lui-même le décor. Le second met en scène la relation parent-enfant sur fonds colorés.',
         specs: {
           format: 'Publicité (2 films)',
@@ -563,6 +583,11 @@ export const projectsData = {
         stylisme: 'Eliette Pessemier',
         thumbnail: '/images/i-have-enough-thumb.jpg',
         images: [],
+        // Photos de tournage tirées de la bibliothèque Photos, redressées et cadrées pour la grille
+        plateau: {
+          titre: 'Sur le plateau',
+          photos: Array.from({ length: 6 }, (_, i) => `/images/the-right-choice-plateau/the-right-choice-plateau-${i + 1}.jpg`),
+        },
         description: 'Clip de meysi, produit par l\'association Stuzka (tourné sous le titre de travail « I Have Enough »). Tunnel, hangar et piste d\'aviation dans la brume : fumigènes et pyrotechnie.',
         specs: {
           format: 'Clip',
@@ -722,6 +747,11 @@ export const projectsData = {
         thumbnail: '/images/vagues-thumb.jpg',
         images: [],
         youtubeId: 'BC1k5pwd-_8',
+        // Photos de tournage tirées de la bibliothèque Photos, redressées et cadrées pour la grille
+        plateau: {
+          titre: 'Sur le plateau',
+          photos: Array.from({ length: 1 }, (_, i) => `/images/vagues-plateau/vagues-plateau-${i + 1}.jpg`),
+        },
         description: 'Pablo est un gitan qui vit seul près de la mer. Ce lieu est devenu son refuge depuis ses 19 ans, âge auquel il est tombé amoureux de son unique amour, Alice, avant de la perdre tragiquement cette même année. Forcé de quitter le seul endroit où il a vu son bonheur, il replonge dans ses souvenirs comme pour plonger avec Alice, la retrouver, quitte à ne plus en émerger.',
         synopsis: 'Deux époques se confrontent : un présent sombre et désaturé face à un passé chaud aux couleurs vives. Tournage en Bretagne avec Easyrig pour suivre les mouvements des personnages sur la plage. Plans dynamiques et sensoriels pour traduire la mémoire de Pablo.',
         specs: {
@@ -775,6 +805,11 @@ export const projectsData = {
         maquillage: 'Claire Villard',
         vfx: 'Jonas Brisé',
         sfxArtifices: 'Mehdi Hamza',
+        // Photos de tournage tirées de la bibliothèque Photos, redressées et cadrées pour la grille
+        plateau: {
+          titre: 'Sur le plateau',
+          photos: Array.from({ length: 7 }, (_, i) => `/images/casse-cest-casse-plateau/casse-plateau-${i + 1}.jpg`),
+        },
         description: 'Clip tourné au Studio Kremlin à Ivry-sur-Seine.\n\nRéal : Romain Habousha\nChef-opérateur : Aïlé Mandé\nChef électricien : Maxime Chastres',
         thumbnail: '/images/casse-cest-casse-thumb.jpg',
         images: [],
@@ -1213,7 +1248,7 @@ export const projectsData = {
         status: 'En post-production',
         plateau: {
           titre: 'Sur le plateau',
-          photos: [2, 1, 4].map((n) => `/images/azincourt-plateau/azincourt-plateau-${n}.jpg`), // 2400 px
+          photos: Array.from({ length: 12 }, (_, i) => `/images/azincourt-tournage/azincourt-tournage-${i + 1}.jpg`), // camp, forêt, nuit : redressées et cadrées pour la grille
         },
         images: [],
         specs: {

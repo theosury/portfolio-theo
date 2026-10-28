@@ -833,7 +833,7 @@ export const projectsData = {
         },
         status: 'En post-production',
         images: [],
-        description: 'Marcus s\'interpose quand deux hommes s\'en prennent à Hedda à la sortie d\'un club.\n\nCourt-métrage tourné aux studios de la Montjoie, dans des décors construits pour le film. Trois jours de prélight sur une grosse installation au grill : une boîte à lumière immense et des lyres automatiques Proteus Maximus, pilotées par un pupitreur.',
+        description: 'Court-métrage tourné aux studios de la Montjoie, dans des décors construits pour le film. Trois jours de prélight sur une grosse installation au grill : une boîte à lumière immense et des lyres automatiques Proteus Maximus, pilotées par un pupitreur.',
         specs: {
           format: 'Court-métrage fiction',
           jours: '3 jours de prélight (13, 14 et 15 octobre)',
@@ -873,7 +873,7 @@ export const projectsData = {
         thumbnail: '/images/nikon-mamie-thumb.jpg',
         status: 'En post-production',
         images: [],
-        description: 'Court-métrage pour le Nikon Film Festival, l\'histoire la plus personnelle de Virginie Courteille. Tourné en trois jours dans une maison de Corbeil-Essonnes, avec une lumière pilotée au pupitre.',
+        description: 'Court-métrage pour le Nikon Film Festival, tourné en trois jours dans une maison de Corbeil-Essonnes, avec une lumière pilotée au pupitre.',
         specs: {
           format: 'Court-métrage (Nikon Film Festival)',
           duree: '2min20',

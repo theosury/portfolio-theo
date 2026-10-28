@@ -613,7 +613,13 @@ export const projectsData = {
         chefOp: 'Nicolas Le Gal',
         cadreur: 'Théo Sury',
         assistantCam: 'Théo Sury',
-        thumbnail: '/images/placeholder-thumb.jpg',
+        thumbnail: '/images/lettre-a-lille-thumb.jpg',
+        couvertureTuile: true,
+        // Seule photo du tournage : la caméra à la table France 3 du dîner-spectacle au Casino Barrière
+        plateau: {
+          titre: 'Sur le plateau',
+          photos: ['/images/lettre-a-lille-plateau/lettre-a-lille-plateau-1.jpg'],
+        },
         status: 'En post-production',
         images: [],
         description: 'Documentaire tourné à Lille et dans la métropole : chez une habitante, le long de la Deûle, au marché de Wazemmes, dans une friperie et au Casino Barrière lors d\'un dîner-spectacle.',

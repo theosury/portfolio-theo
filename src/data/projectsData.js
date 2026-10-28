@@ -81,7 +81,7 @@ export const projetsSecondaires = [
   'une-couronne',        // auxiliaire de régie, ESEC 2022 (extraits sur sa fiche)
   'bbc',
   'pub-vs-ia',           // pas de film public (festivals) : photos de tournage
-  'marcus',              // prélight électro (3 jours), tournage 14 oct 2026 à la Montjoie
+  'marcus',              // prélight électro du 13 au 15 oct 2026 à la Montjoie
   'nikon-mamie',         // Nikon de Vivi tourné du 23 au 25 oct 2026, en montage en novembre
   'nikon-vivi',          // « Mona » = titre du scénario, titre final à confirmer ; film pas encore retrouvé  // Sortis de la grande grille (audit du 11 oct 2026) : projets plus petits
   // ou poste sans rapport avec la lumière et l'image
@@ -831,6 +831,7 @@ export const projectsData = {
         description: 'Marcus s\'interpose quand deux hommes s\'en prennent à Hedda à la sortie d\'un club.\n\nCourt-métrage tourné aux studios de la Montjoie, dans des décors construits pour le film. Trois jours de prélight sur une grosse installation au grill : une boîte à lumière immense et des lyres automatiques Proteus Maximus, pilotées par un pupitreur.',
         specs: {
           format: 'Court-métrage fiction',
+          jours: '3 jours de prélight (13, 14 et 15 octobre)',
           tournage: 'Octobre 2026',
           lieu: 'Studios de la Montjoie, Saint-Denis',
           lumiere: 'Boîte à lumière géante au grill, lyres Proteus Maximus',

@@ -860,7 +860,7 @@ export const projectsData = {
         assistantReal: 'Marine Houé',
         script: 'Souleym Minn',
         chefOp: 'Léo Aguiton',
-        assistantCam: 'Antoine Vérité & Isaac Camille-Jean',
+        assistantCam: 'Antoine Vérité & Isaac Gorin',
         photo: 'Léo-Paul Pezza',
         chefElectro: 'Abel Duflo',
         electros: 'Théo Sury & Guilhem Leroux',

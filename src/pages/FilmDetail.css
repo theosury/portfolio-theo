@@ -301,6 +301,10 @@
   margin-bottom: var(--spacing-lg);
 }
 
+.film-detail__thumbnails--bandeau {
+  grid-template-columns: repeat(4, 1fr);
+}
+
 .film-detail__thumbnail {
   position: relative;
   cursor: pointer;
@@ -775,6 +779,10 @@
   .film-detail__thumbnails {
     grid-template-columns: repeat(auto-fill, minmax(100px, 1fr));
     gap: 0.75rem;
+  }
+
+  .film-detail__thumbnails--bandeau {
+    grid-template-columns: repeat(2, 1fr);
   }
 
   .film-detail__title {

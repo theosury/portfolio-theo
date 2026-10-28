@@ -304,6 +304,19 @@ const FilmDetail = () => {
                   </div>
                 )}
               </>
+            ) : hasImages && project.imagesEnVignettes ? (
+              // Images trop petites pour la pleine largeur (captures Instagram) : bandeau de vignettes
+              <div className="film-detail__thumbnails film-detail__thumbnails--bandeau">
+                {project.images.map((image, index) => (
+                  <div
+                    key={index}
+                    className="film-detail__thumbnail"
+                    onClick={() => openImageModal(index)}
+                  >
+                    <img src={image} alt={`${project.title} - Photo ${index + 1}`} />
+                  </div>
+                ))}
+              </div>
             ) : hasImages ? (
               <div className="film-detail__gallery">
                 <img 

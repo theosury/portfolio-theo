@@ -398,7 +398,7 @@ export const projectsData = {
         // Photos de tournage tirées de la bibliothèque Photos, redressées et cadrées pour la grille
         plateau: {
           titre: 'Sur le plateau',
-          photos: Array.from({ length: 3 }, (_, i) => `/images/bureau-du-karma-plateau/karma-plateau-${i + 1}.jpg`),
+          photos: Array.from({ length: 6 }, (_, i) => `/images/bureau-du-karma-plateau/karma-plateau-${i + 1}.jpg`),
         },
         description: 'Court-métrage d\'une minute réalisé pour le festival 1 minute 1 court, où il a été diffusé sous le numéro 35. Dans un bureau administratif d\'un autre âge, on tamponne les sentences karmiques.\n\nPrix du scénario au festival 1 minute 1 court.',
         specs: {
@@ -852,7 +852,8 @@ export const projectsData = {
         vfx: 'Ewan Ros',
         etalonneur: 'Christophe Chemin',
         // Le film n'est pas diffusé publiquement pendant les festivals : images partagées par la prod sur Instagram
-        images: [1, 2, 3, 4, 5].map((n) => `/images/pub-vs-ia/film-${n}.jpg`),
+        images: [1, 2, 3, 5].map((n) => `/images/pub-vs-ia/film-${n}.jpg`),
+        imagesEnVignettes: true, // 1080 px : floues en pleine largeur
         plateau: {
           titre: 'Sur le plateau',
           credit: 'Théo Sury',
@@ -1082,13 +1083,13 @@ export const projectsData = {
         assistantSon: 'Louise Bride',
         deco: 'Mila Martineau & Jules Coquet',
         thumbnail: '/images/undetoi-thumb.jpg',
-        couvertureTuile: '/images/undetoi-plateau/undetoi-plateau-3.jpg', // la vignette est trop sombre sous le voile de la tuile
+        couvertureTuile: '/images/undetoi-plateau/undetoi-plateau-2.jpg', // la vignette est trop sombre sous le voile de la tuile
         status: 'En post-production',
         images: [],
         // Photos de tournage tirées de la bibliothèque Photos, redressées et cadrées pour la grille
         plateau: {
           titre: 'Sur le plateau',
-          photos: Array.from({ length: 6 }, (_, i) => `/images/undetoi-plateau/undetoi-plateau-${i + 1}.jpg`),
+          photos: Array.from({ length: 4 }, (_, i) => `/images/undetoi-plateau/undetoi-plateau-${i + 1}.jpg`),
         },
         specs: {
           format: 'Court-métrage fiction',

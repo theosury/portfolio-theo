@@ -882,7 +882,7 @@ export const projectsData = {
           lieu: 'Corbeil-Essonnes (Essonne)',
           camera: 'Sony FX6',
           lumiere: 'Sas en 12x12\'',
-          particularite: 'Format 4/3, soleil tourné sous la pluie et pluie tournée au soleil',
+          particularite: 'Format 4/3',
         },
       },
       {

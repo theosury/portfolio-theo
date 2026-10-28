@@ -826,6 +826,7 @@ export const projectsData = {
         script: 'Julia Nogueira',
         electros: 'Simon Clarisse, Diego Galuteau, Clothilde Barbier, Julie Puel, Théo Frachon, Arthur Flavini, Théo Sury & Jade Sinturet-Cuinier (prélight)',
         thumbnail: '/images/marcus-thumb.jpg',
+        couvertureTuile: true, // image en fond de sa tuile dans « Voir les autres projets »
         // Photos de prélight (13 au 15 octobre 2026), redressées et cadrées pour la grille
         plateau: {
           titre: 'Sur le plateau',
@@ -871,6 +872,7 @@ export const projectsData = {
         maquillage: 'Eleonora Covalet',
         regisseur: 'Alex Birot',
         thumbnail: '/images/nikon-mamie-thumb.jpg',
+        couvertureTuile: true, // image en fond de sa tuile dans « Voir les autres projets »
         status: 'En post-production',
         images: [],
         description: 'Court-métrage pour le Nikon Film Festival, tourné en trois jours dans une maison de Corbeil-Essonnes, avec une lumière pilotée au pupitre.',

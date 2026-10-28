@@ -1168,7 +1168,7 @@ export const projectsData = {
         // Photos de tournage tirées de la bibliothèque Photos, redressées et cadrées pour la grille
         plateau: {
           titre: 'Sur le plateau',
-          photos: Array.from({ length: 7 }, (_, i) => `/images/bbc-plateau/bbc-plateau-${i + 1}.jpg`),
+          photos: Array.from({ length: 6 }, (_, i) => `/images/bbc-plateau/bbc-plateau-${i + 1}.jpg`),
         },
         description: 'Xavier et Awa rentrent chez eux et croisent Madame Kogo dans l\'ascenseur. Elle apprend qu\'Awa va avoir une fille et confronte Xavier sur son passé, lui indiquant qu\'il doit procéder à un processus de réparation avant de devenir père.',
         specs: {

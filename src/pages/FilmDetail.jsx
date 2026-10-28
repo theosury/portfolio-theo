@@ -304,18 +304,11 @@ const FilmDetail = () => {
                   </div>
                 )}
               </>
-            ) : hasImages && project.imagesEnVignettes ? (
-              // Images trop petites pour la pleine largeur (captures Instagram) : bandeau de vignettes
-              <div className="film-detail__thumbnails film-detail__thumbnails--bandeau">
-                {project.images.map((image, index) => (
-                  <div
-                    key={index}
-                    className="film-detail__thumbnail"
-                    onClick={() => openImageModal(index)}
-                  >
-                    <img src={image} alt={`${project.title} - Photo ${index + 1}`} />
-                  </div>
-                ))}
+            ) : hasImages && project.photoEnTete ? (
+              // Images du film trop petites pour la pleine largeur (captures Instagram) :
+              // une photo de plateau en tête, les images du film en grille sous le texte
+              <div className="film-detail__no-media">
+                <img src={project.photoEnTete} alt={project.title} />
               </div>
             ) : hasImages ? (
               <div className="film-detail__gallery">
@@ -375,6 +368,19 @@ const FilmDetail = () => {
                     extraits={{ videos: boucles }}
                     ratio={project.boucleRatio}
                   />
+                </div>
+              )}
+
+              {project.photoEnTete && hasImages && (
+                <div className="film-detail__extraits">
+                  <h3>Images du film</h3>
+                  <div className="film-detail__images-film">
+                    {project.images.map((image, index) => (
+                      <button key={image} onClick={() => openImageModal(index)} aria-label={`Agrandir l'image ${index + 1}`}>
+                        <img src={image} alt={`${project.title} - Photo ${index + 1}`} loading="lazy" />
+                      </button>
+                    ))}
+                  </div>
                 </div>
               )}
 

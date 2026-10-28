@@ -301,10 +301,6 @@
   margin-bottom: var(--spacing-lg);
 }
 
-.film-detail__thumbnails--bandeau {
-  grid-template-columns: repeat(4, 1fr);
-}
-
 .film-detail__thumbnail {
   position: relative;
   cursor: pointer;
@@ -781,10 +777,6 @@
     gap: 0.75rem;
   }
 
-  .film-detail__thumbnails--bandeau {
-    grid-template-columns: repeat(2, 1fr);
-  }
-
   .film-detail__title {
     font-size: 1.8rem;
   }
@@ -886,6 +878,28 @@
 
 .film-detail__plateau-grid button:hover img {
   transform: scale(1.03);
+}
+
+.film-detail__images-film {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 0.75rem;
+}
+
+.film-detail__images-film button {
+  padding: 0;
+  border: none;
+  background: #000;
+  border-radius: 6px;
+  overflow: hidden;
+  cursor: zoom-in;
+}
+
+.film-detail__images-film img {
+  display: block;
+  width: 100%;
+  aspect-ratio: 16 / 9;
+  object-fit: cover;
 }
 
 @media (max-width: 600px) {

@@ -854,11 +854,11 @@ export const projectsData = {
         etalonneur: 'Christophe Chemin',
         // Le film n'est pas diffusé publiquement pendant les festivals : images partagées par la prod sur Instagram
         images: [1, 2, 3, 5].map((n) => `/images/pub-vs-ia/film-${n}.jpg`),
-        imagesEnVignettes: true, // 1080 px : floues en pleine largeur
+        photoEnTete: '/images/pub-vs-ia/plateau-1.jpg', // images du film en 1080 px : floues en pleine largeur, donc en grille
         plateau: {
           titre: 'Sur le plateau',
           credit: 'Théo Sury',
-          photos: [1, 2, 3].map((n) => `/images/pub-vs-ia/plateau-${n}.jpg`),
+          photos: ['/images/pub-vs-ia/plateau-2.jpg'],
         },
         thumbnail: '/images/pub-vs-ia-thumb.jpg',
         couvertureTuile: true,

@@ -876,6 +876,11 @@ export const projectsData = {
         couvertureTuile: true, // image en fond de sa tuile dans « Voir les autres projets »
         status: 'En post-production',
         images: [],
+        // Photos de tournage (dossier PHOTO VIVI), sans les portraits d'équipe
+        plateau: {
+          titre: 'Sur le plateau',
+          photos: Array.from({ length: 9 }, (_, i) => `/images/nikon-mamie-plateau/mamie-plateau-${i + 1}.jpg`),
+        },
         description: 'Court-métrage pour le Nikon Film Festival, tourné en trois jours dans une maison de Corbeil-Essonnes, avec une lumière pilotée au pupitre.',
         specs: {
           format: 'Court-métrage (Nikon Film Festival)',

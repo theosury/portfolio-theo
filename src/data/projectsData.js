@@ -239,9 +239,15 @@ export const projectsData = {
         photo: 'Elliott Biget',
         regisseur: 'Aliénor Tellier',
         assistRegie: 'Oscar Biget & Yann Machet',
-        thumbnail: '/images/placeholder-thumb.jpg',
+        thumbnail: '/images/nothing-personal-thumb.jpg',
+        couvertureTuile: true,
         status: 'En post-production',
         images: [],
+        // Photos de tournage tirées de la bibliothèque Photos, redressées et cadrées pour la grille
+        plateau: {
+          titre: 'Sur le plateau',
+          photos: Array.from({ length: 3 }, (_, i) => `/images/nothing-personal-plateau/nothing-personal-plateau-${i + 1}.jpg`),
+        },
         description: 'Deux hommes de main, Micka et Vincent, font halte près d\'un centre équestre abandonné avec un otage dans le coffre. Micka, très fier de sa veste en cuir, a surtout envie de discuter.\n\nCourt-métrage étudiant tourné dans le Nord.',
         specs: {
           format: 'Court-métrage fiction',
@@ -278,6 +284,11 @@ export const projectsData = {
         thumbnail: '/images/moutarderie-fallot-thumb.webp',
         status: 'En post-production',
         images: [],
+        // Photos de tournage tirées de la bibliothèque Photos, redressées et cadrées pour la grille
+        plateau: {
+          titre: 'Sur le plateau',
+          photos: Array.from({ length: 6 }, (_, i) => `/images/moutarderie-plateau/moutarderie-plateau-${i + 1}.jpg`),
+        },
         description: 'Docu-fiction en réalité virtuelle commandée par la Moutarderie Fallot, qui retrace la fabrication traditionnelle de la moutarde. Tourné intégralement sur fond vert en studio, en caméra 360, sous la supervision VR de Michael Kolchesky. Décors reconstitués en 3D : atelier de fabrication, grenier et atelier de conditionnement.',
         specs: {
           format: 'Docu-fiction VR 360',
@@ -319,9 +330,15 @@ export const projectsData = {
         deco: 'Anaïs Bordessoules',
         maquillage: 'Audrey Brugnerotto',
         regisseur: 'Quentin Dissard',
-        thumbnail: '/images/placeholder-thumb.jpg',
+        thumbnail: '/images/cache-toi-thumb.jpg',
+        couvertureTuile: true,
         status: 'En post-production',
         images: [],
+        // Photos de tournage tirées de la bibliothèque Photos, redressées et cadrées pour la grille
+        plateau: {
+          titre: 'Sur le plateau',
+          photos: Array.from({ length: 12 }, (_, i) => `/images/cache-toi-plateau/cache-toi-plateau-${i + 1}.jpg`),
+        },
         description: 'Court-métrage tourné à Vincennes et à Paris, en décors naturels : un appartement, une rue et un restaurant.',
         specs: {
           format: 'Court-métrage fiction',
@@ -985,6 +1002,11 @@ export const projectsData = {
         thumbnail: '/images/male-addict-thumb.jpg',
         status: 'En post-production',
         images: [],
+        // Photos de tournage tirées de la bibliothèque Photos, redressées et cadrées pour la grille
+        plateau: {
+          titre: 'Sur le plateau',
+          photos: Array.from({ length: 3 }, (_, i) => `/images/male-addict-plateau/male-addict-plateau-${i + 1}.jpg`),
+        },
         description: 'Triangle amoureux toxique entre Mathis, Thalia et Tom. Mathis et Thalia ont une liaison secrète alors que Thalia est en couple avec Tom, le meilleur ami de Mathis.',
         synopsis: 'L\'histoire explore la manipulation, la trahison et les conséquences d\'une relation destructrice entre trois jeunes adultes pris dans un jeu dangereux de désir et de mensonges.',
         specs: {
@@ -1018,6 +1040,11 @@ export const projectsData = {
         thumbnail: '/images/undetoi-thumb.jpg',
         status: 'En post-production',
         images: [],
+        // Photos de tournage tirées de la bibliothèque Photos, redressées et cadrées pour la grille
+        plateau: {
+          titre: 'Sur le plateau',
+          photos: Array.from({ length: 6 }, (_, i) => `/images/undetoi-plateau/undetoi-plateau-${i + 1}.jpg`),
+        },
         specs: {
           format: 'Court-métrage fiction',
           lieu: 'Appartement Parisien',
@@ -1088,6 +1115,11 @@ export const projectsData = {
         thumbnail: '/images/bbc-thumb.jpg',
         status: 'En post-production',
         images: [],
+        // Photos de tournage tirées de la bibliothèque Photos, redressées et cadrées pour la grille
+        plateau: {
+          titre: 'Sur le plateau',
+          photos: Array.from({ length: 3 }, (_, i) => `/images/bbc-plateau/bbc-plateau-${i + 1}.jpg`),
+        },
         description: 'Xavier et Awa rentrent chez eux et croisent Madame Kogo dans l\'ascenseur. Elle apprend qu\'Awa va avoir une fille et confronte Xavier sur son passé, lui indiquant qu\'il doit procéder à un processus de réparation avant de devenir père.',
         specs: {
           format: 'Court-métrage fiction',

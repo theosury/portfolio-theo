@@ -82,9 +82,13 @@ function Header() {
         {/* Navigation : chaque lien descend à sa section de la page unique */}
         <nav className={menuOpen ? 'active' : ''} aria-label="Navigation principale">
           {SECTIONS.map(({ id, label }) => (
-            <a key={id} href={`/${id}`} className={active === id ? 'active' : ''} onClick={aller(id)}>
-              {label}
-            </a>
+            <React.Fragment key={id}>
+              {/* Le calculateur est une page autonome (public/calculateur), juste avant Contact */}
+              {id === 'contact' && <a href="/calculateur/">Calculateur de rushs</a>}
+              <a href={`/${id}`} className={active === id ? 'active' : ''} onClick={aller(id)}>
+                {label}
+              </a>
+            </React.Fragment>
           ))}
         </nav>
       </div>

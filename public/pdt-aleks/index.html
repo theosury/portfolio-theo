@@ -113,9 +113,14 @@ body.dragging-on, body.dragging-on * { cursor: grabbing !important; user-select:
   .strip .ie, .strip .dn { display: none !important }
   .strip .set { border-right: 0; white-space: normal }
   .strip .act { border-top: 1px solid rgb(0 0 0 / .15) }
-  .strip.dej { grid-template-areas: "n set set ett" "act act act clk" }
+  .strip.dej, .strip.note { grid-template-areas: "n set set ett" "act act act clk" }
 }
 .addbar { padding: 0 8px 10px; display: flex; gap: 6px }
+.strip.note { background: #dfe7f5; grid-template-areas: "n set set set set ett clk act" }
+.strip.note .n { font-size: 14px; color: #3a4a6b }
+.strip.note .nt { width: 100%; padding: 3px 6px; border: 1px solid #9aa8c4; border-radius: 2px; background: #fff; color: #1b1e1a; font: 600 12.5px var(--cond) }
+.strip.note .rm { border: 0; background: none; color: #3a4a6b; text-decoration: underline; font: 500 11px var(--cond); cursor: pointer; padding: 0 }
+.addbar .addnote { border-color: #3a4a6b; color: #8fa3cc }
 .addbar button { border: 1px dashed var(--dej-ink); color: var(--dej-ink); background: transparent; border-radius: 3px; padding: 5px 10px; font: 700 12px var(--cond); letter-spacing: .06em; cursor: pointer }
 .tabs { display: flex; gap: 0; margin-bottom: 12px; border: 2px solid var(--ink); border-radius: 4px; width: fit-content; overflow: hidden }
 .tabs button { border: 0; border-right: 1px solid var(--ink); background: var(--surface); color: var(--ink); padding: 6px 16px; font: 700 13px var(--cond); letter-spacing: .06em; text-transform: uppercase; cursor: pointer }
@@ -352,7 +357,7 @@ const clockAt = (pat, add) => { const t = parseEtt((pat || "").replace(":", "h")
 const placeOf = s => state.strips[s.id] || {day: "pool", order: s.idx, ett: ""};
 function itemsOf(day) {
   const a = SEQ.filter(s => placeOf(s).day === day).map(s => ({kind: "seq", s, p: placeOf(s)}));
-  const b = Object.entries(state.breaks).filter(([, v]) => v.day === day).map(([id, v]) => ({kind: "dej", id, p: v}));
+  const b = Object.entries(state.breaks).filter(([, v]) => v.day === day).map(([id, v]) => ({kind: v.type === "note" ? "note" : "dej", id, p: v}));
   return a.concat(b).sort((x, y) => x.p.order - y.p.order);
 }
 
@@ -412,6 +417,15 @@ function stripEl(it, day, clock) {
       <div class="ett"><input type="text" id="ett-${id}" value="${esc(normEtt(it.p.ett || "1h"))}" aria-label="Durée de la pause" title="Durée"></div>
       <div class="clk">${clock}</div><div class="act"><button class="rm" type="button">retirer</button>${moves(id, day)}</div>`;
     e.querySelector(".rm").onclick = () => commit([["breaks/" + id, null]], "pause retirée");
+  } else if (it.kind === "note") {
+    // bande de note : texte libre + durée (installation, déplacement, changement de décor...)
+    e = el("div", "strip note");
+    e.innerHTML = `<div class="n">✎</div><div class="set"><input type="text" class="nt" id="nt-${id}" value="${esc(it.p.text || "")}" placeholder="Note (installation, déplacement, maquillage...)" maxlength="140" aria-label="Texte de la note"></div>
+      <div class="ett"><input type="text" id="ett-${id}" value="${esc(normEtt(it.p.ett))}" placeholder="0h00" aria-label="Durée de la note" title="Durée"></div>
+      <div class="clk">${clock}</div><div class="act"><button class="rm" type="button">retirer</button>${moves(id, day)}</div>`;
+    e.querySelector(".rm").onclick = () => commit([["breaks/" + id, null]], "note retirée");
+    const nt = e.querySelector(".nt");
+    nt.addEventListener("change", () => commit([["breaks/" + id, {...state.breaks[id], text: nt.value.trim()}]], "note"));
   } else {
     const s = it.s, dname = s.decor || "Décor ?";
     e = el("div", "strip " + (s.ie === "EXT" ? "ext" : s.ie ? "int" : "del") + (s.dn === "N" ? " nuit" : ""));
@@ -434,7 +448,7 @@ function stripEl(it, day, clock) {
   if (dub) dub.onclick = () => dupSeq(it.s);
   const scb = e.querySelector(".scb");
   if (scb) scb.onclick = () => { openSc.has(id) ? openSc.delete(id) : openSc.add(id); render(); };
-  const inp = e.querySelector("input");
+  const inp = e.querySelector(".ett input");
   inp.addEventListener("change", () => {
     const v = normEtt(inp.value);
     if (it.kind === "seq") commit([["strips/" + id, {...placeOf(it.s), ett: v}]], "ETT");
@@ -619,7 +633,7 @@ function colEl(day, label) {
       <div class="fields"><label>Date<input type="date" id="date-${day}" value="${esc(d.date || "")}"></label>
         <label>Lieu<input type="text" id="lieu-${day}" value="${esc(d.lieu || "")}" placeholder="Décor"></label>
         <label>PAT<input type="time" id="pat-${day}" value="${esc(d.pat || "")}"></label></div>
-      <div class="tot tt"><span>Tournage <b>${fmtMin(shoot)}</b></span><span>+ pauses <b>${fmtMin(pause)}</b></span><span>= journée <b class="${mins > 600 ? "over" : ""}">${fmtMin(mins)}</b></span>${d.pat ? `<span>PAT <b>${clockAt(d.pat, 0)}</b> → fin estimée <b>${end}</b></span>` : `<span class="over">PAT à remplir pour l'heure de fin</span>`}${noEtt ? `<span class="over">${noEtt} séq. sans ETT</span>` : ""}${bad ? '<span class="over">un ETT illisible</span>' : ""}${mins > 600 ? '<span class="over">plus de 10h</span>' : ""}</div>
+      <div class="tot tt"><span>Tournage <b>${fmtMin(shoot)}</b></span><span>+ pauses et notes <b>${fmtMin(pause)}</b></span><span>= journée <b class="${mins > 600 ? "over" : ""}">${fmtMin(mins)}</b></span>${d.pat ? `<span>PAT <b>${clockAt(d.pat, 0)}</b> → fin estimée <b>${end}</b></span>` : `<span class="over">PAT à remplir pour l'heure de fin</span>`}${noEtt ? `<span class="over">${noEtt} séq. sans ETT</span>` : ""}${bad ? '<span class="over">un ETT illisible</span>' : ""}${mins > 600 ? '<span class="over">plus de 10h</span>' : ""}</div>
       <div class="tot"><span>Pages <b>${eighths(h8)}</b></span><span>Comédiens ${cast.map(chip).join(" ") || "<b>aucun</b>"}</span></div>`;
     ["date", "lieu", "pat"].forEach(f => {
       const inp = head.querySelector(`#${f}-${day}`);
@@ -641,7 +655,13 @@ function colEl(day, label) {
   });
   col.append(list);
   if (isDay(day)) {
-    const add = el("div", "addbar", `<button type="button">+ Pause déjeuner</button>`);
+    const add = el("div", "addbar", `<button type="button">+ Pause déjeuner</button><button type="button" class="addnote">+ Note</button>`);
+    add.querySelector(".addnote").onclick = () => {
+      const id = "note" + Date.now().toString(36) + Math.random().toString(36).slice(2, 6);
+      const l = itemsOf(day);
+      commit([["breaks/" + id, {type: "note", text: "", day, order: orderBetween(l, l.length), ett: ""}]], "note ajoutée");
+      setTimeout(() => document.getElementById("nt-" + id)?.focus(), 0);
+    };
     add.querySelector("button").onclick = () => {
       const id = "dej" + Date.now().toString(36) + Math.random().toString(36).slice(2, 6);
       const l = itemsOf(day);
@@ -650,7 +670,7 @@ function colEl(day, label) {
     col.append(add);
     const d = state.days[day] || {};
     const dt = d.date ? new Date(d.date + "T12:00").toLocaleDateString("fr-FR", {weekday: "short", day: "numeric", month: "short"}) : "";
-    col.append(el("div", "eod", `<span>Fin du ${esc(label.toLowerCase())}${dt ? " / " + esc(dt) : ""}${d.pat ? " / fin estimée " + clockAt(d.pat, mins) : ""}</span><span>${eighths(h8)} p. / tournage ${fmtMin(shoot)} + pauses ${fmtMin(pause)} = ${fmtMin(mins)}</span>`));
+    col.append(el("div", "eod", `<span>Fin du ${esc(label.toLowerCase())}${dt ? " / " + esc(dt) : ""}${d.pat ? " / fin estimée " + clockAt(d.pat, mins) : ""}</span><span>${eighths(h8)} p. / tournage ${fmtMin(shoot)} + pauses et notes ${fmtMin(pause)} = ${fmtMin(mins)}</span>`));
   }
   return col;
 }
@@ -732,7 +752,8 @@ function exportCsv() {
     itemsOf(day).forEach((it, i) => {
       const clock = isDay(day) ? clockAt(d.pat, run) : "";
       const m = parseEtt(it.p.ett || (it.kind === "dej" ? "1h" : "")); if (!isNaN(m)) run += m;
-      if (it.kind === "dej") rows.push([label, d.date || "", i + 1, clock, "", "", "", "PAUSE DÉJEUNER", "", "", "", "", "", "", "", normEtt(it.p.ett || "1h")]);
+      if (it.kind === "note") rows.push([label, d.date || "", i + 1, clock, "", "", "", "NOTE", "", it.p.text || "", "", "", "", "", "", normEtt(it.p.ett)]);
+      else if (it.kind === "dej") rows.push([label, d.date || "", i + 1, clock, "", "", "", "PAUSE DÉJEUNER", "", "", "", "", "", "", "", normEtt(it.p.ett || "1h")]);
       else { const s = it.s; rows.push([label, isDay(day) ? d.date || "" : "", i + 1, clock, s.n, s.ie, s.dn, s.decor, s.prec, s.res, castOf(s).map(m => (m.num ? m.num + " - " : "") + m.name + (m.kind === "fig" ? " (fig.)" : "")).join(", "), s.extra, s.h8, s.pl, s.rep, normEtt(it.p.ett)]); }
     });
   });

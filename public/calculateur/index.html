@@ -394,6 +394,10 @@ body.no-calc .eqs, body.no-calc .eqs-sum, body.no-calc .calc { display: none; }
 .wf-skip { grid-column: 1 / -1; margin: 0; font-size: 13px; color: var(--muted); }
 .obs li { padding-left: 16px; position: relative; max-width: 95ch; }
 .obs li::before { content: "›"; position: absolute; left: 2px; color: var(--accent); }
+.cam-lede { margin: 6px 0 0; max-width: 60ch; color: var(--muted); font-size: 14px; line-height: 1.5; }
+.empty-cams { display: flex; flex-wrap: wrap; align-items: center; gap: 12px 16px; }
+.empty-cams > span { flex: 1 1 260px; }
+.tools [hidden], .tools[hidden] { display: none; }
 .empty { margin: 0; padding: 20px 24px; color: var(--muted); font-size: 14px; border-top: 1px solid var(--line); }
 .inp input[type=number] { -moz-appearance: textfield; appearance: textfield; }
 .inp input::-webkit-outer-spin-button, .inp input::-webkit-inner-spin-button { -webkit-appearance: none; margin: 0; }
@@ -474,7 +478,7 @@ footer.foot a:hover { color: var(--muted); }
   <header class="hero">
     <div>
       <h1>Calculateur de rushs</h1>
-      <p class="lede">Volume, cartes et stockage par caméra ou enregistreur externe. Débits constructeur.</p>
+      <p class="lede">Volume, cartes et stockage par caméra ou enregistreur externe, et comparaison de caméras et de codecs. Débits constructeur.</p>
     </div>
     <div class="tools">
       <label class="switch" title="Équations et détail du calcul"><input type="checkbox" id="p-calc"> Afficher les calculs</label>
@@ -563,11 +567,13 @@ footer.foot a:hover { color: var(--muted); }
   <section class="panel" aria-labelledby="t-compare">
     <div class="params" style="padding-bottom:20px">
       <div class="compare-head">
-        <h2 id="t-compare">Caméras et enregistreurs</h2>
-        <div class="tools">
-          <label class="switch" title="Additionne les volumes des lignes"><input type="checkbox" id="p-sum"> Caméras simultanées</label>
-          <button class="btn ghost" id="add-spot" title="Ralentis, drone, caméra B sur quelques plans">Caméra ponctuelle</button>
-          <button class="btn ghost" id="add">Ajouter une caméra</button>
+        <div><h2 id="t-compare">Caméras et enregistreurs</h2>
+        <p class="cam-lede">Une ligne par caméra ou par réglage. Plusieurs lignes se comparent côte à côte&nbsp;: deux caméras, deux codecs, deux cadences. Si elles tournent ensemble, cocher « Caméras simultanées » pour les additionner.</p></div>
+        <div class="tools" id="cam-tools">
+          <label class="switch" id="sum-wrap" title="Additionne les volumes des lignes"><input type="checkbox" id="p-sum"> Caméras simultanées</label>
+          <button class="linkish" id="add-spot" title="Ralentis, drone, caméra B sur quelques plans">Caméra ponctuelle</button>
+          <button class="btn ghost" id="add-dup" title="Copie la dernière ligne : il ne reste qu'à changer la caméra, le codec ou la cadence">Comparer un autre réglage</button>
+          <button class="btn" id="add">Ajouter une caméra</button>
         </div>
       </div>
       <ul class="obs" id="c-notes"></ul>
@@ -1564,7 +1570,7 @@ function renderBrief() {
 }
 function renderWorkflows() {
   const box = document.getElementById('workflows'), us = projectUnits();
-  if (!us.length || us.every(x => x.c.marg == null)) { box.innerHTML = `<p class="empty" style="border:0;padding:0">${us.length ? 'Renseigner le tournage' : 'Ajouter une caméra'} pour proposer des workflows.</p>`; return; }
+  if (!us.length || us.every(x => x.c.marg == null)) { box.innerHTML = `<p class="empty" style="border:0;padding:0">${us.length ? 'Renseigner le tournage' : '<button class="linkish" data-add>Ajouter une caméra</button>'} pour proposer des workflows.</p>`; return; }
   const cur = Object.keys(WORKFLOWS).find(k => { const d = WORKFLOWS[k].dests; return d.length === S.dests.length && d.every((t, i) => S.dests[i].type === t); });
   // Le workflow retenu, s'il ne correspond à aucune proposition, est comparé à côté
   const list = [...(!cur && S.dests.length ? [['mine', { label: 'Ton workflow', why: 'Workflow retenu plus bas, avec tes disques et ta liaison.' }]] : []), ...Object.entries(WORKFLOWS)];
@@ -1632,7 +1638,7 @@ function renderRecos() {
   const base = S.rows[S.recoRow];
   const box = document.getElementById('recos'), ins = document.getElementById('opt-insight');
   ins.hidden = true;
-  if (!base) { box.innerHTML = '<p class="empty" style="border:0;padding:0">Ajouter une caméra pour comparer les codecs.</p>'; return; }
+  if (!base) { box.innerHTML = '<p class="empty" style="border:0;padding:0"><button class="linkish" data-add>Ajouter une caméra</button> pour comparer les codecs.</p>'; return; }
   const items = recoItems(base).map(x => ({ ...x, c: compute(x.r) }));
   const max = Math.max(...items.map(x => x.c.gbh));
   // Pour chaque codec, chaque workflow : coût des disques et copie du soir
@@ -1710,7 +1716,7 @@ function renderPlans() {
     return `<article class="plan pool"><div class="plan-head"><div class="plan-title"><strong>Cartes en commun · ${esc(G.k)}</strong><span>${esc(names)}</span></div>${nTot != null ? `<span class="pill pill-${nTot >= G.pool ? 'ok' : nTot === G.pool - 1 ? 'warn' : 'bad'}">${nTot >= G.pool ? 'Confortable' : nTot === G.pool - 1 ? 'Juste' : 'Pas assez'}</span>` : ''}</div>
       <p class="plan-text">Prévoir <strong>${G.pool} cartes</strong> pour l'ensemble, au lieu de ${G.sep} si chaque caméra avait les siennes : une seule carte de secours pour le groupe. ${G.ps.map((p, j) => `${esc(camById(G.g[j].cam).name)} : ${p.rec.k - 1} ${p.rec.how === 'soir' ? 'pour la journée' : p.rec.how === 'midi' ? 'avec une copie à la pause' : 'en rotation'}`).join(', ')}. ${verdict}</p></article>`;
   }).join('');
-  document.getElementById('plans').innerHTML = !rows.length ? '<p class="empty" style="border:0;padding:0">Ajouter une caméra pour dimensionner les cartes.</p>' : poolHTML + rows.map(([r, i]) => {
+  document.getElementById('plans').innerHTML = !rows.length ? '<p class="empty" style="border:0;padding:0"><button class="linkish" data-add>Ajouter une caméra</button> pour dimensionner les cartes.</p>' : poolHTML + rows.map(([r, i]) => {
     const p = plan(r), cam = p.cam;
     const media = r.media === 'custom' ? `${r.custom} Go` : cam.media[r.media][0];
     const head = `<div class="plan-head">
@@ -1738,7 +1744,11 @@ function render(focus) {
   S.copies = S.dests.length;
   renderDests();
   S.rows.filter(isSet).forEach(r => { normalize(r); if (r.rec) normalizeRec(r); });
-  document.getElementById('rows').innerHTML = S.rows.length ? S.rows.map(rowHTML).join('') : '<p class="empty">Aucune caméra. Ajouter une caméra pour commencer, ou <button class="linkish" id="load-example">voir un exemple</button> : court métrage mesuré, Alexa Mini en ProRes 4444, 5 jours.</p>';
+  document.getElementById('rows').innerHTML = S.rows.length ? S.rows.map(rowHTML).join('') : '<div class="empty empty-cams"><button class="btn" data-add>Ajouter une caméra</button><button class="btn ghost" data-add="spot" title="Ralentis, drone, caméra B sur quelques plans">Caméra ponctuelle</button><span>ou <button class="linkish" id="load-example">voir un exemple</button> : court métrage mesuré, Alexa Mini en ProRes 4444, 5 jours.</span></div>';
+  document.getElementById('cam-tools').hidden = !S.rows.length;
+  document.getElementById('sum-wrap').hidden = S.rows.length < 2;
+  // Un seul bouton beige à l'écran : l'export ne l'est qu'une fois une caméra choisie
+  document.getElementById('export-pdf').classList.toggle('ghost', !validRows().length);
   document.getElementById('c-notes').innerHTML = camerasNotes().map(n => `<li>${esc(n)}</li>`).join('');
 
   const foot = document.getElementById('foot');
@@ -1880,14 +1890,20 @@ portSel.innerHTML = Object.entries(PORTS).map(([k, v]) => `<option value="${k}">
 portSel.addEventListener('change', () => { S.port = portSel.value; render('p-port'); });
 document.getElementById('p-ports').addEventListener('input', e => { const v = parseInt(e.target.value, 10); S.ports = v > 0 ? v : null; render('p-ports'); });
 document.getElementById('p-verify').addEventListener('change', e => { S.verify = e.target.value === 'oui'; render('p-verify'); });
-document.getElementById('add').addEventListener('click', () => {
-  S.rows.push({ cam: '' });
+// Ajout d'une caméra depuis l'en-tête, l'état vide ou les renvois des blocs du bas
+const addRow = spot => {
+  S.rows.push(spot ? { cam: '', spot: { note: '', min: null, days: null } } : { cam: '' });
   render(`r${S.rows.length - 1}-cam`);
-});
-document.getElementById('add-spot').addEventListener('click', () => {
-  S.rows.push({ cam: '', spot: { note: '', min: null, days: null } });
+  document.getElementById(`r${S.rows.length - 1}-cam`)?.scrollIntoView({ block: 'center', behavior: 'smooth' });
+};
+document.getElementById('add').addEventListener('click', () => addRow(false));
+document.getElementById('add-dup').addEventListener('click', () => {
+  S.rows.push(structuredClone(S.rows[S.rows.length - 1]));
   render(`r${S.rows.length - 1}-cam`);
+  document.getElementById(`r${S.rows.length - 1}-cam`)?.scrollIntoView({ block: 'center', behavior: 'smooth' });
 });
+document.getElementById('add-spot').addEventListener('click', () => addRow(true));
+document.addEventListener('click', e => { const b = e.target.closest('[data-add]'); if (b) addRow(b.dataset.add === 'spot'); });
 
 // Sources des caméras à données, regroupées par marque
 document.getElementById('brand-sources').innerHTML = Object.entries(DATA_SOURCES).map(([brand, list]) =>

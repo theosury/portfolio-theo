@@ -1,9 +1,13 @@
 // API du plan de travail partagé (theosury.fr/pdt-aleks) : un état JSON dans Netlify Blobs + la présence de chacun
 import { getStore } from "@netlify/blobs";
-import { createHash } from "node:crypto";
+import { createHash, timingSafeEqual } from "node:crypto";
 
-// empreinte du code d'accès (le code lui-même n'est pas dans le dépôt)
-const KEY_HASH = "564bef8e0da27244164219c50771d2b22bca3599779af20658715276c6d7299f";
+// le code d'accès est dans la variable d'environnement Netlify PDT_KEY (jamais dans le dépôt)
+const digest = v => createHash("sha256").update(String(v)).digest();
+function keyOk(given) {
+  const secret = (globalThis.Netlify?.env?.get("PDT_KEY")) || process.env.PDT_KEY;
+  return !!secret && timingSafeEqual(digest(given), digest(secret));
+}
 const COLLS = ["cast", "seqs", "strips", "breaks", "days"];
 const PRESENCE_TTL = 20000;
 
@@ -23,7 +27,7 @@ async function peers(store) {
 
 export default async (req) => {
   const key = req.headers.get("x-pdt-key") || "";
-  if (createHash("sha256").update(key).digest("hex") !== KEY_HASH) return json({ error: "code" }, 401);
+  if (!keyOk(key)) { await new Promise(r => setTimeout(r, 800)); return json({ error: "code" }, 401); }
   const store = getStore({ name: "pdt-aleks", consistency: "strong" });
 
   if (req.method === "GET") {

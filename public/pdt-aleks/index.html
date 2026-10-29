@@ -326,7 +326,8 @@ const isDay = d => d === "J1" || d === "J2";
 // état local, alimenté par la base
 const state = {cast: {}, seqs: {}, strips: {}, breaks: {}, days: {J1: {}, J2: {}}};
 let loaded = false;
-function rebuildSeq() { SEQ = Object.entries(state.seqs).map(([id, d]) => ({cast: "", extra: "", prec: "", res: "", decor: "", h8: 0, pl: 0, rep: 0, script: [], ...d, id})).sort((a, b) => (a.idx ?? 0) - (b.idx ?? 0)); }
+const num = v => Math.max(0, Math.floor(Number(v) || 0)), str = v => typeof v === "string" ? v : v == null ? "" : String(v);
+function rebuildSeq() { SEQ = Object.entries(state.seqs).map(([id, d]) => ({...d, id, n: str(d.n), ie: str(d.ie), dn: str(d.dn), decor: str(d.decor), prec: str(d.prec), res: str(d.res), cast: str(d.cast), extra: str(d.extra), h8: num(d.h8), pl: num(d.pl), rep: num(d.rep), idx: Number(d.idx) || 0, script: Array.isArray(d.script) ? d.script : []})).sort((a, b) => (a.idx ?? 0) - (b.idx ?? 0)); }
 let db = null;
 
 const $ = s => document.querySelector(s);
@@ -416,15 +417,15 @@ function stripEl(it, day, clock) {
     e = el("div", "strip " + (s.ie === "EXT" ? "ext" : s.ie ? "int" : "del") + (s.dn === "N" ? " nuit" : ""));
     e.style.setProperty("--dcol", decorCol(s.decor));
     const cast = castOf(s);
-    const ex = s.extra.split(" ").filter(Boolean).map(x => `<span class="x">${x}</span>`).join("");
+    const ex = s.extra.split(" ").filter(Boolean).map(x => `<span class="x">${esc(x)}</span>`).join("");
     const pl = s.rep ? `${s.pl} + ${s.rep} repris` : `${s.pl || "-"} plans`;
     const on = openSc.has(id);
-    e.innerHTML = `<div class="n">${esc(s.n)}</div><div class="ie">${s.ie || "?"}</div>
+    e.innerHTML = `<div class="n">${esc(s.n)}</div><div class="ie">${esc(s.ie || "?")}</div>
       <div class="set" title="${esc(dname + (s.prec ? " (" + s.prec + ")" : "") + " : " + s.res)}"><b class="dc" style="background:${decorCol(s.decor)}">${esc(dname)}</b>${s.prec ? `<em>${esc(s.prec)}</em>` : ""}${ex}<span class="rs">${esc(s.res)}</span>${cast.length ? `<span class="cast">${cast.map(chip).join("")}</span>` : ""}</div>
-      <div class="dn">${esc(s.dn || "")}</div><div class="pg">${eighths(s.h8)}</div>
+      <div class="dn">${esc(s.dn || "")}</div><div class="pg">${esc(eighths(s.h8))}</div>
       <div class="ett"><input type="text" id="ett-${id}" value="${esc(normEtt(it.p.ett))}" placeholder="0h00" aria-label="ETT SEQ ${esc(s.n)}"></div>
       <div class="clk">${clock}</div>
-      <div class="act"><button type="button" class="scb" aria-expanded="${on}" title="${pl}">${on ? "Masquer" : "Scénario"}</button><button type="button" class="edb" title="Modifier la séquence" aria-label="Modifier">✎</button>${moves(id, day)}</div>
+      <div class="act"><button type="button" class="scb" aria-expanded="${on}" title="${esc(pl)}">${on ? "Masquer" : "Scénario"}</button><button type="button" class="edb" title="Modifier la séquence" aria-label="Modifier">✎</button>${moves(id, day)}</div>
       ${on ? scriptHtml(s) : ""}`;
   }
   const edb = e.querySelector(".edb");
@@ -712,7 +713,7 @@ function exportJson() {
   saveFile(`PDT Aleksandra ${stamp()}.json`, JSON.stringify(data, null, 2), "application/json");
 }
 function exportCsv() {
-  const q = v => { v = String(v ?? ""); return /[;"\n]/.test(v) ? '"' + v.replace(/"/g, '""') + '"' : v; };
+  const q = v => { v = String(v ?? ""); if (/^[=+\-@\t\r]/.test(v)) v = "'" + v; return /[;"\n]/.test(v) ? '"' + v.replace(/"/g, '""') + '"' : v; };
   const rows = [["Jour", "Date", "Ordre", "Heure début", "Séq", "Int/Ext", "Jour/Nuit", "Décor", "Précision", "Résumé", "Comédiens", "Éléments", "Pages (8e)", "Plans", "Plans repris", "ETT"]];
   COLS.forEach(([day, label]) => {
     let run = 0; const d = state.days[day] || {};

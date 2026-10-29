@@ -876,6 +876,15 @@
   aspect-ratio: 16 / 9;
 }
 
+/* Deux photos seulement : côte à côte, pas une grande puis une petite seule */
+.film-detail__plateau-grid button:first-child:nth-last-child(2) {
+  grid-column: auto;
+}
+
+.film-detail__plateau-grid button:first-child:nth-last-child(2) img {
+  aspect-ratio: 3 / 2;
+}
+
 .film-detail__plateau-grid button:hover img {
   transform: scale(1.03);
 }

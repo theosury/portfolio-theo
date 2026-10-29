@@ -422,7 +422,6 @@ export const projectsData = {
       },
       {
         id: 'trauma-resonance',
-        masque: true, // caché pour une grille de tuiles symétrique (4 x 4), à remettre si besoin
         title: 'Trauma Résonance',
         year: '2026',
         month: 'Avril 2026',
@@ -1640,7 +1639,6 @@ export const projectsData = {
       },
       {
         id: 'gadfly',
-        masque: true, // stagiaire : masqué (audit du 11 oct 2026), à remettre si besoin
         title: 'GADFLY',
         year: '2023',
         month: 'Novembre 2023',
@@ -1673,10 +1671,11 @@ export const projectsData = {
           '/images/gadfly-snaps/gadfly-6.jpg',
           '/images/gadfly-snaps/gadfly-7.jpg'
         ],
-        // Le décor du diner pendant une prise (bibliothèque Photos)
+        // Le diner pendant une prise et sa façade éclairée (bibliothèque Photos)
         plateau: {
           titre: 'Sur le plateau',
-          photos: ['/images/gadfly-tournage/gadfly-tournage-1.jpg'],
+          photos: [1, 2].map((n) => `/images/gadfly-tournage/gadfly-tournage-${n}.jpg`),
+          entieres: [2], // portrait : non recadré à l'agrandissement
         },
         description: 'Une nuit, dans un diner faiblement éclairé, une simple erreur de commande plonge Joe dans un voyage surréaliste et troublant. Le temps se distord, la réalité bascule, et les visages familiers adoptent des rôles énigmatiques alors qu\'il cherche quelque chose qui n\'a peut-être jamais existé.',
         synopsis: 'Mêlant tension psychologique et absurdité onirique, Gadfly explore la frontière fragile entre le réel et l\'imaginaire, entraînant son protagoniste (et le spectateur) dans un monde où rien n\'est vraiment ce qu\'il semble être.',

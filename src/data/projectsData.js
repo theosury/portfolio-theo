@@ -427,7 +427,7 @@ export const projectsData = {
         year: '2026',
         month: 'Avril 2026',
         role: 'Électricien',
-        realisateur: 'Kenji Isidor',
+        // Réalisateur volontairement non crédité (demande de Théo)
         producteur: 'Kenji Isidor',
         prodExec: 'Axelle Derudder',
         premierAssReal: 'Sébastien Arroux',

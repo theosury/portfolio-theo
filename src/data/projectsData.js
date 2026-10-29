@@ -444,9 +444,16 @@ export const projectsData = {
         photo: 'Ninon Dabos & Aryane Nassirian Shehni',
         regisseur: 'Jonathan Francillette',
         assistRegie: 'Emilien Rouillard & Thomas Raoult',
-        thumbnail: '/images/placeholder-thumb.jpg',
+        thumbnail: '/images/trauma-resonance-thumb.jpg', // le décor d'hôpital dans la fumée
+        couvertureTuile: true,
         status: 'En post-production',
         images: [],
+        // Photos de tournage tirées de la bibliothèque Photos, redressées et cadrées pour la grille
+        plateau: {
+          titre: 'Sur le plateau',
+          photos: Array.from({ length: 9 }, (_, i) => `/images/trauma-resonance-plateau/trauma-plateau-${i + 1}.jpg`),
+          entieres: [2, 3], // portraits : non recadrés à l'agrandissement
+        },
         description: 'Court-métrage tourné à Paris, en partie dans un décor d\'hôpital reconstitué.',
         specs: {
           format: 'Court-métrage fiction',
@@ -1667,6 +1674,11 @@ export const projectsData = {
           '/images/gadfly-snaps/gadfly-6.jpg',
           '/images/gadfly-snaps/gadfly-7.jpg'
         ],
+        // Le décor du diner pendant une prise (bibliothèque Photos)
+        plateau: {
+          titre: 'Sur le plateau',
+          photos: ['/images/gadfly-tournage/gadfly-tournage-1.jpg'],
+        },
         description: 'Une nuit, dans un diner faiblement éclairé, une simple erreur de commande plonge Joe dans un voyage surréaliste et troublant. Le temps se distord, la réalité bascule, et les visages familiers adoptent des rôles énigmatiques alors qu\'il cherche quelque chose qui n\'a peut-être jamais existé.',
         synopsis: 'Mêlant tension psychologique et absurdité onirique, Gadfly explore la frontière fragile entre le réel et l\'imaginaire, entraînant son protagoniste (et le spectateur) dans un monde où rien n\'est vraiment ce qu\'il semble être.',
         specs: {

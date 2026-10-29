@@ -34,6 +34,10 @@ const Footer = () => {
               </a>
             )}
           </div>
+          {/* Outils : pages autonomes servies depuis public/ */}
+          <nav className="footer__outils" aria-label="Outils">
+            <a href="/calculateur/" className="footer__outil">Calculateur de rushs</a>
+          </nav>
           <p className="footer__text">
             © {currentYear} Théo Sury
           </p>

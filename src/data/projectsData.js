@@ -1662,6 +1662,7 @@ export const projectsData = {
         chefHMC: 'Celia Burtin',
         cheffeDecoratrice: 'Audrey Felix',
         thumbnail: '/images/gadfly-thumb.jpg',
+        couvertureTuile: true,
         images: [
           '/images/gadfly-snaps/gadfly-1.jpg',
           '/images/gadfly-snaps/gadfly-2.jpg',

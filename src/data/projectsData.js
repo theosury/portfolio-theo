@@ -1050,11 +1050,7 @@ export const projectsData = {
         couvertureTuile: true,
         status: 'En post-production',
         images: [],
-        // Photos de tournage tirées de la bibliothèque Photos, redressées et cadrées pour la grille
-        plateau: {
-          titre: 'Sur le plateau',
-          photos: Array.from({ length: 3 }, (_, i) => `/images/male-addict-plateau/male-addict-plateau-${i + 1}.jpg`),
-        },
+        // Pas de grille de plateau : les photos de téléphone ne sont pas à la hauteur, pas d'accès aux photos du photographe
         description: 'Triangle amoureux toxique entre Mathis, Thalia et Tom. Mathis et Thalia ont une liaison secrète alors que Thalia est en couple avec Tom, le meilleur ami de Mathis.',
         synopsis: 'L\'histoire explore la manipulation, la trahison et les conséquences d\'une relation destructrice entre trois jeunes adultes pris dans un jeu dangereux de désir et de mensonges.',
         specs: {

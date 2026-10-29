@@ -59,7 +59,7 @@ input:focus-visible, select:focus-visible, button:focus-visible { outline: 2px s
 .empty { margin-top: 8px; font: 500 12px var(--cond); color: var(--mid); text-align: center; padding: 18px 8px; border: 1px dashed var(--line); border-radius: 3px }
 /* bande façon stripboard : une ligne, colonnes fixes */
 .strip { --ink: #1b1e1a; --mid: #4a5047; --surface: #ffffff; --bg: #f4f4f0; --line: #8c9288; color: var(--ink); position: relative; cursor: grab;
-  display: grid; grid-template-columns: 46px 40px minmax(0, 1fr) 38px 46px 84px 48px 230px; grid-template-areas: "n ie set dn pg ett clk act" "sc sc sc sc sc sc sc sc";
+  display: grid; grid-template-columns: 46px 40px minmax(0, 1fr) 38px 46px 84px 48px 250px; grid-template-areas: "n ie set dn pg ett clk act" "sc sc sc sc sc sc sc sc";
   align-items: center; min-height: 32px; border: 1px solid #1b1e1a; border-top-width: 0; font: 12.5px/1.2 var(--cond); font-variant-numeric: tabular-nums }
 .list > .strip:first-child, .list > .empty + .strip { border-top-width: 1px }
 .strip > * { padding: 3px 5px; min-width: 0 }
@@ -102,7 +102,7 @@ body.dragging-on, body.dragging-on * { cursor: grabbing !important; user-select:
 .strip.dej { background: #ff9d5c; grid-template-areas: "n set set set set ett clk act" }
 .strip.dej .set { font: 800 12.5px var(--cond); letter-spacing: .12em; justify-content: center }
 .strip.dej .rm { border: 0; background: none; color: #5a2208; text-decoration: underline; font: 500 11px var(--cond); cursor: pointer; padding: 0 }
-.colhdr { align-items: end; border-bottom: 1px solid var(--line); margin-bottom: 4px; display: grid; grid-template-columns: 46px 40px minmax(0, 1fr) 38px 46px 84px 48px 230px; font: 700 10px var(--cond); letter-spacing: .08em; text-transform: uppercase; color: var(--mid); padding: 0 9px }
+.colhdr { align-items: end; border-bottom: 1px solid var(--line); margin-bottom: 4px; display: grid; grid-template-columns: 46px 40px minmax(0, 1fr) 38px 46px 84px 48px 250px; font: 700 10px var(--cond); letter-spacing: .08em; text-transform: uppercase; color: var(--mid); padding: 0 9px }
 .colhdr span { padding: 4px 3px; text-align: center; line-height: 1.15; font-size: 10.5px; color: var(--ink) } .colhdr span:last-child { text-align: right } .colhdr span:nth-child(3) { text-align: left }
 .eod { margin: 0 8px 10px; background: #111; color: #fff; padding: 6px 10px; display: flex; flex-wrap: wrap; justify-content: space-between; gap: 4px 14px; font: 700 12px var(--cond); letter-spacing: .06em; text-transform: uppercase; font-variant-numeric: tabular-nums }
 @media (max-width: 900px) {
@@ -125,7 +125,7 @@ body.dragging-on, body.dragging-on * { cursor: grabbing !important; user-select:
 .toolbar { margin: -6px 0 12px; display: flex; flex-wrap: wrap; gap: 6px } .tsep { width: 10px }
 .scall:disabled { opacity: .4; cursor: default }
 .addseq { border: 1px dashed var(--ink); background: transparent; color: var(--ink); border-radius: 3px; padding: 4px 10px; font: 700 12px var(--cond); cursor: pointer }
-.edb { border: 1px solid rgb(0 0 0 / .35); background: #fff; color: #1b1e1a; border-radius: 2px; font: 700 11px var(--cond); padding: 1px 5px; cursor: pointer }
+.dub, .edb { border: 1px solid rgb(0 0 0 / .35); background: #fff; color: #1b1e1a; border-radius: 2px; font: 700 11px var(--cond); padding: 1px 5px; cursor: pointer }
 .moves .to { background: #1b1e1a; color: #fff; border-color: #1b1e1a } .moves .to.alt { background: #fff; color: #1b1e1a }
 dialog.wide { width: min(640px, calc(100vw - 32px)) }
 .fg { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 8px }
@@ -203,7 +203,7 @@ dialog button { border: 0; background: var(--ink); color: var(--surface); paddin
     <label class="span4">Éléments (FIG, T34, TIGRE...)<input name="extra" type="text" maxlength="60"></label>
     <label class="span4">Texte du scénario <small>une ligne par paragraphe, « NOM (didascalie) : réplique » pour un dialogue</small><textarea name="script" rows="8"></textarea></label>
   </div>
-  <div class="dlgbar"><button type="button" id="seqdel" class="danger">Supprimer la séquence</button><span></span><button type="button" id="seqcancel" class="ghostb">Fermer</button><button>Enregistrer</button></div>
+  <div class="dlgbar"><button type="button" id="seqdel" class="danger">Supprimer la séquence</button><button type="button" id="seqdup" class="ghostb">Dupliquer</button><span></span><button type="button" id="seqcancel" class="ghostb">Fermer</button><button>Enregistrer</button></div>
 </form></dialog>
 <dialog id="castdlg" class="wide"><form method="dialog" id="castform"><h2>Comédiens et figurants</h2>
   <div class="crow chead"><span>N°</span><span>Nom</span><span>Type</span><span>Couleur</span><span></span></div>
@@ -425,11 +425,13 @@ function stripEl(it, day, clock) {
       <div class="dn">${esc(s.dn || "")}</div><div class="pg">${esc(eighths(s.h8))}</div>
       <div class="ett"><input type="text" id="ett-${id}" value="${esc(normEtt(it.p.ett))}" placeholder="0h00" aria-label="ETT SEQ ${esc(s.n)}"></div>
       <div class="clk">${clock}</div>
-      <div class="act"><button type="button" class="scb" aria-expanded="${on}" title="${esc(pl)}">${on ? "Masquer" : "Scénario"}</button><button type="button" class="edb" title="Modifier la séquence" aria-label="Modifier">✎</button>${moves(id, day)}</div>
+      <div class="act"><button type="button" class="scb" aria-expanded="${on}" title="${esc(pl)}">${on ? "Masquer" : "Scénario"}</button><button type="button" class="edb" title="Modifier la séquence" aria-label="Modifier">✎</button><button type="button" class="dub" title="Dupliquer la bande" aria-label="Dupliquer">⧉</button>${moves(id, day)}</div>
       ${on ? scriptHtml(s) : ""}`;
   }
   const edb = e.querySelector(".edb");
   if (edb) edb.onclick = () => editSeq(it.s);
+  const dub = e.querySelector(".dub");
+  if (dub) dub.onclick = () => dupSeq(it.s);
   const scb = e.querySelector(".scb");
   if (scb) scb.onclick = () => { openSc.has(id) ? openSc.delete(id) : openSc.add(id); render(); };
   const inp = e.querySelector("input");
@@ -538,7 +540,7 @@ function editSeq(s) {
   f.extra.value = d.extra; f.pgw.value = Math.floor((d.h8 || 0) / 8); f.pgf.value = (d.h8 || 0) % 8; f.pl.value = d.pl || 0; f.rep.value = d.rep || 0; f.script.value = scriptToText(d.script);
   const ids = s ? castOf(s).map(m => m.id) : [];
   $("#castbox").innerHTML = (CAST.length ? CAST.map(m => `<label class="ck"><input type="checkbox" name="cast" value="${esc(m.id)}"${ids.includes(m.id) ? " checked" : ""}>${chip(m)}</label>`).join("") : "<small>Aucun comédien. Les créer avec « Comédiens et figurants ».</small>");
-  $("#seqdel").hidden = !s;
+  $("#seqdel").hidden = !s; $("#seqdup").hidden = !s;
   $("#seqdlg").showModal(); f.n.focus();
 }
 function saveSeq() {
@@ -552,6 +554,16 @@ function saveSeq() {
     const idx = Math.max(0, ...SEQ.map(x => x.idx ?? 0)) + 1;
     commit([["seqs/" + id, {...data, idx}], ["strips/" + id, {day: "pool", order: idx, ett: ""}]], "SEQ " + data.n + " ajoutée");
   }
+}
+// dupliquer : même contenu, numéro suivi de « (2) », placée juste après l'originale
+function dupSeq(s) {
+  const src = state.seqs[s.id]; if (!src) return;
+  const id = "s" + Date.now().toString(36) + Math.random().toString(36).slice(2, 5);
+  const p = placeOf(s), list = itemsOf(p.day), i = list.findIndex(x => x.kind === "seq" && x.s.id === s.id);
+  const after = SEQ.find(x => (x.idx ?? 0) > (s.idx ?? 0));
+  const copy = JSON.parse(JSON.stringify(src));
+  copy.n = String(s.n) + " (2)"; copy.idx = after ? ((s.idx ?? 0) + (after.idx ?? 0)) / 2 : (s.idx ?? 0) + 1;
+  commit([["seqs/" + id, copy], ["strips/" + id, {day: p.day, order: orderBetween(list, i + 1), ett: ""}]], "SEQ " + s.n + " dupliquée");
 }
 function deleteSeq() {
   if (!editing || !confirm("Supprimer la SEQ " + editing.n + " ? (Annuler permet de la récupérer)")) return;
@@ -751,6 +763,7 @@ $("#impfile").onchange = ev => { const f = ev.target.files[0]; ev.target.value =
 $("#undo").onclick = undo; $("#redo").onclick = redo;
 $("#seqform").addEventListener("submit", saveSeq);
 $("#seqdel").onclick = deleteSeq;
+$("#seqdup").onclick = () => { if (editing) { $("#seqdlg").close(); dupSeq(editing); } };
 $("#seqcancel").onclick = () => $("#seqdlg").close();
 $("#scall").onclick = () => { const all = openSc.size < SEQ.length; SEQ.forEach(s => all ? openSc.add(s.id) : openSc.delete(s.id)); $("#scall").textContent = all ? "Masquer tout le scénario" : "Afficher tout le scénario"; render(); };
 legend(); render(); online();

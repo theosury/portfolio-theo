@@ -84,7 +84,7 @@ function Header() {
           {SECTIONS.map(({ id, label }) => (
             <React.Fragment key={id}>
               {/* Le calculateur est une page autonome (public/calculateur), juste avant Contact */}
-              {id === 'contact' && <a href="/calculateur/">Calculateur de rushs</a>}
+              {id === 'contact' && <a href="/calculateur/" title="Calculateur de rushs">Outils</a>}
               <a href={`/${id}`} className={active === id ? 'active' : ''} onClick={aller(id)}>
                 {label}
               </a>

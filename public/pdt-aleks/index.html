@@ -222,12 +222,13 @@ dialog button { border: 0; background: var(--ink); color: var(--surface); paddin
   let rev = -1, docs = {}, busy = false, queue = [], peers = [], myPresence = {};
   const subs = {}, peerCbs = [];
 
+  let asking = null;
   function askKey(again) {
-    return new Promise(res => {
+    return asking ||= new Promise(res => {
       const d = document.createElement("dialog");
       d.innerHTML = `<form method="dialog"><h2>Code d'accès</h2><p style="font:500 13px var(--cond);color:var(--mid)">${again ? "Code incorrect, réessayer." : "Le code du PDT, donné par la production."}</p><input type="text" required autocomplete="off" autocapitalize="off" style="width:100%;padding:6px;font:15px var(--sans)"><button>Entrer</button></form>`;
       document.body.append(d); d.showModal();
-      d.querySelector("form").addEventListener("submit", () => { key = d.querySelector("input").value.trim(); try { localStorage.setItem("pdt-key", key); } catch {} d.remove(); res(); });
+      d.querySelector("form").addEventListener("submit", () => { key = d.querySelector("input").value.trim(); try { localStorage.setItem("pdt-key", key); } catch {} d.remove(); asking = null; res(); });
       d.addEventListener("cancel", e => e.preventDefault());
     });
   }

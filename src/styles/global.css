@@ -32,7 +32,7 @@
   --color-info: #a855f7;
   
   /* Typographie */
-  --font-main: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+  --font-main: 'Jost', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
   /* Titres (nom, films, pages) : serif « générique de film » */
   --font-display: 'Instrument Serif', 'Times New Roman', serif;
   --font-weight-light: 300;

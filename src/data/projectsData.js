@@ -1904,7 +1904,7 @@ Disponible en tant qu'électricien ou chef électricien, et à l'écoute de tout
   ],
 
   contact: {
-    email: 'theosury@gmail.com',
+    email: 'contact@theosury.fr',
     phone: '07 50 84 62 01',
     instagram: '@theosury',
     vimeo: '',

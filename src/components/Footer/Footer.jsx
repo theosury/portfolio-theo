@@ -1,4 +1,5 @@
 import React from 'react';
+import { Link } from 'react-router-dom';
 import { aboutData } from '../../data/projectsData';
 import { IconeInstagram, IconeLinkedin } from '../Icones';
 import './Footer.css';
@@ -37,6 +38,7 @@ const Footer = () => {
           {/* Outils : pages autonomes servies depuis public/ */}
           <nav className="footer__outils" aria-label="Outils">
             <a href="/calculateur/" className="footer__outil">Calculateur de rushs</a>
+            <Link to="/mentions-legales" className="footer__outil">Mentions légales</Link>
           </nav>
           <p className="footer__text">
             © {currentYear} Théo Sury

@@ -1,0 +1,61 @@
+/* Pages de texte : mentions légales et page introuvable */
+
+.page-simple {
+  min-height: 70vh;
+  padding: calc(var(--header-height) + var(--spacing-lg)) 0 var(--spacing-xl);
+}
+
+.page-simple__contenu {
+  max-width: 680px;
+}
+
+.page-simple__titre {
+  font-family: var(--font-display);
+  font-weight: var(--font-weight-normal);
+  font-size: clamp(2.4rem, 6vw, 3.6rem);
+  line-height: 1.05;
+  margin-bottom: var(--spacing-md);
+}
+
+.page-simple h2 {
+  font-size: 0.8rem;
+  font-weight: var(--font-weight-semibold);
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  opacity: 0.55;
+  margin: var(--spacing-md) 0 0.5rem;
+}
+
+.page-simple p {
+  line-height: 1.7;
+  opacity: 0.85;
+}
+
+.page-simple a {
+  color: inherit;
+  text-decoration: underline;
+  text-underline-offset: 3px;
+}
+
+.page-simple__retour {
+  display: inline-block;
+  margin-top: var(--spacing-lg);
+  font-size: 0.9rem;
+  opacity: 0.7;
+  transition: opacity var(--transition-fast);
+}
+
+.page-simple__retour:hover {
+  opacity: 1;
+}
+
+.page-simple--introuvable {
+  display: flex;
+  align-items: center;
+}
+
+@media (max-width: 768px) {
+  .page-simple {
+    padding: calc(var(--header-height) + var(--spacing-md)) 0 var(--spacing-lg);
+  }
+}

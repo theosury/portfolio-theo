@@ -8,6 +8,8 @@ import './styles/global.css';
 
 const Home = lazy(() => import('./pages/Home'));
 const FilmDetail = lazy(() => import('./pages/FilmDetail'));
+const MentionsLegales = lazy(() => import('./pages/PagesSimples').then((m) => ({ default: m.MentionsLegales })));
+const Introuvable = lazy(() => import('./pages/PagesSimples').then((m) => ({ default: m.Introuvable })));
 
 // Compte une visite GoatCounter par page (le script peut finir de charger après le premier rendu)
 function compterVisite(path) {
@@ -41,6 +43,8 @@ function AppContent() {
                 {['films', 'experiences', 'photos', 'contact'].map((section) => (
                   <Route key={section} path={`/${section}`} element={<Navigate to="/" replace state={{ section }} />} />
                 ))}
+                <Route path="/mentions-legales" element={<MentionsLegales />} />
+                <Route path="*" element={<Introuvable />} />
               </Routes>
             </PageTransition>
           </Suspense>

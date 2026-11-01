@@ -28,6 +28,10 @@
 }
 
 .footer__outils {
+  display: flex;
+  justify-content: center;
+  flex-wrap: wrap;
+  gap: 0.4rem 1.5rem;
   margin-bottom: 0.75rem;
 }
 

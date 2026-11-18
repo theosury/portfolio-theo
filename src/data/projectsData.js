@@ -55,12 +55,14 @@ export const ordreManuel = [
   'insipide',            // réalisation
   'tecnomat',            // pub TV
   'armanaque',
-  'quand-son-souffle',   // contre-jours, forêt, soleil couchant
+  'gate66',              // sorti en juillet 2026
   // En post-production (section « En cours »)
   'super-vespapa',
   'jugement-dernier',
+  'la-table-regie',
   'azincourt',
-  'gate66',
+  'jeanne',
+  'aleksandra',
 ];
 
 // ========== SECOND PLAN ==========
@@ -69,13 +71,13 @@ export const ordreManuel = [
 // Indépendant du champ « status » : un film peut être en post-production
 // et rester en grille principale (ou l'inverse).
 export const projetsSecondaires = [
+  'quand-son-souffle',   // 2e assistant caméra : sorti de la grille pour garder un nombre pair
   'nothing-personal',
   'moutarderie-fallot-vr',
   'cache-toi-cest-mon-pere',
   'male-addict',
   'trauma-resonance',
   'lettre-a-lille',
-  'la-table-regie',
   'undetoi',
   'verite-studio',        // pas encore d'extraits
   'gadfly',              // stagiaire ; terminé en septembre 2025 (FilmFreeway), pas encore diffusé
@@ -344,7 +346,7 @@ export const projectsData = {
         regisseur: 'Quentin Dissard',
         thumbnail: '/images/cache-toi-thumb.jpg',
         couvertureTuile: true,
-        status: 'En post-production',
+        status: 'En parcours festival',
         images: [],
         // Photos de tournage tirées de la bibliothèque Photos, redressées et cadrées pour la grille
         plateau: {
@@ -650,6 +652,8 @@ export const projectsData = {
         thumbnail: '/images/la-table-regie-thumb.jpg',
         couvertureTuile: true,
         status: 'En post-production', // tournage terminé en octobre 2026
+        diaporama: [1, 3, 5, 6].map((n) => `/images/la-table-regie-plateau/ltr-plateau-${n}.jpg`), // backstage, pas d'images du film
+        diaporamaRatio: '3 / 2',
         images: [],
         // Installations lumière des blocs 4 et 5 (le réalisateur accepte que les techniciens partagent des images) ; pont sur deux long johns en tête
         plateau: {
@@ -1125,19 +1129,143 @@ export const projectsData = {
       },
 
       {
+        id: 'jeanne',
+        title: 'Jeanne',
+        year: '2026',
+        month: 'Novembre 2026',
+        role: 'Machiniste',
+        realisateur: 'Clément Joly-Gavache',
+        dirProd: 'Pacôme Dartois',
+        assistProd: 'Pauline Cormary',
+        premierAssReal: 'Antoine Girardin',
+        secondAssReal: 'Eve Sadoine',
+        regisseurs: 'Noah Waxin & Delphine Saint-Cyr',
+        cheffeOp: 'Océanne Skarica',
+        assistantCam: 'Héloïse Tour',
+        secondAssistantCam: 'Léo Exbrayat',
+        stagiaires: 'Lucie Delattre (caméra)',
+        cheffeElectro: 'Margot Nahi',
+        electros: 'Emma Vende & Violette Serpollet',
+        chefMachino: 'Léo Moissonier',
+        machino: 'Théo Sury & Geoffroy Bordier',
+        son: 'Valentin Bigot',
+        assistantsSon: 'Clément Josse & Jonathan Manso',
+        deco: 'Paul Rabillard, Clément Ricart & Giovanna Alvarez',
+        costume: 'Benoit Sabatier',
+        maquillage: 'Jules Devaux',
+        photo: 'Tom Millot',
+        thumbnail: '/images/jeanne-thumb.jpg',
+        diaporama: ['jeanne-carte-1', 'jeanne-carte-2', 'jeanne-carte-3', 'jeanne-plateau-6'].map((n) => `/images/jeanne-plateau/${n}.jpg`), // photos de plateau, pas de stills du film
+        diaporamaRatio: '3 / 2',
+        status: 'En post-production',
+        plateau: {
+          titre: 'Sur le plateau',
+          photos: Array.from({ length: 12 }, (_, i) => `/images/jeanne-plateau/jeanne-plateau-${i + 1}.jpg`),
+        },
+        images: [],
+        cast: [
+          'Geneviève Emanuelli (Jeanne)',
+          'François Romain (Jean)',
+          'Aymeline Lestrat (Christine)',
+          'Cosmo Penna Skarica',
+        ],
+        specs: {
+          format: 'Court-métrage',
+          tournage: 'Novembre 2026',
+          lieu: 'Reuilly-Sauvigny (Aisne)',
+          financement: 'Pictanovo',
+        },
+      },
+
+      {
+        id: 'aleksandra',
+        title: 'Aleksandra',
+        year: '2026',
+        month: 'Novembre 2026',
+        role: 'Chef opérateur',
+        realisateur: 'Richard Vandal',
+        premierAssReal: 'Lélia Sehr',
+        chefOp: 'Théo Sury',
+        assistantCam: 'Bérénice Demailly',
+        chefElectro: 'Virgile Vermeulen',
+        electros: 'Lou Cassot',
+        chefMachino: 'Jean-Alain Adli',
+        son: 'Axel Segard',
+        regisseurs: 'Steve Clément & Jérémy Joly',
+        thumbnail: '/images/aleksandra-thumb.jpg',
+        enTeteRatio: '4 / 3', // garde les têtes et la caméra sur la photo de couverture
+        diaporama: ['aleks-carte', 'aleks-carte-2', 'aleks-plateau-2'].map((n) => `/images/aleksandra-plateau/${n}.jpg`), // backstage, pas d'images du film
+        diaporamaRatio: '3 / 2',
+        status: 'En post-production',
+        plateau: {
+          titre: 'Sur le plateau',
+          photos: ['aleks-plateau-1', 'aleks-plateau-6', 'aleks-plateau-3', 'aleks-plateau-4', 'aleks-plateau-5', 'aleks-plateau-2'].map((n) => `/images/aleksandra-plateau/${n}.jpg`),
+        },
+        images: [],
+        description: 'Un T34 commandé par une jeune soldate est pris en embuscade sur le front ukrainien.',
+        cast: [
+          'Camille Humbert (Aleksandra)',
+          'Florent Vandermeer (Koverchenko)',
+          'Maxence Dandois (Rogojine)',
+          'Stéphane Lemaire (Shatov)',
+        ],
+        specs: {
+          format: 'Court-métrage',
+          jours: '2 jours',
+          tournage: 'Novembre 2026',
+          lieu: 'Musée de l\'Abri, Hatten (Alsace)',
+          camera: 'Sony FX6',
+        },
+      },
+
+      {
         id: 'gate66',
+        boucles: [1, 2, 3, 4].map((n) => `/videos/boucles/gate66-${n}`), // extraits muets, sans sous-titres
+        boucleRatio: '1200 / 502', // format du film (bandes noires retirées)
         title: 'Gate 66',
-        year: '2025',
-        month: 'Septembre 2025',
+        year: '2026',
+        month: 'Juillet 2026',
         role: '1er assistant caméra B',
         realisateur: 'Maël Kerever',
+        scenariste: 'Maël Kerever',
+        prodExec: 'Fabio Sguera',
+        dirProd: 'Léa Morelle',
+        premierAssReal: 'Lou-Ann Roblin',
+        secondAssReal: 'Oscar Biget',
+        script: 'Gaétan Berthier Espada',
         chefOp: 'Bastien Leprince',
+        cadreur: 'Clément Simonnot',
+        cadreurB: 'Samuel Spiteri',
+        assistantCam: 'Simon Delahaye (caméra A) & Théo Sury (caméra B)',
+        secondAssistantCam: 'Samuel Spiteri',
+        dit: 'Gabriel Scordel',
+        chefElectro: 'Samuel Paul',
+        electros: 'Séraphin Kyndt-Morel, Virgile Vermeulen & Pierre Mulloni',
+        cheffeMachino: 'Manon Felten',
+        machinos: 'Malo Germonprez & Lyse Denis',
+        son: 'Clément Noury',
+        deco: 'Blaise Arnaud',
+        maquillage: 'Zoé Chêne & Eva Mezrag',
+        monteur: 'César Roussel',
+        soundDesign: 'Benjamin Poilane',
+        mixage: 'Simon Lebel',
+        musique: 'Gwendoline Lezere',
+        vfx: 'ARTFX Lille',
         production: 'École 24 × ArtFX',
-        thumbnail: '/images/gate66-thumb.jpg',
-        status: 'En post-production',
-        diaporama: [1, 2, 4, 3].map((n) => `/images/gate66-plateau/gate66-plateau-${n}.jpg`), // backstage, pas d'images du film
-        diaporamaRatio: '3 / 2',
-        // Photos de plateau (backstage, pas d'images du film)
+        thumbnail: '/images/gate66-film-thumb.jpg',
+        // Film et making-of officiels (chaîne ARTFX)
+        youtubeIds: [
+          { id: 'hDFlHruJ7B8', title: 'Le film' },
+          { id: 'x0KmJfwCsEE', title: 'Le making-of' },
+        ],
+        synopsis: 'Après avoir ouvert un passage vers l\'Enfer, le Front Uni de l\'Humanité envoie ses deux meilleurs soldats traquer et tuer le Diable pour libérer le monde de son emprise.',
+        cast: [
+          'Léo Henry Hamy (Derek)',
+          'Manon Bouscasse (Madeleine)',
+          'Dominique Thomas (Satan)',
+          'David Krüger (Colonel)',
+        ],
+        // Photos de plateau
         plateau: {
           titre: 'Sur le plateau',
           photos: [8, 2, 9, 3, 4, 5, 7].map((n) => `/images/gate66-plateau/gate66-plateau-${n}.jpg`),
@@ -1145,8 +1273,10 @@ export const projectsData = {
         images: [],
         specs: {
           format: 'Court-métrage',
+          duree: '8min18',
           jours: '5 jours',
           tournage: 'Septembre 2025',
+          diffusion: 'Sorti en juillet 2026',
           lieu: 'Plaine Image, Tourcoing',
           camera: 'Alexa 35 / Sony A7S IV',
           objectifs: 'Cooke Varotal / Cooke S8/i FF',
@@ -1226,7 +1356,7 @@ export const projectsData = {
         photo: 'Astrid Joos-Deligne',
         thumbnail: '/images/verite-studio-thumb.jpg',
         couvertureTuile: true,
-        status: 'En post-production',
+        status: 'En parcours festival',
         images: ['/images/verite_studio.jpg'], // photo de tournage (clap)
         // Photos de tournage tirées de la bibliothèque Photos (export de Théo), redressées et cadrées pour la grille
         plateau: {
@@ -1282,7 +1412,7 @@ export const projectsData = {
         status: 'En post-production',
         plateau: {
           titre: 'Sur le plateau',
-          photos: [1, 2, 3, 4, 5, 6, 9, 10, 11, 12].map((n) => `/images/azincourt-tournage/azincourt-tournage-${n}.jpg`), // camp, forêt, nuit : redressées et cadrées pour la grille
+          photos: [1, 2, 3, 4, 5, 6, 9, 10, 11].map((n) => `/images/azincourt-tournage/azincourt-tournage-${n}.jpg`), // camp, forêt, nuit : redressées et cadrées pour la grille
         },
         images: [],
         specs: {

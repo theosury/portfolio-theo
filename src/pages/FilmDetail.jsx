@@ -328,7 +328,10 @@ const FilmDetail = () => {
                 )}
               </div>
             ) : aVisuel ? (
-              <div className="film-detail__no-media">
+              <div
+                className="film-detail__no-media"
+                style={project.enTeteRatio ? { paddingTop: 0, aspectRatio: project.enTeteRatio } : undefined}
+              >
                 <img src={project.thumbnail} alt={project.title} />
               </div>
             ) : null}
@@ -668,6 +671,7 @@ const LIBELLES_SPECS = {
   optiques: 'Optiques',
   particularite: 'Particularité',
   diffusion: 'Diffusion',
+  financement: 'Financement',
   lumiere: 'Lumière',
 };
 

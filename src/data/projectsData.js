@@ -1130,11 +1130,12 @@ export const projectsData = {
 
       {
         id: 'jeanne',
-        title: 'Jeanne',
+        title: 'La vente aux souvenirs',
         year: '2026',
         month: 'Novembre 2026',
         role: 'Machiniste',
         realisateur: 'Clément Joly-Gavache',
+        production: 'Le Printemps de nos trente ans',
         dirProd: 'Pacôme Dartois',
         assistProd: 'Pauline Cormary',
         premierAssReal: 'Antoine Girardin',

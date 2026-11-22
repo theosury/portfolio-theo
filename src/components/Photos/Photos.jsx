@@ -5,7 +5,8 @@ import './Photos.css';
 const nomBase = (f) => f.replace(/\.[^.]+$/, '');
 
 // Section secondaire : une sélection, le reste à la demande
-const APERCU = 8;
+// Six grandes plutôt que huit petites (Théo, 23 nov 2026)
+const APERCU = 6;
 
 function Photos() {
   const photos = listePhotos.map((p) => `/images/photos/${p.fichier}`);

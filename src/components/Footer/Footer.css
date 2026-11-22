@@ -62,3 +62,6 @@
     font-size: 0.8rem;
   }
 }
+/* Instagram et LinkedIn déjà juste au-dessus dans Contact : pas de doublon
+   (Théo, 23 nov 2026) */
+body:has(.contact-section) .footer__socials { display: none; }

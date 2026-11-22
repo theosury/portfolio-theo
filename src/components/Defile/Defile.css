@@ -157,6 +157,26 @@
   }
 }
 
+/* Rangées justifiées (Théo, 2026-11-22) : même hauteur dans une rangée,
+   largeur proportionnelle au format (flex-grow = rapport largeur / hauteur) */
+.defile--justifie {
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
+  gap: clamp(2rem, 4vw, 3.5rem);
+}
+.defile__rang {
+  display: flex;
+  align-items: flex-start;
+  gap: clamp(1rem, 2.5vw, 2rem);
+}
+.defile__rang > .defile__bande { flex: var(--ratio-num, 1.78) 1 0; min-width: 0; }
+.defile__rang--seul .defile__media { aspect-ratio: 2.39; }
+@media (max-width: 700px) {
+  .defile__rang { flex-direction: column; gap: 2.5rem; }
+  .defile__rang > .defile__bande { flex: none; }
+}
+
 /* Nombre impair de films : le dernier prend toute la largeur (pas de trou) */
 @media (min-width: 701px) {
   .defile > .defile__bande:last-child:nth-child(odd) {
@@ -168,3 +188,203 @@
 }
 
 
+
+/* ===== Essai (?bento) : pleine largeur, images bord à bord, texte sur l'image =====
+   Deux films par rangée.
+   Pas d'îlots : joints de 4 px, pas de légende détachée sous l'image. */
+.bento .defile {
+    gap: var(--joint);
+  max-width: none;
+  width: 100vw;
+  margin-left: calc(50% - 50vw);
+  padding: 0 var(--joint);
+}
+
+.bento .defile .defile__bande {
+  position: relative;
+  overflow: hidden;
+}
+
+@media (hover: hover) {
+  .bento .defile .defile__bande:hover { transform: none; }
+  .bento .defile .defile__bande:hover .defile__media img,
+  .bento .defile .defile__bande:hover .defile__media video { transform: scale(1.04); }
+}
+
+.bento .defile .defile__media {
+  border-radius: 0;
+  aspect-ratio: 16 / 10;
+}
+
+/* Le texte passe sur l'image, en bas à gauche, sur un dégradé */
+.bento .defile .defile__media::after {
+  background: linear-gradient(transparent 50%, rgba(0, 0, 0, 0.75));
+}
+
+.bento .defile .defile__texte {
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  z-index: 2;
+  padding: clamp(1.2rem, 2.5vw, 2.5rem);
+  pointer-events: none;
+}
+
+.bento .defile .defile__type {
+  top: clamp(1rem, 2vw, 1.8rem);
+  bottom: auto;
+  right: clamp(1rem, 2vw, 1.8rem);
+}
+
+.bento .defile .defile__meta,
+.bento .defile .defile__credits { opacity: 0.8; }
+
+/* Deux par rangée ; un dernier film seul prend toute la largeur (règle « impair » plus haut) */
+@media (min-width: 701px) {
+  .bento .defile > .defile__bande:last-child:nth-child(odd) .defile__nom { font-size: clamp(2.4rem, 5vw, 4.5rem); }
+}
+
+@media (max-width: 700px) {
+  .bento .defile { padding: 0; }
+  .bento .defile .defile__media { aspect-ratio: 4 / 5; }
+}
+
+/* 100vw compte la barre de défilement : on coupe le débord horizontal */
+.bento .films-page { overflow-x: clip; }
+
+/* ===== Essai (?bento) : films classés par rôle =====
+   Rangées souples : chaque film a sa largeur selon le nombre par ligne (2 à 5) ;
+   une dernière rangée incomplète garde cette taille et se centre. */
+.bento .defile--rythme {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  margin-bottom: 0;
+}
+/* Un palier après l'autre, du même écart qu'entre deux images */
+.bento .defile--rythme + .defile--rythme { margin-top: var(--joint); }
+.bento .defile--rythme > .defile__bande {
+  flex: 0 0 calc((100% - (var(--par-ligne, 2) - 1) * var(--joint)) / var(--par-ligne, 2));
+}
+.bento .defile--rythme > .defile__bande .defile__media,
+.bento .defile--rythme > .defile__bande:last-child:nth-child(odd) .defile__media { aspect-ratio: 16 / 10; }
+.bento .defile--rythme > .defile__bande:last-child:nth-child(odd) .defile__nom { font-size: clamp(1.7rem, 2.8vw, 2.4rem); }
+
+/* Par trois, quatre, cinq : texte plus petit */
+.bento .defile--rythme > [data-par-ligne="3"] .defile__nom { font-size: clamp(1.3rem, 2vw, 1.9rem); }
+.bento .defile--rythme > [data-par-ligne="4"] .defile__nom { font-size: clamp(1.1rem, 1.5vw, 1.5rem); }
+.bento .defile--rythme > [data-par-ligne="5"] .defile__nom { font-size: clamp(1rem, 1.25vw, 1.3rem); }
+.bento .defile--rythme > :not([data-par-ligne="2"]) .defile__texte { padding: clamp(0.9rem, 1.4vw, 1.4rem); }
+.bento .defile--rythme > [data-par-ligne="5"] .defile__meta { font-size: 0.62rem; }
+
+/* Titres de section */
+.bento .films-role__titre {
+  margin: clamp(3rem, 6vw, 5rem) 0 clamp(1rem, 2vw, 1.6rem);
+  padding: 0 var(--joint);
+  font-family: var(--font-display);
+  font-style: italic;
+  font-weight: 400;
+  font-size: clamp(1.6rem, 3vw, 2.4rem);
+  text-align: center;
+}
+.bento .films-role:first-of-type .films-role__titre { margin-top: 0; }
+
+/* Téléphone : à l'image en pleine largeur, le reste deux par ligne */
+@media (max-width: 700px) {
+  .bento .defile--rythme > [data-par-ligne="2"] { flex-basis: 100%; }
+  .bento .defile--rythme > :not([data-par-ligne="2"]) { flex-basis: calc((100% - var(--joint)) / 2); }
+  .bento .defile--rythme > :not([data-par-ligne="2"]) .defile__media { aspect-ratio: 4 / 5; }
+  .bento .defile--rythme > :not([data-par-ligne="2"]) .defile__nom { font-size: 1.15rem; }
+  .bento .defile--rythme > :not([data-par-ligne="2"]) .defile__texte { padding: 0.8rem; }
+}
+
+/* Vignettes allégées : titre et rôle seulement ; réalisation, image, type
+   et statut apparaissent au survol (et restent sur la fiche du film) */
+.bento .defile--rythme .defile__credits,
+.bento .defile--rythme .defile__type {
+  opacity: 0;
+  transition: opacity 0.3s ease;
+}
+@media (hover: hover) {
+  .bento .defile--rythme .defile__bande:hover .defile__credits,
+  .bento .defile--rythme .defile__bande:focus-visible .defile__credits { opacity: 0.8; }
+  .bento .defile--rythme .defile__bande:hover .defile__type,
+  .bento .defile--rythme .defile__bande:focus-visible .defile__type { opacity: 1; }
+}
+/* Sans survol (téléphone), ils restent masqués : la fiche les donne */
+.bento .defile--rythme .defile__credits { max-height: 0; overflow: hidden; }
+@media (hover: hover) {
+  .bento .defile--rythme .defile__bande:hover .defile__credits,
+  .bento .defile--rythme .defile__bande:focus-visible .defile__credits { max-height: 3em; }
+}
+
+/* Mention fixe sur les vignettes en photos de plateau (essai) : pastille
+   crème au-dessus du titre, « En post-production » ou « Photos de tournage » */
+.bento .defile--rythme .defile__mention {
+  order: -1;
+  align-self: flex-start;
+  margin-bottom: 0.3rem;
+  padding: 0.2rem 0.6rem;
+  font-size: 0.6rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.12em;
+  color: #000;
+  background: #e8dcc6;
+  border-radius: 999px;
+}
+
+/* Dernier palier sans extrait : image fixe par-dessus le fondu de photos de
+   plateau ; elle s'efface au survol pour laisser le fondu se jouer */
+.bento .defile--rythme .defile__media .defile__fixe { z-index: 0; transition: opacity 0.5s ease; }
+@media (hover: hover) {
+  .bento .defile--rythme .defile__bande:hover .defile__fixe,
+  .bento .defile--rythme .defile__bande:focus-visible .defile__fixe { opacity: 0; }
+}
+
+/* Version aérée (Théo, 2026-11-22) : tuiles espacées à tous les paliers,
+   légende sous l'image et non dessus, sans dégradé ; pastille sur l'image */
+.bento .defile--rythme {
+  --ecart: 1.6vw;
+  column-gap: var(--ecart);
+  row-gap: 2.4rem;
+  padding: 0 2vw;
+}
+.bento .defile--rythme + .defile--rythme { margin-top: clamp(3rem, 6vw, 5rem); }
+.bento .defile--rythme > .defile__bande {
+  flex-basis: calc((100% - (var(--par-ligne, 2) - 1) * var(--ecart)) / var(--par-ligne, 2));
+  overflow: visible;
+}
+.bento .defile--rythme .defile__media::after { display: none; }
+.bento .defile--rythme > .defile__bande .defile__texte {
+  position: static;
+  padding: 0.8rem 0 0;
+}
+.bento .defile--rythme .defile__meta { color: #888; opacity: 1; }
+.bento .defile--rythme > [data-par-ligne="2"] .defile__nom,
+.bento .defile--rythme > [data-par-ligne="2"]:last-child:nth-child(odd) .defile__nom { font-size: clamp(1.5rem, 2.2vw, 2rem); }
+.bento .defile--rythme .defile__mention {
+  position: absolute;
+  top: 0.7rem;
+  left: 0.7rem;
+  z-index: 3;
+}
+@media (max-width: 700px) {
+  .bento .defile--rythme { --ecart: 4vw; row-gap: 1.8rem; padding: 0 4vw; }
+  .bento .defile--rythme > [data-par-ligne="2"] { flex-basis: 100%; }
+  .bento .defile--rythme > :not([data-par-ligne="2"]) { flex-basis: calc((100% - var(--ecart)) / 2); }
+  .bento .defile--rythme > .defile__bande .defile__texte { padding: 0.5rem 0 0; }
+}
+/* L'artiste passe sous le titre : tous les titres d'une rangée alignés */
+.bento .defile--rythme .defile__artiste { order: 1; }
+.bento .defile--rythme .defile__meta { order: 2; }
+.bento .defile--rythme .defile__credits { order: 3; }
+/* Vrai format de chaque film (Théo, 2026-11-22) : rien n'est recadré ;
+   les tuiles d'une rangée s'alignent par le haut */
+.bento .defile--rythme { align-items: flex-start; }
+.bento .defile--rythme > .defile__bande .defile__media,
+.bento .defile--rythme > .defile__bande:last-child:nth-child(odd) .defile__media,
+.bento .defile--rythme > :not([data-par-ligne="2"]) .defile__media { aspect-ratio: var(--ratio-natif, 16 / 9); }
+/* Rangées de trois (En cours) : titres plus petits */
+.defile--serre .defile__nom { font-size: clamp(1.2rem, 1.8vw, 1.6rem); }

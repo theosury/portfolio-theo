@@ -12,10 +12,6 @@ const Contact = () => {
         </header>
 
         <div className="contact__content">
-          <p className="contact__subtitle">
-            Intéressé par une collaboration ? N'hésitez pas à me contacter.
-          </p>
-
           {/* Le mail et le téléphone en grand, les réseaux en dessous */}
           <div className="contact__principal">
             {aboutData.contact.email && (
@@ -60,7 +56,7 @@ const Contact = () => {
             )}
           </div>
 
-          <p className="contact__pratique">{aboutData.pratique.join(' · ')}</p>
+          <p className="contact__pratique">{aboutData.pratique.join('\u2003')}</p>
         </div>
       </div>
     </section>

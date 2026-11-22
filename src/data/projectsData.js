@@ -53,16 +53,19 @@ export const ordreManuel = [
   'casse-cest-casse',    // électro : cheval sous la pluie, colombe dans la fumée
   'the-right-choice',    // chef électro, plus petit projet : tunnel, pyrotechnie
   'insipide',            // réalisation
-  'tecnomat',            // pub TV
-  'armanaque',
+  'casse-noisette',      // chef-op, film en ligne : remonté (Théo, 22 nov 2026)
+  'armanaque',           // chef-op, extraits en HD : remonté (Théo, 22 nov 2026)
+  'darwin-experience',   // ex-Expériences : making-of
+  'revolte',             // chef électro, film en ligne : remonté (Théo, 22 nov 2026)
   'gate66',              // sorti en juillet 2026
+  'tecnomat',            // pub TV (dans « autres tournages »)
   // En post-production (section « En cours »)
-  'super-vespapa',
+  'super-vespapa',       // chef-op d'abord
   'jugement-dernier',
+  'aleksandra',
   'la-table-regie',
   'azincourt',
   'jeanne',
-  'aleksandra',
 ];
 
 // ========== SECOND PLAN ==========
@@ -89,11 +92,11 @@ export const projetsSecondaires = [
   'nikon-vivi',          // « Mona » = titre du scénario, titre final à confirmer ; film pas encore retrouvé  // Sortis de la grande grille (audit du 11 oct 2026) : projets plus petits
   // ou poste sans rapport avec la lumière et l'image
   'bureau-du-karma',     // 1 minute, festival
-  'casse-noisette',      // portes ouvertes ESEC, une journée
   'mode-kids',
   'pardon',              // 1er assistant caméra
   'loverdance',          // régisseur adjoint (production ARTE / La Fémis)
-  'revolte',             // film de 2e année d'école
+  'tecnomat',            // pub trop lumineuse, détonnait dans la grande grille (22 nov 2026)
+  'dna',                 // photos de tournage : pas en haut de la grande grille (Théo, 22 nov 2026)
 ];
 
 // Applique l'ordre manuel puis le tri par date sur le reste
@@ -253,6 +256,7 @@ export const projectsData = {
         regisseur: 'Aliénor Tellier',
         assistRegie: 'Oscar Biget & Yann Machet',
         thumbnail: '/images/nothing-personal-thumb.jpg',
+        diaporama: [1, 2, 3].map((n) => `/images/nothing-personal-plateau/nothing-personal-plateau-${n}.jpg`), // photos de plateau en fondu (essai grand format)
         couvertureTuile: true,
         status: 'En post-production',
         images: [],
@@ -295,6 +299,8 @@ export const projectsData = {
         maquillage: 'Géraldine Geretier',
         vfx: 'Martial Brard & Charlotte Didier (3D), Julien Brard (post-production 3D)',
         thumbnail: '/images/moutarderie-fallot-thumb.webp',
+        diaporama: [1, 4, 2, 5].map((n) => `/images/moutarderie-plateau/moutarderie-plateau-${n}.jpg`), // photos de plateau en fondu (essai grand format)
+        vignetteFixe: '/images/moutarderie-plateau/moutarderie-plateau-2.jpg', // image fixe au dernier palier de l'essai (choisie le 2026-11-22)
         couvertureTuile: true,
         status: 'En post-production',
         images: [],
@@ -345,6 +351,7 @@ export const projectsData = {
         maquillage: 'Audrey Brugnerotto',
         regisseur: 'Quentin Dissard',
         thumbnail: '/images/cache-toi-thumb.jpg',
+        diaporama: [1, 4, 7, 10].map((n) => `/images/cache-toi-plateau/cache-toi-plateau-${n}.jpg`), // photos de plateau en fondu (essai grand format)
         couvertureTuile: true,
         status: 'En parcours festival',
         images: [],
@@ -371,7 +378,7 @@ export const projectsData = {
       },
       {
         id: 'bureau-du-karma',
-        boucles: [1, 4].map((n) => `/videos/boucles/bureau-du-karma-${n}`),
+        boucles: [1, 4, 5].map((n) => `/videos/boucles/bureau-du-karma-${n}`),
         boucleRatio: '1200 / 676', // format des extraits (bandes noires retirées)
         title: 'Bureau du Karma',
         year: '2026',
@@ -445,6 +452,7 @@ export const projectsData = {
         regisseur: 'Jonathan Francillette',
         assistRegie: 'Emilien Rouillard & Thomas Raoult',
         thumbnail: '/images/trauma-resonance-thumb.jpg', // le décor d'hôpital dans la fumée
+        diaporama: [1, 4, 7, 2].map((n) => `/images/trauma-resonance-plateau/trauma-plateau-${n}.jpg`), // photos de plateau en fondu (essai grand format)
         couvertureTuile: true,
         status: 'En post-production',
         images: [],
@@ -573,7 +581,7 @@ export const projectsData = {
         id: 'the-right-choice',
         // Un seul plan du tunnel (1) : arche dans la fumée, pyro, contre-jour, fumée rouge
         // (pas le plan du mannequin : lumière qui n'est pas de Théo)
-        boucles: [6, 1, 7, 2].map((n) => `/videos/boucles/the-right-choice-${n}`), // extraits muets enchaînés dans la grille
+        boucles: [6, 1, 7, 2, 8, 9, 10, 11, 12].map((n) => `/videos/boucles/the-right-choice-${n}`), // extraits muets enchaînés dans la grille
         boucleRatio: '1920 / 1080',
         title: 'The Right Choice',
         artiste: 'meysi',
@@ -670,7 +678,7 @@ export const projectsData = {
       },
       {
         id: 'vedette',
-        boucles: [1, 5, 4, 2, 3].map((n) => `/videos/boucles/vedette-${n}`), // 2 : le travelling dans le décor
+        boucles: [1, 5, 4, 2, 3, 6, 7, 8, 9, 10, 11, 12, 13, 14].map((n) => `/videos/boucles/vedette-${n}`), // 2 : le travelling dans le décor
         boucleRatio: '1200 / 600', // format des extraits (bandes noires retirées)
         title: 'Vedette !',
         year: '2024',
@@ -725,7 +733,7 @@ export const projectsData = {
       },
       {
         id: 'vagues',
-        boucles: [17, 15, 21, 18, 20, 22, 4].map((n) => `/videos/boucles/vagues-${n}`), // extraits muets enchaînés dans la grille
+        boucles: [17, 15, 21, 18, 20, 22, 4, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32, 33, 34].map((n) => `/videos/boucles/vagues-${n}`), // extraits muets enchaînés dans la grille
         boucleRatio: '1200 / 500', // format des extraits (bandes noires retirées)
         // Pas de plans sur fond de ciel gris seul, ni la trompette (l'équipe s'y reflète)
         // 17 : la valse (les mains en longue focale, puis le plan large), 15 : Pablo face à la mer, 18 : la course entière, de la mer à la plage,
@@ -767,7 +775,7 @@ export const projectsData = {
         // Photos de tournage tirées de la bibliothèque Photos, redressées et cadrées pour la grille
         plateau: {
           titre: 'Sur le plateau',
-          photos: Array.from({ length: 1 }, (_, i) => `/images/vagues-plateau/vagues-plateau-${i + 1}.jpg`),
+          photos: Array.from({ length: 10 }, (_, i) => `/images/vagues-plateau/vagues-plateau-${i + 1}.jpg`),
         },
         description: 'Pablo est un gitan qui vit seul près de la mer. Ce lieu est devenu son refuge depuis ses 19 ans, âge auquel il est tombé amoureux de son unique amour, Alice, avant de la perdre tragiquement cette même année. Forcé de quitter le seul endroit où il a vu son bonheur, il replonge dans ses souvenirs comme pour plonger avec Alice, la retrouver, quitte à ne plus en émerger.',
         synopsis: 'Deux époques se confrontent : un présent sombre et désaturé face à un passé chaud aux couleurs vives. Tournage en Bretagne avec Easyrig pour suivre les mouvements des personnages sur la plage. Plans dynamiques et sensoriels pour traduire la mémoire de Pablo.',
@@ -798,7 +806,7 @@ export const projectsData = {
       {
         id: 'casse-cest-casse',
         chefMachino: 'Roman Popsing',
-        boucles: [1, 2, 3].map((n) => `/videos/boucles/casse-cest-casse-${n}`), // extraits muets enchaînés dans la grille
+        boucles: [1, 2, 3, 5].map((n) => `/videos/boucles/casse-cest-casse-${n}`), // extraits muets enchaînés dans la grille ; 4 (tête dans le sang) retiré : trop fixe (Théo)
         boucleRatio: '1200 / 676', // format des extraits (bandes noires retirées)
         title: 'Cassé c\'est Cassé',
         year: '2026',
@@ -899,6 +907,7 @@ export const projectsData = {
         script: 'Julia Nogueira',
         electros: 'Simon Clarisse, Diego Galuteau, Clothilde Barbier, Julie Puel, Théo Frachon, Arthur Flavini, Théo Sury & Jade Sinturet-Cuinier (prélight)',
         thumbnail: '/images/marcus-thumb.jpg',
+        diaporama: [1, 4, 7, 2].map((n) => `/images/marcus-plateau/marcus-plateau-${n}.jpg`), // photos de plateau en fondu (essai grand format)
         couvertureTuile: true, // image en fond de sa tuile dans « Voir les autres projets »
         // Photos de prélight (13 au 15 octobre 2026), redressées et cadrées pour la grille
         plateau: {
@@ -946,6 +955,7 @@ export const projectsData = {
         maquillage: 'Eleonora Covalet',
         regisseur: 'Alex Birot',
         thumbnail: '/images/nikon-mamie-thumb.jpg',
+        diaporama: [1, 4, 7, 10].map((n) => `/images/nikon-mamie-plateau/mamie-plateau-${n}.jpg`), // photos de plateau en fondu (essai grand format)
         couvertureTuile: '/images/nikon-mamie-plateau/mamie-plateau-1.jpg', // la vignette est trop sombre sous le voile de la tuile
         status: 'En post-production',
         images: [],
@@ -989,7 +999,7 @@ export const projectsData = {
       },
       {
         id: 'asterix',
-        boucles: [3, 1, 2].map((n) => `/videos/boucles/asterix-${n}`),
+        boucles: [3, 1, 2, 4, 5, 6].map((n) => `/videos/boucles/asterix-${n}`),
         boucleRatio: '1200 / 676', // format des extraits (bandes noires retirées)
         title: 'Astérix',
         year: '2026',
@@ -1056,8 +1066,9 @@ export const projectsData = {
         assistRegie: 'Ming Saw & Paul Legendre',
         coordinatriceIntimite: 'Luce Paz',
         thumbnail: '/images/male-addict-thumb.jpg',
+        diaporama: [1, 4, 2, 3].map((n) => `/images/male-addict-plateau/male-addict-plateau-${n}.jpg`), // photos de plateau en fondu (essai grand format)
         couvertureTuile: true,
-        status: 'En post-production',
+        // Plus de statut « En post-production » : le film ne sortira sans doute pas (Théo, 2026-11-22)
         images: [],
         // Photos de tournage choisies par Théo (bibliothèque Photos), redressées et cadrées pour la grille
         plateau: {
@@ -1096,6 +1107,8 @@ export const projectsData = {
         assistantSon: 'Louise Bride',
         deco: 'Mila Martineau & Jules Coquet',
         thumbnail: '/images/undetoi-thumb.jpg',
+        diaporama: [1, 4, 2, 3].map((n) => `/images/undetoi-plateau/undetoi-plateau-${n}.jpg`), // photos de plateau en fondu (essai grand format)
+        vignetteFixe: '/images/undetoi-plateau/undetoi-plateau-2.jpg', // image fixe au dernier palier de l'essai (choisie le 2026-11-22)
         couvertureTuile: '/images/undetoi-plateau/undetoi-plateau-2.jpg', // la vignette est trop sombre sous le voile de la tuile
         status: 'En post-production',
         images: [],
@@ -1221,7 +1234,7 @@ export const projectsData = {
 
       {
         id: 'gate66',
-        boucles: [1, 2, 3, 4].map((n) => `/videos/boucles/gate66-${n}`), // extraits muets, sans sous-titres
+        boucles: [1, 2, 3, 4, 5, 7, 8, 9].map((n) => `/videos/boucles/gate66-${n}`), // extraits muets, sans sous-titres
         boucleRatio: '1200 / 502', // format du film (bandes noires retirées)
         title: 'Gate 66',
         year: '2026',
@@ -1299,6 +1312,8 @@ export const projectsData = {
         chefElectro: 'Leo Aguiton',
         production: 'MOLIMO Prod',
         thumbnail: '/images/bbc-thumb.jpg',
+        diaporama: [1, 4, 7, 2].map((n) => `/images/bbc-plateau/bbc-plateau-${n}.jpg`), // photos de plateau en fondu (essai grand format)
+        vignetteFixe: '/images/bbc-plateau/bbc-plateau-2.jpg', // image fixe au dernier palier de l'essai (choisie le 2026-11-22)
         couvertureTuile: true,
         status: 'En post-production',
         images: [],
@@ -1356,6 +1371,7 @@ export const projectsData = {
         maquillage: 'Arya Bardin',
         photo: 'Astrid Joos-Deligne',
         thumbnail: '/images/verite-studio-thumb.jpg',
+        diaporama: [1, 4, 7, 10].map((n) => `/images/verite-studio-plateau/verite-plateau-${n}.jpg`), // photos de plateau en fondu (essai grand format)
         couvertureTuile: true,
         status: 'En parcours festival',
         images: ['/images/verite_studio.jpg'], // photo de tournage (clap)
@@ -1492,7 +1508,9 @@ export const projectsData = {
           'Lorenzo Blondet (Keran)',
           'Bastien Lapouille (Maeron)',
         ],
-        boucles: [1, 4].map((n) => `/videos/boucles/armanaque-${n}`),
+        // Plans choisis plan par plan dans le film (22 nov 2026) : baiser, salon, fête, jardin de nuit, bar, couple ;
+        // 4 (téléphone au jardin) retiré, trop plat
+        boucles: [5, 7, 1, 8, 9, 10, 6].map((n) => `/videos/boucles/armanaque-${n}`),
         boucleRatio: '1200 / 632', // format des extraits (bandes noires retirées)
         title: 'Armanaque',
         year: '2024',
@@ -1536,7 +1554,7 @@ export const projectsData = {
       },
       {
         id: 'pardon',
-        boucles: [4, 1, 3].map((n) => `/videos/boucles/pardon-${n}`),
+        boucles: [4, 1, 3, 5, 6, 7].map((n) => `/videos/boucles/pardon-${n}`),
         boucleRatio: '1200 / 1008', // format des extraits (bandes noires retirées)
         title: 'Pardon',
         year: '2024',
@@ -1577,7 +1595,7 @@ export const projectsData = {
       },
       {
         id: 'casse-noisette',
-        boucles: [1, 4].map((n) => `/videos/boucles/casse-noisette-${n}`),
+        boucles: [1, 4, 5, 6, 7].map((n) => `/videos/boucles/casse-noisette-${n}`),
         boucleRatio: '1200 / 676', // format des extraits (bandes noires retirées)
         title: 'Casse-Noisette',
         year: '2024',
@@ -1619,7 +1637,7 @@ export const projectsData = {
       },
       {
         id: 'quand-son-souffle',
-        boucles: [1, 2, 3, 4, 5].map((n) => `/videos/boucles/quand-son-souffle-${n}`),
+        boucles: [1, 2, 3, 4, 5, 6, 7, 8].map((n) => `/videos/boucles/quand-son-souffle-${n}`),
         boucleRatio: '1200 / 676', // format des extraits (bandes noires retirées)
         title: 'Quand son souffle s\'est arrêté',
         year: '2024',
@@ -1667,7 +1685,7 @@ export const projectsData = {
       },
       {
         id: 'loverdance',
-        boucles: [1, 2].map((n) => `/videos/boucles/loverdance-${n}`),
+        boucles: [1, 2, 3, 4].map((n) => `/videos/boucles/loverdance-${n}`),
         boucleRatio: '1200 / 722', // format des extraits (bandes noires retirées)
         title: 'Loverdance',
         year: '2024',
@@ -1723,7 +1741,7 @@ export const projectsData = {
       },
       {
         id: 'insipide',
-        boucles: [1, 8, 4, 7, 3].map((n) => `/videos/boucles/insipide-${n}`), // la couleur d'abord (La Fuite, fin de La Valse, Le Mépris), un plan noir et blanc pour finir
+        boucles: [3, 8, 4, 7, 9, 12, 1, 10, 13, 11].map((n) => `/videos/boucles/insipide-${n}`), // les plus beaux d'abord, couleur et noir et blanc en alternance (Théo, 2026-11-22)
         boucleRatio: '1200 / 900', // format des extraits (bandes noires retirées)
         title: 'Insipide',
         year: '2022',
@@ -1793,6 +1811,7 @@ export const projectsData = {
         chefHMC: 'Celia Burtin',
         cheffeDecoratrice: 'Audrey Felix',
         thumbnail: '/images/gadfly-thumb.jpg',
+        diaporama: [1, 2].map((n) => `/images/gadfly-tournage/gadfly-tournage-${n}.jpg`), // photos de plateau en fondu (essai grand format)
         couvertureTuile: true,
         images: [
           '/images/gadfly-snaps/gadfly-1.jpg',
@@ -1829,7 +1848,7 @@ export const projectsData = {
       },
       {
         id: 'revolte',
-        boucles: [1, 2, 4].map((n) => `/videos/boucles/revolte-${n}`),
+        boucles: [1, 2, 4, 5, 6, 7].map((n) => `/videos/boucles/revolte-${n}`),
         boucleRatio: '1200 / 598', // format des extraits (bandes noires retirées)
         title: 'Le Révolté',
         year: '2023',
@@ -1916,6 +1935,72 @@ export const projectsData = {
           'Magalie Botella Martinez',
           'Gabriel Tiphine'
         ]
+      },
+      // Passés d'Expériences aux films (section « Sur le plateau ») le 2026-11-22
+      {
+        id: 'dna',
+        title: 'Demain Nous Appartient (DNA)',
+        year: '2024',
+        role: '3e assistant caméra',
+        realisateurs: 'Alexis Charrier & Thomas Lipmann',
+        chefOp: 'William Hulin & Hervé Lodé',
+        production: 'TELSETE pour TF1',
+        thumbnail: '/images/experiences/dna/3.jpg',
+        couvertureTuile: true, // photo de plateau en fond de tuile dans « autres tournages »
+        images: [],
+        diaporama: [3, 1, 2, 4].map((n) => `/images/experiences/dna/${n}.jpg`), // photos de plateau en fondu
+        plateau: {
+          titre: 'Sur le plateau',
+          photos: [1, 2, 3, 4].map((n) => `/images/experiences/dna/${n}.jpg`),
+        },
+        description: 'Assistanat caméra sur la série quotidienne de TF1, pendant un mois, en deux sessions.',
+        specs: {
+          format: 'Série TV',
+          diffusion: 'TF1',
+        },
+      },
+      {
+        id: 'darwin-experience',
+        title: 'Darwin Experience',
+        year: '2025',
+        role: 'Photographe & making-of',
+        realisateurs: 'Martin Schrepel',
+        chefOp: 'Grégoire Léon-Dufour',
+        production: 'PRISM, avec le soutien du CNC',
+        thumbnail: '/videos/boucles/darwin-making-scene.jpg',
+        images: [],
+        // Tuile : mes making-of, quatre plans verticaux côte à côte (scène, plage, nuit) ;
+        // pas les plans des clips, qui sont l'image d'un autre chef-op (Théo, 2026-11-22).
+        // Les plans des clips restent sur la fiche, crédités, sous « Les clips ».
+        boucles: ['scene', 'plage', 'nuit'].map((n) => `/videos/boucles/darwin-making-${n}`),
+        boucleRatio: '1920 / 852',
+        tuileImagesDeTheo: true, // pas de crédit « Image » sous la tuile : ce sont mes images
+        // Fiche : les mêmes plans en grille, avec les clips sur YouTube
+        extraits: {
+          titre: 'Les clips',
+          ratio: '2.39 / 1',
+          videos: Array.from({ length: 14 }, (_, i) => `/videos/boucles/darwin-${i + 1}`),
+          liens: [
+            { href: 'https://www.youtube.com/watch?v=89fB1I9N_1o', texte: 'Automatic Doors' },
+            { href: 'https://www.youtube.com/watch?v=aKJyRwJYJXI', texte: 'Home' },
+            { href: 'https://www.youtube.com/watch?v=SQz6HeVUkfA', texte: 'I Killed You' },
+            { href: 'https://www.youtube.com/watch?v=U5DOOxT_HKU', texte: 'Just Want To Dance' },
+          ],
+        },
+        // Mes making-of, en vertical, l'un après l'autre
+        videoFiles: [
+          { file: '/videos/darwin-making-automatic-doors.mp4', poster: '/videos/darwin-making-automatic-doors.jpg', title: 'Automatic Doors', vertical: true },
+          { file: '/videos/darwin-making-home.mp4', poster: '/videos/darwin-making-home.jpg', title: 'Home', vertical: true },
+          { file: '/videos/darwin-making-i-killed-you.mp4', poster: '/videos/darwin-making-i-killed-you.jpg', title: 'I Killed You', vertical: true },
+          { file: '/videos/darwin-making-just-want-to-dance.mp4', poster: '/videos/darwin-making-just-want-to-dance.jpg', title: 'Just Want To Dance', vertical: true },
+        ],
+        description: 'Making-of du tournage des quatre clips de l\'EP « Home », trois jours au Havre en janvier 2025.',
+        specs: {
+          format: 'Making-of de clips',
+          jours: '3 jours',
+          tournage: 'Janvier 2025',
+          lieu: 'Le Havre',
+        },
       },
     ];
 

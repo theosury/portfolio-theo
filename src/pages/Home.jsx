@@ -38,23 +38,27 @@ const Home = () => {
     return () => clearTimeout(timer);
   }, [location]);
 
+  // Présentation : portrait de plateau, accroche, puis la bio
+  const intro = (
+    <section className="home-intro" id="home-intro">
+      <figure className="home-intro__portrait">
+        <img src="/images/portrait-plateau.jpg" alt="Théo Sury au cadre sur le tournage de Super Vespapa" loading="lazy" />
+        <figcaption>Sur le tournage de Super Vespapa. Photo : Arthur Cassot</figcaption>
+      </figure>
+      <div className="home-intro__texte">
+        <p className="home-intro__accroche">Chef-opérateur & électricien, entre Lille et Paris.</p>
+        {aboutData.bio.split('\n\n').map((paragraphe, i) => (
+          <p key={i}>{paragraphe}</p>
+        ))}
+      </div>
+    </section>
+  );
+
   return (
     <div className="home">
       <Hero />
 
-      {/* Présentation : portrait de plateau, accroche, puis la bio */}
-      <section className="home-intro" id="home-intro">
-        <figure className="home-intro__portrait">
-          <img src="/images/portrait-plateau.jpg" alt="Théo Sury au cadre sur le tournage de Super Vespapa" loading="lazy" />
-          <figcaption>Sur le tournage de Super Vespapa · Photo : Arthur Cassot</figcaption>
-        </figure>
-        <div className="home-intro__texte">
-          <p className="home-intro__accroche">Chef-opérateur & électricien, entre Lille et Paris.</p>
-          {aboutData.bio.split('\n\n').map((paragraphe, i) => (
-            <p key={i}>{paragraphe}</p>
-          ))}
-        </div>
-      </section>
+      {intro}
 
       <section id="films" className="home-section">
         <Films dansAccueil />

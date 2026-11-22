@@ -4,25 +4,26 @@ import './Experiences.css';
 
 // Du plus récent au plus ancien (dernière année citée, « 2023-2024 » compte pour 2024)
 const derniereAnnee = (item) => Math.max(...(String(item.year).match(/\d{4}/g) || [0]).map(Number));
-const experiencesTriees = [...projectsData.autres].sort((a, b) => derniereAnnee(b) - derniereAnnee(a));
+// Une expérience devenue fiche film (DNA, Darwin) n'apparaît plus qu'avec les films
+const idsFilms = new Set(projectsData.films.map((f) => f.id));
+const experiencesTriees = projectsData.autres.filter((e) => !idsFilms.has(e.id)).sort((a, b) => derniereAnnee(b) - derniereAnnee(a));
 
-// Grille à deux colonnes sans trou : les making-of prennent toute la largeur,
-// et une carte restée seule sur sa rangée s'élargit aussi.
+// Quatre par rangée, sans trou (Théo, 23 nov 2026 : les expériences pèsent
+// moins que les films) : les making-of prennent toute la largeur, une rangée
+// incomplète se partage la largeur (trois, deux, ou une seule carte).
 const avecLargeur = (items) => {
   const resultat = [];
-  let enAttente = null;
+  let rang = [];
+  const vider = () => {
+    rang.forEach((item) => resultat.push({ item, taille: `par${rang.length}` }));
+    rang = [];
+  };
   items.forEach((item) => {
-    if (item.makingOf) {
-      if (enAttente) { resultat.push({ item: enAttente, large: true }); enAttente = null; }
-      resultat.push({ item, large: true });
-    } else if (enAttente) {
-      resultat.push({ item: enAttente, large: false }, { item, large: false });
-      enAttente = null;
-    } else {
-      enAttente = item;
-    }
+    if (item.makingOf) { vider(); resultat.push({ item, taille: 'par1' }); return; }
+    rang.push(item);
+    if (rang.length === 4) vider();
   });
-  if (enAttente) resultat.push({ item: enAttente, large: true });
+  vider();
   return resultat;
 };
 
@@ -44,8 +45,8 @@ const Experiences = ({ dansAccueil = false }) => {
       </header>
 
       <div className="experiences-grille">
-        {avecLargeur(experiencesTriees).map(({ item, large }) => (
-          <article key={item.id} className={`experience${large ? ' experience--large' : ''}`}>
+        {avecLargeur(experiencesTriees).map(({ item, taille }) => (
+          <article key={item.id} className={`experience experience--${taille}${taille === 'par1' ? ' experience--large' : ''}`}>
             {item.makingOf ? (
               <MakingOf item={item} onOuvrir={(index) => setVue({ medias: item.makingOf.map((m) => ({ video: m.file })), index })} />
             ) : item.photos ? (
@@ -63,7 +64,7 @@ const Experiences = ({ dansAccueil = false }) => {
               {(item.realisateurs || item.directeursPhoto) && (
                 <p className="experience__credits">
                   {item.realisateurs && <>Réal : {item.realisateurs}</>}
-                  {item.realisateurs && item.directeursPhoto && ' · '}
+                  {item.realisateurs && item.directeursPhoto && '\u2003'}
                   {item.directeursPhoto && <>Image : {item.directeursPhoto}</>}
                 </p>
               )}

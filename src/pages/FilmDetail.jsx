@@ -14,8 +14,12 @@ const ORDRE_FILMS = [
 // Retour à l'accueil, là où l'on était avant d'ouvrir la fiche (sinon : section Films)
 const retourAccueil = (navigate) => {
   let y = null;
-  try { y = sessionStorage.getItem('retourAccueil'); } catch { /* stockage indisponible */ }
-  navigate('/', { state: y !== null ? { retourY: Number(y) } : { section: 'films' } });
+  let page = '/';
+  try {
+    y = sessionStorage.getItem('retourAccueil');
+    page = sessionStorage.getItem('retourPage') || '/';
+  } catch { /* stockage indisponible */ }
+  navigate(page, { state: y !== null ? { retourY: Number(y) } : { section: 'films' } });
 };
 
 const FilmDetail = () => {
@@ -77,8 +81,10 @@ const FilmDetail = () => {
 
   // Les extraits en boucle, en grille. Celui qui sert d'aperçu au lecteur
   // YouTube n'est pas répété ; Feng Shui a déjà sa propre grille d'extraits.
+  // Avec plusieurs vidéos sur le site (Darwin : les making-of), les boucles
+  // ne servent qu'à la vignette : le lecteur montre déjà ces plans.
   const boucleEnTete = !hasMultipleVideosFor(project) && !project.videoFile && project.youtubeId;
-  const boucles = project.extraits ? [] : (project.boucles || []).slice(boucleEnTete ? 1 : 0);
+  const boucles = project.extraits || project.videoFiles?.length ? [] : (project.boucles || []).slice(boucleEnTete ? 1 : 0);
 
   const hasImages = project.images && project.images.length > 0;
   // La vignette générique ne vaut pas un visuel : inutile d'ouvrir la fiche
@@ -184,6 +190,20 @@ const FilmDetail = () => {
   // Rendu carrousel de vidéos (YouTube et/ou Vimeo)
   const renderVideoCarousel = () => {
     if (!hasMultipleVideos) return null;
+
+    // Vidéos verticales hébergées (Darwin : les making-of) : côte à côte
+    if (multipleVideos.every((v) => v.platform === 'file' && v.vertical)) {
+      return (
+        <div className="film-detail__verticales">
+          {multipleVideos.map((video) => (
+            <figure key={video.file}>
+              <video src={video.file} poster={video.poster} title={video.title} controls playsInline preload="none"></video>
+              {video.title && <figcaption>{video.title}</figcaption>}
+            </figure>
+          ))}
+        </div>
+      );
+    }
 
     const currentVideo = multipleVideos[currentVideoIndex];
     const currentTitle =
@@ -391,7 +411,7 @@ const FilmDetail = () => {
               {project.extraits && (
                 <div className="film-detail__extraits">
                   <h3>{project.extraits.titre}</h3>
-                  <ExtraitsGrille key={project.id} extraits={project.extraits} />
+                  <ExtraitsGrille key={project.id} extraits={project.extraits} ratio={project.extraits.ratio} />
                 </div>
               )}
 
@@ -579,7 +599,7 @@ const PhotosPlateau = ({ plateau, titre }) => {
       {(credit || lien) && (
         <p className="film-detail__extraits-credit">
           {credit && <>Photos : {credit}</>}
-          {credit && lien && ' · '}
+          {credit && lien && '\u2003'}
           {lien && (
             <a href={lien} target="_blank" rel="noopener noreferrer">Voir le post Instagram →</a>
           )}
@@ -625,7 +645,7 @@ const ExtraitVideo = ({ src }) => {
 };
 
 const ExtraitsGrille = ({ extraits, ratio }) => {
-  const { videos, credit, creditLien, lien } = extraits;
+  const { videos, credit, creditLien, lien, liens } = extraits;
   // La première en grand ; si le reste est impair, la dernière aussi (pas de trou)
   const classes = ['film-detail__extraits-grid', videos.length % 2 === 0 ? 'film-detail__extraits-grid--fin-large' : ''].join(' ');
   return (
@@ -635,13 +655,23 @@ const ExtraitsGrille = ({ extraits, ratio }) => {
           <ExtraitVideo key={src} src={src} />
         ))}
       </div>
+      {liens && (
+        <p className="film-detail__extraits-credit">
+          {liens.map(({ href, texte }, i) => (
+            <span key={href}>
+              {i > 0 && '\u2003'}
+              <a href={href} target="_blank" rel="noopener noreferrer">{texte} →</a>
+            </span>
+          ))}
+        </p>
+      )}
       {(credit || lien) && (
         <p className="film-detail__extraits-credit">
           {credit && (
             <>
               Images :{' '}
               <a href={creditLien} target="_blank" rel="noopener noreferrer">{credit}</a>
-              {lien && ' · '}
+              {lien && '\u2003'}
             </>
           )}
           {lien && (

@@ -3,13 +3,34 @@ import './Defile.css';
 
 // Grille vivante : chaque film est une carte avec son extrait en boucle.
 // Utilisé sur l'accueil (sélection) et sur la page Films (tous les films).
-const Defile = ({ films, onOuvrir }) => (
-  <div className="defile">
-    {films.map((film) => (
-      <BandeFilm key={film.id} film={film} onClick={() => onOuvrir(film)} />
-    ))}
-  </div>
-);
+// parLigne (essai grand format) : pour chaque film, le nombre de films sur sa ligne
+const Defile = ({ films, onOuvrir, parLigne, parRang = 2 }) => {
+  if (parLigne) {
+    return (
+      <div className="defile defile--rythme">
+        {films.map((film, i) => (
+          <BandeFilm key={film.id} film={film} parLigne={parLigne[i]} onClick={() => onOuvrir(film)} />
+        ))}
+      </div>
+    );
+  }
+  // Rangées de deux, justifiées : les deux films ont la même hauteur, chacun
+  // prend une largeur à la mesure de son format (un film en scope n'est plus
+  // tout petit à côté d'un 16:9). Un dernier film seul prend toute la largeur.
+  const rangs = [];
+  for (let i = 0; i < films.length; i += parRang) rangs.push(films.slice(i, i + parRang));
+  return (
+    <div className={`defile defile--justifie${parRang > 2 ? ' defile--serre' : ''}`}>
+      {rangs.map((rang) => (
+        <div key={rang[0].id} className={`defile__rang${rang.length === 1 ? ' defile__rang--seul' : ''}`}>
+          {rang.map((film) => (
+            <BandeFilm key={film.id} film={film} onClick={() => onOuvrir(film)} />
+          ))}
+        </div>
+      ))}
+    </div>
+  );
+};
 
 // Format d'une bande : celui du film (« 1920 / 804 »), mais jamais plus haut
 // que 1,6:1, pour qu'un film en 4:3 soit légèrement recadré plutôt que bordé de noir
@@ -19,10 +40,17 @@ const ratioBande = (ratio) => {
   return String(Math.max(l / h, 1.6));
 };
 
+// Le même format en nombre, pour répartir la largeur d'une rangée
+const ratioNum = (r) => {
+  const [l, h = 1] = String(r).split('/').map(Number);
+  return l / h;
+};
+
 // Image créditée à son chef-opérateur dès que Théo ne l'a pas signée lui-même
 // (électro, assistant, régie, mais aussi réalisation ou cadre)
 const creditImage = (film) => {
   if (/chef-op/i.test(film.role)) return null;
+  if (film.tuileImagesDeTheo) return null; // la tuile montre ses propres images (Darwin : ses making-of)
   const nom = film.chefOp || film.cheffeOp || null;
   return nom && !/sury/i.test(nom) ? nom : null;
 };
@@ -36,7 +64,7 @@ const creditReal = (film) => {
 const credits = (film) =>
   [creditReal(film) && `Réal : ${creditReal(film)}`, creditImage(film) && `Image : ${creditImage(film)}`]
     .filter(Boolean)
-    .join(' · ');
+    .join('\u2003');
 
 // Type de projet, court : sans la précision entre parenthèses ni « fiction »
 // (presque tous les films en sont), pour ne pas surcharger les vignettes
@@ -46,7 +74,7 @@ const typeProjet = (film) =>
 // Une bande du défilé. L'extrait ne se charge et ne joue que lorsque la bande
 // est à l'écran. Sans extrait (films en post-production, ou vidéo indisponible),
 // l'image de la vignette avance en lent zoom pour garder du mouvement.
-const BandeFilm = ({ film, onClick }) => {
+const BandeFilm = ({ film, parLigne, onClick }) => {
   // Plusieurs extraits enchaînés ; l'ancien champ « boucle » (un seul) reste accepté
   const extraits = film.boucles || (film.boucle ? [film.boucle] : null);
 
@@ -54,26 +82,39 @@ const BandeFilm = ({ film, onClick }) => {
     <button
       type="button"
       className={`defile__bande${extraits ? ' defile__bande--video' : ''}`}
-      style={{ '--ratio-bande': film.diaporamaRatio || ratioBande(film.boucleRatio) }}
+      style={{ '--ratio-bande': film.diaporamaRatio || ratioBande(film.boucleRatio), '--ratio-num': ratioNum(film.diaporamaRatio || ratioBande(film.boucleRatio)), '--ratio-natif': film.boucleRatio || film.diaporamaRatio || (film.boucles || film.boucle ? '16 / 9' : '3 / 2'), '--par-ligne': parLigne }}
+      data-par-ligne={parLigne}
       onClick={onClick}
     >
       <div className="defile__media">
         {extraits ? (
           <Extraits sources={extraits} />
         ) : film.diaporama ? (
-          <Diaporama images={film.diaporama} />
+          <>
+            <Diaporama images={film.diaporama} />
+            {/* Essai, dernier palier : image fixe, le fondu se révèle au survol */}
+            {parLigne === 4 && (
+              <img className="defile__fixe" src={film.vignetteFixe || film.thumbnail} alt="" loading="lazy" />
+            )}
+          </>
         ) : (
-          <img className="defile__zoom" src={film.thumbnail} alt="" loading="lazy" style={{ animationDelay: `-${(film.id.length * 1.7) % 6}s` }} />
+          <img className="defile__zoom" src={typeof film.couvertureTuile === 'string' ? film.couvertureTuile : film.thumbnail} alt="" loading="lazy" style={{ animationDelay: `-${(film.id.length * 1.7) % 6}s` }} />
         )}
-        {typeProjet(film) && <span className="defile__type">{typeProjet(film)}</span>}
+        {(typeProjet(film) || film.status) && (
+          <span className="defile__type">{[typeProjet(film), parLigne && film.status].filter(Boolean).join('\u2003')}</span>
+        )}
       </div>
       <div className="defile__texte">
         {film.artiste && <span className="defile__artiste">{film.artiste}</span>}
         <span className="defile__nom">{film.title}</span>
         <span className="defile__meta">
-          {film.year} · {film.role}
+          {film.year}{'\u2003'}{film.role}
         </span>
         {credits(film) && <span className="defile__credits">{credits(film)}</span>}
+        {/* Essai : sans extrait, la vignette montre des photos de plateau ; on le dit */}
+        {parLigne && !extraits && (
+          <span className="defile__mention">{/post-prod/i.test(film.status || '') ? 'En post-production' : 'Photos de tournage'}</span>
+        )}
       </div>
       <span className="defile__voir" aria-hidden="true">Voir le projet →</span>
     </button>

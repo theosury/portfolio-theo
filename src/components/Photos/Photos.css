@@ -282,3 +282,11 @@
     gap: 0.5rem;
   }
 }
+
+/* Même largeur que les films et les expériences, photos plus grandes
+   (Théo, 23 nov 2026) */
+html:not(.bento) .photos-grid {
+  columns: 3 240px;
+  column-gap: clamp(0.6rem, 1.5vw, 1rem);
+  max-width: 1500px;
+}

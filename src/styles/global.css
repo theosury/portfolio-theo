@@ -257,3 +257,8 @@ body::after {
   background-image: url('/images/grain.png');
   background-size: 160px 160px;
 }
+
+/* ===== Essai (?bento) : le 100vw compte la barre de défilement ===== */
+.bento body { overflow-x: clip; }
+/* Écart entre les images : un filet de 3 px, chaque film reste distinct (choix de Théo, 2026-11-22) */
+.bento { --joint: 3px; }

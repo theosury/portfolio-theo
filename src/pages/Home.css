@@ -78,3 +78,28 @@
     aspect-ratio: 4 / 3;
   }
 }
+/* ===== Essai (?bento) : présentation après les films, photo et texte côte à côte =====
+   Photo en hauteur (4:5, jamais recadrée), à taille de portrait, alignée sur le texte */
+.bento .home-intro {
+  grid-template-columns: minmax(0, 26rem) minmax(0, 34rem);
+  justify-content: center;
+  align-items: end;
+  max-width: none;
+  padding: var(--spacing-xl) clamp(1.5rem, 5vw, 6rem) 0;
+}
+
+.bento .home-intro .home-intro__portrait img {
+  border-radius: 0;
+  object-position: center top;
+}
+
+@media (max-width: 768px) {
+  .bento .home-intro { grid-template-columns: 1fr; padding: var(--spacing-lg) 1rem 0; }
+  .bento .home-intro .home-intro__portrait { max-width: 22rem; }
+}
+
+/* Bio un peu plus grande et plus claire (Théo, 23 nov 2026) */
+html:not(.bento) .home-intro__texte p:not(.home-intro__accroche) {
+  font-size: 1.05rem;
+  opacity: 0.88;
+}

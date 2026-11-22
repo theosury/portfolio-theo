@@ -1008,3 +1008,77 @@
     min-height: 120px;
   }
 }
+
+/* ===== Essai (?bento) : fiche film, médias bord à bord, texte en colonne lisible ===== */
+.bento .film-detail__container { max-width: none; padding-left: 0; padding-right: 0; }
+
+/* Médias : pleine largeur, grands formats aérés, sans arrondis */
+.bento .film-detail__video,
+.bento .film-detail__gallery,
+.bento .film-detail__no-media,
+.bento .film-detail__thumbnail,
+.bento .film-detail__extraits-grid video,
+.bento .film-detail__plateau-grid button,
+.bento .film-detail__images-film button,
+.bento .film-detail__voyage-carte { border-radius: 0; }
+
+.bento .film-detail__videos-grid,
+.bento .film-detail__thumbnails,
+.bento .film-detail__extraits-grid,
+.bento .film-detail__plateau-grid,
+.bento .film-detail__images-film,
+.bento .film-detail__voyage { gap: var(--joint); }
+
+.bento .film-detail__videos-grid,
+.bento .film-detail__thumbnails { margin-bottom: var(--joint); }
+
+.bento .film-detail__images-film { grid-template-columns: repeat(2, 1fr); }
+.bento .film-detail__video { margin-bottom: var(--joint); }
+.bento .film-detail__video--vertical { margin: 0 auto var(--joint); }
+
+@media (hover: hover) {
+  .bento .film-detail__thumbnail:hover { transform: none; box-shadow: none; }
+  .bento .film-detail__thumbnail:hover img { transform: scale(1.04); }
+}
+
+/* Texte : colonne de lecture centrée */
+.bento .film-detail__info > *:not(.film-detail__extraits),
+.bento .film-detail__extraits > *:not(.film-detail__extraits-grid):not(.film-detail__plateau-grid):not(.film-detail__images-film) {
+  max-width: 40rem;
+  margin-left: auto;
+  margin-right: auto;
+  padding-left: 1rem;
+  padding-right: 1rem;
+  box-sizing: border-box;
+}
+
+.bento .film-detail__voyage { margin-top: 3rem; padding: 2rem var(--joint) 0; }
+
+@media (max-width: 600px) {
+  .bento .film-detail__images-film { grid-template-columns: repeat(2, 1fr); }
+  .bento .film-detail__voyage { padding: 2rem 0 0; }
+}
+
+/* Vidéos verticales côte à côte (making-of Darwin) */
+.film-detail__verticales {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: var(--joint, 0.75rem);
+  width: 100%;
+}
+.film-detail__verticales figure { margin: 0; }
+.film-detail__verticales video {
+  display: block;
+  width: 100%;
+  aspect-ratio: 9 / 16;
+  object-fit: cover;
+  background: #000;
+}
+.film-detail__verticales figcaption {
+  margin-top: 0.5rem;
+  font-size: 0.8rem;
+  opacity: 0.7;
+}
+@media (max-width: 700px) {
+  .film-detail__verticales { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+}
